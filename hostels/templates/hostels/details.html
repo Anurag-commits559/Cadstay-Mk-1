@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ hostel.hostel_name }} — {{ block.super }}{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'hostels/css/hostel.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="hs-page py-4">
+  <div class="container">
+    <nav aria-label="breadcrumb" class="mb-3">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'hostels:hostel_list' %}">Hostels</a></li>
+        <li class="breadcrumb-item active">{{ hostel.hostel_name }}</li>
+      </ol>
+    </nav>
+
+    {# --- Image gallery --- #}
+    {% with images=hostel.images.all %}
+      {% if images %}
+        <div class="hs-gallery-main mb-2">
+          <img src="{{ images.0.image.url }}" alt="{{ hostel.hostel_name }}" id="hs-main-image">
+        </div>
+        {% if images|length > 1 %}
+          <div class="hs-gallery-thumbs">
+            {% for img in images|slice:":4" %}
+              <img src="{{ img.image.url }}" alt="" onclick="document.getElementById('hs-main-image').src=this.src">
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% else %}
+        <div class="hs-gallery-main d-flex align-items-center justify-content-center mb-2">
+          <span style="font-size:3rem;">🏠</span>
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <div class="row mt-4 g-4">
+      <div class="col-lg-8">
+        <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+          <div>
+            <h1 class="hs-heading mb-1">{{ hostel.hostel_name }}</h1>
+            <div class="hs-card-location mb-2">📍 {{ hostel.address }}, {{ hostel.area }}, {{ hostel.city }} — {{ hostel.pincode }}</div>
+          </div>
+          <span class="hs-pill hs-pill-{{ hostel.status|lower }}">{{ hostel.get_status_display }}</span>
+        </div>
+
+        <div class="d-flex gap-3 flex-wrap my-3">
+          <span class="hs-chip">{{ hostel.get_property_type_display }}</span>
+          <span class="hs-chip">{{ hostel.get_gender_allowed_display }}</span>
+          {% if hostel.food_available %}<span class="hs-chip">{{ hostel.get_food_type_display }} food available</span>{% endif %}
+        </div>
+
+        <p>{{ hostel.description|linebreaksbr }}</p>
+
+        {# --- Amenities --- #}
+        <div class="hs-section-heading mt-4"><h2 class="hs-heading h4 mb-0">Amenities</h2></div>
+        {% if hostel.amenity_list %}
+          <div class="row row-cols-2 row-cols-md-4 g-2 mb-4">
+            {% for label in hostel.amenity_list %}
+              <div class="col"><div class="hs-amenity-card"><span class="icon">✓</span>{{ label }}</div></div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="text-muted">No amenities listed yet.</p>
+        {% endif %}
+
+        {# --- Rooms --- #}
+        <div class="hs-section-heading mt-4"><h2 class="hs-heading h4 mb-0">Rooms</h2></div>
+        <div class="row g-3 mb-4">
+          {% for room in hostel.rooms.all %}
+            <div class="col-md-6">
+              <div class="hs-room-detail-card h-100 d-flex flex-column">
+                <div class="d-flex justify-content-between align-items-start">
+                  <h3 class="h6 mb-1">{{ room.get_room_type_display }}</h3>
+                  {% if room.availability_status == "AVAILABLE" %}
+                    <span class="hs-pill hs-pill-available">Available</span>
+                  {% elif room.availability_status == "LIMITED" %}
+                    <span class="hs-pill hs-pill-limited">Limited</span>
+                  {% else %}
+                    <span class="hs-pill hs-pill-full">Full</span>
+                  {% endif %}
+                </div>
+                <div class="hs-price mb-1">₹{{ room.rent|floatformat:0 }}<span>/month</span></div>
+                <div class="text-muted small mb-2">Deposit ₹{{ room.security_deposit|floatformat:0 }}</div>
+                <div class="text-muted small mb-2">{{ room.available_beds }} of {{ room.total_beds }} beds available</div>
+                <div class="d-flex flex-wrap gap-2 small text-muted mb-3">
+                  {% if room.attached_bathroom %}<span>✓ Attached bathroom</span>{% endif %}
+                  {% if room.ac_available %}<span>✓ AC</span>{% endif %}
+                  {% if room.furnishing %}<span>✓ {{ room.get_furnishing_display }}</span>{% endif %}
+                </div>
+                <button type="button" class="hs-btn hs-btn-primary mt-auto"
+                        data-hostel-id="{{ hostel.id }}" data-room-id="{{ room.id }}">
+                  Request room
+                </button>
+              </div>
+            </div>
+          {% empty %}
+            <p class="text-muted">No rooms have been added to this listing yet.</p>
+          {% endfor %}
+        </div>
+      </div>
+
+      {# --- Sidebar: pricing + owner --- #}
+      <div class="col-lg-4">
+        <div class="hs-form-shell mb-3">
+          <div class="hs-fieldset-help mb-1">Starting from</div>
+          {% if hostel.starting_rent %}
+            <div class="hs-price mb-3" style="font-size:1.6rem;">₹{{ hostel.starting_rent|floatformat:0 }}<span>/month</span></div>
+          {% else %}
+            <p class="text-muted">Pricing not available yet.</p>
+          {% endif %}
+          <button type="button" class="hs-btn hs-btn-primary w-100 mb-2" data-hostel-id="{{ hostel.id }}">
+            Send request
+          </button>
+          <button type="button" class="hs-btn hs-btn-outline w-100" data-hostel-id="{{ hostel.id }}">
+            Contact owner
+          </button>
+        </div>
+
+        <div class="hs-form-shell">
+          <h3 class="h6 hs-heading">Listed by</h3>
+          <p class="mb-0">{{ hostel.owner.full_name|default:hostel.owner.username }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

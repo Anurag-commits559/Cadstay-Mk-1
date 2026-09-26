@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     # "listings",
     # "roommates",
     # "search",
+    "hostels"
 ]
 
 MIDDLEWARE = [

@@ -1,0 +1,223 @@
+{% comment %}
+Expects: hostel_form, formset, image_form, mode ("add" or "edit"), and
+`hostel` (only present in edit mode, used to show existing images/rooms).
+{% endcomment %}
+<div class="hs-steps">
+  <div class="hs-step is-active">1. Basics</div>
+  <div class="hs-step">2. Location</div>
+  <div class="hs-step">3. Facilities</div>
+  <div class="hs-step">4. Food</div>
+  <div class="hs-step">5. Images</div>
+  <div class="hs-step">6. Rooms</div>
+  <div class="hs-step">7. Review</div>
+</div>
+
+{% if hostel_form.non_field_errors or formset.non_form_errors %}
+  <div class="alert alert-danger">
+    {{ hostel_form.non_field_errors }}
+    {{ formset.non_form_errors }}
+  </div>
+{% endif %}
+
+<form method="post" enctype="multipart/form-data" data-hs-form novalidate>
+  {% csrf_token %}
+  {{ formset.management_form }}
+
+  <!-- STEP 1 — Basic Information -->
+  <fieldset class="hs-fieldset is-active">
+    <h3 class="hs-fieldset-title">Basic information</h3>
+    <p class="hs-fieldset-help">Start with the essentials students will see first.</p>
+    <div class="row g-3">
+      <div class="col-md-8">
+        <label class="form-label">Hostel / property name</label>
+        {{ hostel_form.hostel_name }}
+        {{ hostel_form.hostel_name.errors }}
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Property type</label>
+        {{ hostel_form.property_type }}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Who can stay here?</label>
+        {{ hostel_form.gender_allowed }}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Contact phone</label>
+        {{ hostel_form.contact_phone }}
+        {{ hostel_form.contact_phone.errors }}
+      </div>
+      <div class="col-12">
+        <label class="form-label">Description</label>
+        {{ hostel_form.description }}
+      </div>
+    </div>
+    <div class="d-flex justify-content-end mt-4">
+      <button type="button" class="hs-btn hs-btn-primary" data-hs-next>Continue</button>
+    </div>
+  </fieldset>
+
+  <!-- STEP 2 — Location -->
+  <fieldset class="hs-fieldset">
+    <h3 class="hs-fieldset-title">Location</h3>
+    <p class="hs-fieldset-help">Help students find you.</p>
+    <div class="row g-3">
+      <div class="col-12">
+        <label class="form-label">Address</label>
+        {{ hostel_form.address }}
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Area</label>
+        {{ hostel_form.area }}
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">City</label>
+        {{ hostel_form.city }}
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Pincode</label>
+        {{ hostel_form.pincode }}
+        {{ hostel_form.pincode.errors }}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Latitude (optional)</label>
+        {{ hostel_form.latitude }}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Longitude (optional)</label>
+        {{ hostel_form.longitude }}
+      </div>
+    </div>
+    <div class="d-flex justify-content-between mt-4">
+      <button type="button" class="hs-btn hs-btn-ghost" data-hs-prev>Back</button>
+      <button type="button" class="hs-btn hs-btn-primary" data-hs-next>Continue</button>
+    </div>
+  </fieldset>
+
+  <!-- STEP 3 — Facilities -->
+  <fieldset class="hs-fieldset">
+    <h3 class="hs-fieldset-title">Facilities</h3>
+    <p class="hs-fieldset-help">Select everything this property offers.</p>
+    <div class="hs-amenity-grid">
+      {% for field in hostel_form %}
+        {% if field.name in "wifi,ac,laundry,parking,cctv,security,power_backup,lift,common_room,study_room,gym,kitchen,housekeeping,hot_water,washing_machine" %}
+          <label class="hs-amenity-toggle">
+            {{ field }}
+            <span>{{ field.label }}</span>
+          </label>
+        {% endif %}
+      {% endfor %}
+    </div>
+    <div class="d-flex justify-content-between mt-4">
+      <button type="button" class="hs-btn hs-btn-ghost" data-hs-prev>Back</button>
+      <button type="button" class="hs-btn hs-btn-primary" data-hs-next>Continue</button>
+    </div>
+  </fieldset>
+
+  <!-- STEP 4 — Food -->
+  <fieldset class="hs-fieldset">
+    <h3 class="hs-fieldset-title">Food</h3>
+    <p class="hs-fieldset-help">Let students know what's included.</p>
+    <div class="row g-3">
+      <div class="col-12 form-check">
+        {{ hostel_form.food_available }}
+        <label class="form-check-label">Food available on-site</label>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Food type</label>
+        {{ hostel_form.food_type }}
+      </div>
+      <div class="col-md-8 d-flex flex-wrap gap-3 align-items-end">
+        <div class="form-check">
+          {{ hostel_form.breakfast_included }}
+          <label class="form-check-label">Breakfast</label>
+        </div>
+        <div class="form-check">
+          {{ hostel_form.lunch_included }}
+          <label class="form-check-label">Lunch</label>
+        </div>
+        <div class="form-check">
+          {{ hostel_form.dinner_included }}
+          <label class="form-check-label">Dinner</label>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex justify-content-between mt-4">
+      <button type="button" class="hs-btn hs-btn-ghost" data-hs-prev>Back</button>
+      <button type="button" class="hs-btn hs-btn-primary" data-hs-next>Continue</button>
+    </div>
+  </fieldset>
+
+  <!-- STEP 5 — Images -->
+  <fieldset class="hs-fieldset">
+    <h3 class="hs-fieldset-title">Photos</h3>
+    <p class="hs-fieldset-help">Listings with real photos get far more requests. JPG, PNG or WEBP, up to 5 MB each.</p>
+
+    {% if mode == "edit" %}
+      <div class="hs-fieldset-help mb-2">
+        Manage your existing photos in the "Current photos" panel above this form, then use the box below to add more.
+      </div>
+    {% endif %}
+
+    <div class="hs-dropzone" id="hs-dropzone">
+      <div class="hs-dropzone-icon">📷</div>
+      <div><strong>Upload images</strong></div>
+      <div>Drag &amp; drop or click to browse — JPG • PNG • WEBP</div>
+    </div>
+    {{ image_form.images }}
+    {{ image_form.images.errors }}
+    <div class="hs-preview-grid" id="hs-preview-grid"></div>
+
+    <div class="d-flex justify-content-between mt-4">
+      <button type="button" class="hs-btn hs-btn-ghost" data-hs-prev>Back</button>
+      <button type="button" class="hs-btn hs-btn-primary" data-hs-next>Continue</button>
+    </div>
+  </fieldset>
+
+  <!-- STEP 6 — Rooms -->
+  <fieldset class="hs-fieldset">
+    <h3 class="hs-fieldset-title">Rooms</h3>
+    <p class="hs-fieldset-help">Add every room type you offer, with rent and bed availability.</p>
+
+    <div id="hs-room-formset">
+      {% for form in formset %}
+        <div class="hs-room-row">
+          <div class="hs-room-row-title">Room {{ forloop.counter }}</div>
+          {% include "hostels/_room_fields.html" with form=form %}
+          {% if form.instance.pk %}
+            <label class="form-check mt-2">
+              {{ form.DELETE }}
+              <span class="form-check-label small text-muted">Delete this room</span>
+            </label>
+          {% endif %}
+          <button type="button" class="hs-btn hs-btn-ghost hs-room-remove-btn" data-hs-remove-room>Remove</button>
+        </div>
+      {% endfor %}
+    </div>
+
+    <button type="button" id="hs-add-room-btn" class="hs-btn hs-btn-outline">+ Add another room</button>
+
+    <!-- Hidden template used by hostel.js to clone a brand-new room row -->
+    <template id="hs-room-empty-form">
+      {% include "hostels/_room_fields.html" with form=formset.empty_form %}
+    </template>
+
+    <div class="d-flex justify-content-between mt-4">
+      <button type="button" class="hs-btn hs-btn-ghost" data-hs-prev>Back</button>
+      <button type="button" class="hs-btn hs-btn-primary" data-hs-next>Continue</button>
+    </div>
+  </fieldset>
+
+  <!-- STEP 7 — Review & Publish -->
+  <fieldset class="hs-fieldset">
+    <h3 class="hs-fieldset-title">Review &amp; publish</h3>
+    <p class="hs-fieldset-help">Double-check the details below, then publish or save as a draft.</p>
+    <div id="hs-review-summary" class="border rounded p-3 mb-3" style="border-color: var(--hs-border);"></div>
+    <div class="d-flex justify-content-between mt-4">
+      <button type="button" class="hs-btn hs-btn-ghost" data-hs-prev>Back</button>
+      <div class="d-flex gap-2">
+        <button type="submit" name="save_draft" class="hs-btn hs-btn-outline">Save draft</button>
+        <button type="submit" name="publish" class="hs-btn hs-btn-primary">Publish listing</button>
+      </div>
+    </div>
+  </fieldset>
+</form>

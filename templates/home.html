@@ -19,10 +19,13 @@
 <div class="row g-4 mt-4">
     <div class="col-md-4">
         <div class="card h-100 border-0 shadow-sm rounded-4">
-            <div class="card-body text-center p-4">
-                <h5 class="card-title fw-semibold">Find Hostels</h5>
-                <p class="card-text text-secondary">Browse verified hostels and PGs near you, coming soon.</p>
-            </div>
+
+            <a href="{% url 'hostels:hostel_list' %}" style="text-decoration:none; color:inherit;">
+<div class="...">
+    <h3>Find Hostels</h3>
+    <p>Browse verified hostels and PGs near you.</p>
+</div>
+</a>
         </div>
     </div>
     <div class="col-md-4">

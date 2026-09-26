@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Hostels &amp; PGs — {{ block.super }}{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'hostels/css/hostel.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="hs-page py-4">
+  <div class="container">
+    <div class="hs-section-heading flex-wrap gap-2">
+      <div>
+        <h1 class="hs-heading mb-1">Hostels &amp; PGs near you</h1>
+        <p class="text-muted mb-0">{{ total_count }} listing{{ total_count|pluralize }} found</p>
+      </div>
+      <form method="get" class="d-flex align-items-center gap-2">
+        <label for="sort" class="text-muted small mb-0">Sort by</label>
+        <select name="sort" id="sort" class="form-select form-select-sm" onchange="this.form.submit()" style="width: auto;">
+          <option value="newest" {% if sort == "newest" %}selected{% endif %}>Newest</option>
+          <option value="price_low" {% if sort == "price_low" %}selected{% endif %}>Price: Low to High</option>
+          <option value="price_high" {% if sort == "price_high" %}selected{% endif %}>Price: High to Low</option>
+          <option value="available" {% if sort == "available" %}selected{% endif %}>Most Available</option>
+        </select>
+      </form>
+    </div>
+
+    {# Member 3: add a filter sidebar/bar here, submitting extra GET params that hostel_list() will read. #}
+
+    {% if page_obj.object_list %}
+      <div class="row g-4">
+        {% for hostel in page_obj %}
+          <div class="col-12 col-md-6 col-lg-4">
+            {% include "hostels/_card.html" %}
+          </div>
+        {% endfor %}
+      </div>
+
+      {% if page_obj.has_other_pages %}
+        <nav class="mt-4" aria-label="Listing pages">
+          <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+              <li class="page-item"><a class="page-link" href="?sort={{ sort }}&page={{ page_obj.previous_page_number }}">Previous</a></li>
+            {% endif %}
+            <li class="page-item disabled"><span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span></li>
+            {% if page_obj.has_next %}
+              <li class="page-item"><a class="page-link" href="?sort={{ sort }}&page={{ page_obj.next_page_number }}">Next</a></li>
+            {% endif %}
+          </ul>
+        </nav>
+      {% endif %}
+    {% else %}
+      <div class="hs-empty-state">
+        <span class="icon">🏠</span>
+        <h3 class="hs-heading">No listings yet</h3>
+        <p>Check back soon — new hostels are added regularly.</p>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

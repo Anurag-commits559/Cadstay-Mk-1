@@ -45,10 +45,9 @@ INSTALLED_APPS = [
     # Local apps
     "accounts",
     # Other team members will add their apps here later, e.g.:
-    # "listings",
-    # "roommates",
     # "search",
-    "hostels"
+    "hostels",
+    "roommates",
 ]
 
 MIDDLEWARE = [

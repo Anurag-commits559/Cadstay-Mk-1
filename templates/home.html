@@ -16,12 +16,25 @@
     {% endif %}
 </div>
 
+<div class="card border-0 shadow-sm rounded-4 mb-4">
+    <div class="card-body p-3">
+        <form method="get" action="{% url 'hostels:hostel_list' %}" class="row g-2 align-items-center">
+            <div class="col-12 col-md-8">
+                <input type="text" name="q" class="form-control" placeholder="📍 Search hostels by location, area or college">
+            </div>
+            <div class="col-12 col-md-4 d-grid">
+                <button type="submit" class="btn btn-primary">Search Hostels</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <div class="row g-4 mt-4">
     <div class="col-md-4">
         <div class="card h-100 border-0 shadow-sm rounded-4">
 
             <a href="{% url 'hostels:hostel_list' %}" style="text-decoration:none; color:inherit;">
-<div class="...">
+<div class="card-body text-center p-4">
     <h3>Find Hostels</h3>
     <p>Browse verified hostels and PGs near you.</p>
 </div>
@@ -30,10 +43,12 @@
     </div>
     <div class="col-md-4">
         <div class="card h-100 border-0 shadow-sm rounded-4">
-            <div class="card-body text-center p-4">
-                <h5 class="card-title fw-semibold">Find Roommates</h5>
-                <p class="card-text text-secondary">Match with compatible roommates, coming soon.</p>
-            </div>
+            <a href="{% url 'roommates:roommate_list' %}" style="text-decoration:none; color:inherit;">
+                <div class="card-body text-center p-4">
+                    <h5 class="card-title fw-semibold">Find Roommates</h5>
+                    <p class="card-text text-secondary">Match with compatible roommates based on your preferences.</p>
+                </div>
+            </a>
         </div>
     </div>
     <div class="col-md-4">

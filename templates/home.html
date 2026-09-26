@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}NoBroker Hostel & Roommate Finder{% endblock %}
+{% block content %}
+<div class="text-center py-5">
+    <h1 class="fw-bold mb-3">NoBroker Hostel & Roommate Finder</h1>
+    <p class="lead text-secondary mb-4">
+        Find a comfortable place and the right roommate — without the broker.
+    </p>
+    {% if not user.is_authenticated %}
+    <div class="d-flex justify-content-center gap-3">
+        <a href="{% url 'accounts:login' %}" class="btn btn-primary px-4">Login</a>
+        <a href="{% url 'accounts:register' %}" class="btn btn-outline-primary px-4">Register</a>
+    </div>
+    {% else %}
+    <a href="{% url 'accounts:dashboard' %}" class="btn btn-primary px-4">Go to Dashboard</a>
+    {% endif %}
+</div>
+
+<div class="row g-4 mt-4">
+    <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm rounded-4">
+            <div class="card-body text-center p-4">
+                <h5 class="card-title fw-semibold">Find Hostels</h5>
+                <p class="card-text text-secondary">Browse verified hostels and PGs near you, coming soon.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm rounded-4">
+            <div class="card-body text-center p-4">
+                <h5 class="card-title fw-semibold">Find Roommates</h5>
+                <p class="card-text text-secondary">Match with compatible roommates, coming soon.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm rounded-4">
+            <div class="card-body text-center p-4">
+                <h5 class="card-title fw-semibold">Connect Directly</h5>
+                <p class="card-text text-secondary">No brokers, no extra fees — just direct connections.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

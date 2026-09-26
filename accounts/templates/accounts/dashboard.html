@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - NoBroker{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card border-0 shadow-sm rounded-4 mb-4">
+            <div class="card-body p-4">
+                <h3 class="fw-bold">Welcome, {{ user.first_name|default:user.username }}</h3>
+                <p class="text-secondary mb-0">Role: {{ user.get_role_display }}</p>
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm rounded-4 mb-4">
+            <div class="card-body p-4">
+                <h6 class="text-secondary text-uppercase small">Profile completion</h6>
+                <div class="progress mb-2" style="height: 10px;">
+                    <div class="progress-bar" role="progressbar" style="width: {{ profile.completion_percentage }}%;"></div>
+                </div>
+                <p class="small text-secondary mb-0">{{ profile.completion_percentage }}% complete — <a href="{% url 'accounts:edit_profile' %}">finish your profile</a></p>
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-body p-4 text-center text-secondary">
+                <p class="mb-0">Hostel and roommate features will appear here once those modules are added by the team.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

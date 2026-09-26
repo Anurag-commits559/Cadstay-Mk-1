@@ -1,0 +1,62 @@
+/* NoBroker Hostel & Roommate Finder — design system
+   Keep it simple: one accent color, light background, rounded cards. */
+
+:root {
+    --nb-primary: #2f6fed;
+    --nb-bg: #f8f9fb;
+    --nb-text: #22262b;
+}
+
+body {
+    background-color: var(--nb-bg);
+    color: var(--nb-text);
+    font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.navbar-brand {
+    font-size: 1.35rem;
+}
+
+.btn-primary {
+    background-color: var(--nb-primary);
+    border-color: var(--nb-primary);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: #245bcb;
+    border-color: #245bcb;
+}
+
+.btn-outline-primary {
+    color: var(--nb-primary);
+    border-color: var(--nb-primary);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--nb-primary);
+    border-color: var(--nb-primary);
+}
+
+.text-primary {
+    color: var(--nb-primary) !important;
+}
+
+.card {
+    border-radius: 1rem;
+}
+
+.form-control,
+.form-select {
+    border-radius: 0.5rem;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--nb-primary);
+    box-shadow: 0 0 0 0.2rem rgba(47, 111, 237, 0.15);
+}
+
+footer {
+    border-top: 1px solid #e9ecef;
+}

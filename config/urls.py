@@ -19,6 +19,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", accounts_views.home, name="home"),
     path("", include("accounts.urls")),
+    path("hostels/", include("hostels.urls"))
 ]
 
 if settings.DEBUG:

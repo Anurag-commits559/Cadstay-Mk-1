@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}My listings — {{ block.super }}{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'hostels/css/hostel.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="hs-page py-4">
+  <div class="container">
+    <div class="hs-section-heading">
+      <h1 class="hs-heading mb-0">My listings</h1>
+      <a href="{% url 'hostels:hostel_add' %}" class="hs-btn hs-btn-primary">+ Add hostel</a>
+    </div>
+
+    <div class="row g-3 mb-4">
+      <div class="col-6 col-md-3">
+        <div class="hs-stat-card">
+          <div class="hs-stat-value">{{ stats.total }}</div>
+          <div class="hs-stat-label">Total listings</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="hs-stat-card">
+          <div class="hs-stat-value">{{ stats.active }}</div>
+          <div class="hs-stat-label">Active</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="hs-stat-card">
+          <div class="hs-stat-value">{{ stats.draft }}</div>
+          <div class="hs-stat-label">Drafts</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="hs-stat-card">
+          <div class="hs-stat-value">{{ stats.available_rooms }}</div>
+          <div class="hs-stat-label">Available rooms</div>
+        </div>
+      </div>
+    </div>
+
+    {% if hostels %}
+      <div class="d-flex flex-column gap-2">
+        {% for hostel in hostels %}
+          <div class="hs-manage-row flex-wrap">
+            {% with img=hostel.primary_image %}
+              {% if img %}
+                <img src="{{ img.image.url }}" class="hs-manage-thumb" alt="">
+              {% else %}
+                <div class="hs-manage-thumb d-flex align-items-center justify-content-center">🏠</div>
+              {% endif %}
+            {% endwith %}
+            <div class="flex-grow-1">
+              <div class="fw-semibold">{{ hostel.hostel_name }}</div>
+              <div class="text-muted small">📍 {{ hostel.area }}, {{ hostel.city }} · Added {{ hostel.created_at|date:"M j, Y" }}</div>
+              <div class="d-flex gap-2 mt-1 flex-wrap">
+                <span class="hs-pill hs-pill-{{ hostel.status|lower }}">{{ hostel.get_status_display }}</span>
+                <span class="text-muted small">{{ hostel.available_rooms }} room type{{ hostel.available_rooms|pluralize }} available</span>
+                {% if hostel.starting_rent %}
+                  <span class="text-muted small">from ₹{{ hostel.starting_rent|floatformat:0 }}/mo</span>
+                {% endif %}
+              </div>
+            </div>
+            <div class="d-flex gap-2 flex-wrap">
+              <a href="{% url 'hostels:hostel_detail' hostel.pk %}" class="hs-btn hs-btn-ghost">View</a>
+              <a href="{% url 'hostels:hostel_edit' hostel.pk %}" class="hs-btn hs-btn-outline">Edit</a>
+              <a href="{% url 'hostels:hostel_edit' hostel.pk %}#rooms" class="hs-btn hs-btn-outline">Manage rooms</a>
+              <form method="post" action="{% url 'hostels:hostel_deactivate' hostel.pk %}" class="d-inline">
+                {% csrf_token %}
+                <button type="submit" class="hs-btn hs-btn-ghost">
+                  {% if hostel.status == "ACTIVE" %}Deactivate{% else %}Activate{% endif %}
+                </button>
+              </form>
+              <button type="button" class="hs-btn hs-btn-danger" data-hs-delete-trigger
+                      data-hs-delete-name="{{ hostel.hostel_name }}"
+                      data-hs-delete-url="{% url 'hostels:hostel_delete' hostel.pk %}"
+                      data-bs-toggle="modal" data-bs-target="#hs-delete-modal">
+                Delete
+              </button>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="hs-empty-state">
+        <span class="icon">🏠</span>
+        <h3 class="hs-heading">No listings yet</h3>
+        <p>You haven't added any hostel listings.</p>
+        <a href="{% url 'hostels:hostel_add' %}" class="hs-btn hs-btn-primary">+ Add your first hostel</a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{# Shared delete-confirmation modal, populated by hostel.js from data-hs-delete-* attrs #}
+<div class="modal fade" id="hs-delete-modal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Delete listing?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p class="mb-0">
+          Are you sure you want to delete "<strong data-hs-delete-name></strong>"?
+          This action cannot be undone.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="hs-btn hs-btn-ghost" data-bs-dismiss="modal">Cancel</button>
+        <form method="post" action="">
+          {% csrf_token %}
+          <button type="submit" class="hs-btn hs-btn-danger">Delete listing</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'hostels/js/hostel.js' %}"></script>
+{% endblock %}

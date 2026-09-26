@@ -1,0 +1,510 @@
+/* ==========================================================================
+   Hostel & Room Listing module — design system
+   Palette: deep navy + warm coral accent, cool off-white background.
+   Typeface: Poppins for headings (confident, rounded — fits a student
+   audience), Inter for body copy (quiet, highly legible at small sizes).
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+:root {
+  --hs-navy: #1B2A4A;
+  --hs-navy-dark: #101B33;
+  --hs-coral: #FF6B4A;
+  --hs-coral-dark: #E5522F;
+  --hs-bg: #F7F8FB;
+  --hs-surface: #FFFFFF;
+  --hs-border: #E4E7EC;
+  --hs-text: #1A1D29;
+  --hs-text-muted: #6B7280;
+  --hs-success: #1F9D6C;
+  --hs-success-bg: #E7F7EF;
+  --hs-warning-bg: #FFF4E5;
+  --hs-warning-text: #9A5B00;
+  --hs-radius: 14px;
+  --hs-radius-sm: 8px;
+  --hs-shadow: 0 4px 20px rgba(27, 42, 74, 0.08);
+  --hs-shadow-hover: 0 12px 28px rgba(27, 42, 74, 0.14);
+}
+
+.hs-page {
+  background: var(--hs-bg);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--hs-text);
+}
+
+.hs-page h1, .hs-page h2, .hs-page h3, .hs-page h4,
+.hs-heading {
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 600;
+  color: var(--hs-navy);
+}
+
+/* --------------------------------------------------------------------
+   Buttons
+   -------------------------------------------------------------------- */
+.hs-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.4rem;
+  border-radius: var(--hs-radius-sm);
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: 1px solid transparent;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  cursor: pointer;
+}
+.hs-btn:active { transform: translateY(1px); }
+
+.hs-btn-primary {
+  background: var(--hs-coral);
+  color: #fff;
+}
+.hs-btn-primary:hover { background: var(--hs-coral-dark); color: #fff; }
+
+.hs-btn-outline {
+  background: transparent;
+  border-color: var(--hs-navy);
+  color: var(--hs-navy);
+}
+.hs-btn-outline:hover { background: var(--hs-navy); color: #fff; }
+
+.hs-btn-ghost {
+  background: transparent;
+  color: var(--hs-text-muted);
+  border-color: var(--hs-border);
+}
+.hs-btn-ghost:hover { background: var(--hs-bg); }
+
+.hs-btn-danger {
+  background: #fff;
+  color: #C0392B;
+  border-color: #F3C6C0;
+}
+.hs-btn-danger:hover { background: #FDECEA; }
+
+/* --------------------------------------------------------------------
+   Listing cards
+   -------------------------------------------------------------------- */
+.hs-card {
+  background: var(--hs-surface);
+  border-radius: var(--hs-radius);
+  overflow: hidden;
+  box-shadow: var(--hs-shadow);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--hs-border);
+}
+.hs-card:hover {
+  box-shadow: var(--hs-shadow-hover);
+  transform: translateY(-3px);
+}
+
+.hs-card-media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: linear-gradient(135deg, #EDEFF5, #E4E7EC);
+}
+.hs-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+.hs-card:hover .hs-card-media img { transform: scale(1.06); }
+
+.hs-card-media-empty {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--hs-text-muted);
+  font-size: 2.2rem;
+}
+
+.hs-wishlist-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--hs-navy);
+  border: none;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+
+.hs-badge-gender {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  background: rgba(27, 42, 74, 0.85);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.hs-card-body {
+  padding: 1.1rem 1.2rem 1.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  flex: 1;
+}
+
+.hs-card-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--hs-navy);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.hs-card-location {
+  color: var(--hs-text-muted);
+  font-size: 0.88rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.hs-amenity-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.15rem 0;
+}
+
+.hs-chip {
+  font-size: 0.75rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: var(--hs-bg);
+  border: 1px solid var(--hs-border);
+  color: var(--hs-text-muted);
+}
+
+.hs-card-footer {
+  margin-top: auto;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-top: 0.6rem;
+  border-top: 1px dashed var(--hs-border);
+}
+
+.hs-price {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--hs-navy);
+}
+.hs-price span {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--hs-text-muted);
+}
+
+.hs-room-type-label {
+  font-size: 0.8rem;
+  color: var(--hs-text-muted);
+}
+
+/* --------------------------------------------------------------------
+   Status / availability pills
+   -------------------------------------------------------------------- */
+.hs-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+.hs-pill-available { background: var(--hs-success-bg); color: var(--hs-success); }
+.hs-pill-limited { background: var(--hs-warning-bg); color: var(--hs-warning-text); }
+.hs-pill-full { background: #FBE9E7; color: #C0392B; }
+.hs-pill-active { background: var(--hs-success-bg); color: var(--hs-success); }
+.hs-pill-draft { background: var(--hs-warning-bg); color: var(--hs-warning-text); }
+.hs-pill-inactive { background: var(--hs-border); color: var(--hs-text-muted); }
+
+/* --------------------------------------------------------------------
+   Multi-step form
+   -------------------------------------------------------------------- */
+.hs-form-shell {
+  background: var(--hs-surface);
+  border-radius: var(--hs-radius);
+  border: 1px solid var(--hs-border);
+  box-shadow: var(--hs-shadow);
+  padding: 2rem;
+}
+
+.hs-steps {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+.hs-step {
+  flex: 1;
+  min-width: 90px;
+  text-align: center;
+  padding-bottom: 0.6rem;
+  border-bottom: 3px solid var(--hs-border);
+  color: var(--hs-text-muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+.hs-step.is-active {
+  border-color: var(--hs-coral);
+  color: var(--hs-navy);
+}
+.hs-step.is-done {
+  border-color: var(--hs-success);
+  color: var(--hs-navy);
+}
+
+.hs-fieldset {
+  display: none;
+}
+.hs-fieldset.is-active {
+  display: block;
+  animation: hsFadeIn 0.25s ease;
+}
+@keyframes hsFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.hs-fieldset-title {
+  font-size: 1.15rem;
+  margin-bottom: 0.25rem;
+}
+.hs-fieldset-help {
+  color: var(--hs-text-muted);
+  font-size: 0.88rem;
+  margin-bottom: 1.4rem;
+}
+
+.hs-amenity-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 0.6rem;
+}
+.hs-amenity-toggle {
+  border: 1px solid var(--hs-border);
+  border-radius: var(--hs-radius-sm);
+  padding: 0.6rem 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.hs-amenity-toggle:has(input:checked) {
+  border-color: var(--hs-coral);
+  background: #FFF3EF;
+}
+.hs-amenity-toggle input { accent-color: var(--hs-coral); }
+
+/* --------------------------------------------------------------------
+   Drag & drop image uploader
+   -------------------------------------------------------------------- */
+.hs-dropzone {
+  border: 2px dashed var(--hs-border);
+  border-radius: var(--hs-radius);
+  padding: 2.4rem 1rem;
+  text-align: center;
+  color: var(--hs-text-muted);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.hs-dropzone.is-dragover {
+  border-color: var(--hs-coral);
+  background: #FFF3EF;
+}
+.hs-dropzone-icon { font-size: 2.2rem; margin-bottom: 0.5rem; }
+
+.hs-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 0.75rem;
+  margin-top: 1.2rem;
+}
+.hs-preview-tile {
+  position: relative;
+  border-radius: var(--hs-radius-sm);
+  overflow: hidden;
+  aspect-ratio: 1;
+  border: 1px solid var(--hs-border);
+}
+.hs-preview-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.hs-preview-remove {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.55);
+  color: #fff;
+  border: none;
+  font-size: 0.8rem;
+  line-height: 1;
+}
+.hs-preview-primary-badge {
+  position: absolute;
+  bottom: 4px;
+  left: 4px;
+  background: var(--hs-coral);
+  color: #fff;
+  font-size: 0.65rem;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+}
+
+/* --------------------------------------------------------------------
+   Dynamic room rows
+   -------------------------------------------------------------------- */
+.hs-room-row {
+  border: 1px solid var(--hs-border);
+  border-radius: var(--hs-radius-sm);
+  padding: 1.1rem;
+  margin-bottom: 1rem;
+  position: relative;
+  background: var(--hs-bg);
+}
+.hs-room-row-title {
+  font-weight: 600;
+  color: var(--hs-navy);
+  margin-bottom: 0.75rem;
+}
+.hs-room-remove-btn {
+  position: absolute;
+  top: 0.9rem;
+  right: 0.9rem;
+}
+
+/* --------------------------------------------------------------------
+   Details page
+   -------------------------------------------------------------------- */
+.hs-gallery-main {
+  border-radius: var(--hs-radius);
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  background: #EDEFF5;
+}
+.hs-gallery-main img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.hs-gallery-thumbs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+.hs-gallery-thumbs img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: var(--hs-radius-sm);
+  cursor: pointer;
+  opacity: 0.85;
+}
+.hs-gallery-thumbs img:hover { opacity: 1; }
+
+.hs-amenity-card {
+  border: 1px solid var(--hs-border);
+  border-radius: var(--hs-radius-sm);
+  padding: 0.9rem;
+  text-align: center;
+  background: var(--hs-surface);
+  font-size: 0.85rem;
+}
+.hs-amenity-card .icon { font-size: 1.4rem; display: block; margin-bottom: 0.35rem; }
+
+.hs-room-detail-card {
+  border: 1px solid var(--hs-border);
+  border-radius: var(--hs-radius);
+  padding: 1.2rem;
+  background: var(--hs-surface);
+}
+
+/* --------------------------------------------------------------------
+   Owner dashboard
+   -------------------------------------------------------------------- */
+.hs-stat-card {
+  background: var(--hs-surface);
+  border: 1px solid var(--hs-border);
+  border-radius: var(--hs-radius);
+  padding: 1.2rem;
+  text-align: left;
+}
+.hs-stat-value {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--hs-navy);
+}
+.hs-stat-label {
+  color: var(--hs-text-muted);
+  font-size: 0.85rem;
+}
+
+.hs-manage-row {
+  background: var(--hs-surface);
+  border: 1px solid var(--hs-border);
+  border-radius: var(--hs-radius-sm);
+  padding: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.hs-manage-thumb {
+  width: 72px;
+  height: 72px;
+  border-radius: var(--hs-radius-sm);
+  object-fit: cover;
+  flex-shrink: 0;
+  background: #EDEFF5;
+}
+
+.hs-empty-state {
+  text-align: center;
+  padding: 3.5rem 1.5rem;
+  color: var(--hs-text-muted);
+}
+.hs-empty-state .icon { font-size: 2.6rem; margin-bottom: 0.75rem; display: block; }
+
+/* --------------------------------------------------------------------
+   Utility
+   -------------------------------------------------------------------- */
+.hs-section-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 576px) {
+  .hs-form-shell { padding: 1.2rem; }
+  .hs-steps { gap: 0.25rem; }
+  .hs-step { font-size: 0.72rem; }
+}

@@ -1,0 +1,65 @@
+{% comment %}
+Expects `form` (a RoomForm instance, bound or the formset's empty_form).
+Rendered both for real formset rows and, verbatim, inside the hidden
+<template> used by hostel.js to clone new rows client-side.
+{% endcomment %}
+{{ form.id }}
+<div class="row g-3">
+  <div class="col-md-4">
+    <label class="form-label">Room type</label>
+    {{ form.room_type }}
+  </div>
+  <div class="col-md-4">
+    <label class="form-label">Rent (₹/month)</label>
+    {{ form.rent }}
+  </div>
+  <div class="col-md-4">
+    <label class="form-label">Security deposit (₹)</label>
+    {{ form.security_deposit }}
+  </div>
+  <div class="col-md-3">
+    <label class="form-label">Total beds</label>
+    {{ form.total_beds }}
+  </div>
+  <div class="col-md-3">
+    <label class="form-label">Available beds</label>
+    {{ form.available_beds }}
+  </div>
+  <div class="col-md-3">
+    <label class="form-label">Bathroom</label>
+    {{ form.bathroom_type }}
+  </div>
+  <div class="col-md-3">
+    <label class="form-label">Furnishing</label>
+    {{ form.furnishing }}
+  </div>
+  <div class="col-md-4">
+    <label class="form-label">Room size (optional)</label>
+    {{ form.room_size }}
+  </div>
+  <div class="col-md-8">
+    <label class="form-label">Room description (optional)</label>
+    {{ form.description }}
+  </div>
+  <div class="col-12 d-flex flex-wrap gap-3 pt-1">
+    <div class="form-check">
+      {{ form.ac_available }}
+      <label class="form-check-label">AC</label>
+    </div>
+    <div class="form-check">
+      {{ form.attached_bathroom }}
+      <label class="form-check-label">Attached bathroom</label>
+    </div>
+    <div class="form-check">
+      {{ form.balcony }}
+      <label class="form-check-label">Balcony</label>
+    </div>
+  </div>
+  {% if form.errors %}
+    <div class="col-12">
+      <div class="alert alert-danger py-2 px-3 mb-0 small">
+        {{ form.errors }}
+      </div>
+    </div>
+  {% endif %}
+</div>

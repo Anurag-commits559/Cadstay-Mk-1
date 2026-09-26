@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Add a hostel — {{ block.super }}{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'hostels/css/hostel.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="hs-page py-4">
+  <div class="container" style="max-width: 900px;">
+    <nav aria-label="breadcrumb" class="mb-3">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'hostels:hostel_list' %}">Hostels</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'hostels:my_listings' %}">My listings</a></li>
+        <li class="breadcrumb-item active">Add hostel</li>
+      </ol>
+    </nav>
+
+    <h1 class="hs-heading mb-1">List your property</h1>
+    <p class="text-muted mb-4">Fill in the details below — it takes about five minutes.</p>
+
+    <div class="hs-form-shell">
+      {% include "hostels/_hostel_form.html" with mode="add" %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'hostels/js/hostel.js' %}"></script>
+{% endblock %}

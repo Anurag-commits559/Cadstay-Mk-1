@@ -5,58 +5,95 @@
 
 {% block extra_css %}
   <link rel="stylesheet" href="{% static 'hostels/css/hostel.css' %}">
+  <link rel="stylesheet" href="{% static 'hostels/css/search.css' %}">
 {% endblock %}
 
 {% block content %}
 <div class="hs-page py-4">
   <div class="container">
+
+    {# --- Prominent top search bar (spec item 2) ------------------------ #}
+    <form method="get" class="sr-search-bar mb-4" data-sr-filter-form>
+      {% for key, value in hidden_qs_pairs %}
+        {% if key != "q" and key != "min_rent" and key != "max_rent" and key != "gender" %}<input type="hidden" name="{{ key }}" value="{{ value }}">{% endif %}
+      {% endfor %}
+      <input type="hidden" name="sort" value="{{ sort }}">
+      <div class="row g-2 align-items-center">
+        <div class="col-12 col-md-5">
+          <input type="text" name="q" value="{{ request.GET.q }}" class="form-control" placeholder="📍 Search location, area, hostel name or college">
+        </div>
+        <div class="col-6 col-md-2">
+          <input type="number" name="min_rent" value="{{ request.GET.min_rent }}" class="form-control" placeholder="Min budget">
+        </div>
+        <div class="col-6 col-md-2">
+          <input type="number" name="max_rent" value="{{ request.GET.max_rent }}" class="form-control" placeholder="Max budget">
+        </div>
+        <div class="col-6 col-md-2">
+          <select name="gender" class="form-select">
+            <option value="" {% if not request.GET.gender %}selected{% endif %}>Any gender</option>
+            {% for value, label in gender_choices %}
+              <option value="{{ value }}" {% if request.GET.gender == value %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-6 col-md-1 d-grid">
+          <button type="submit" class="hs-btn hs-btn-primary justify-content-center">Search</button>
+        </div>
+      </div>
+    </form>
+
     <div class="hs-section-heading flex-wrap gap-2">
       <div>
         <h1 class="hs-heading mb-1">Hostels &amp; PGs near you</h1>
-        <p class="text-muted mb-0">{{ total_count }} listing{{ total_count|pluralize }} found</p>
+        <p class="text-muted mb-0" id="sr-results-count-heading">{{ total_count }} listing{{ total_count|pluralize }} found</p>
       </div>
-      <form method="get" class="d-flex align-items-center gap-2">
-        <label for="sort" class="text-muted small mb-0">Sort by</label>
-        <select name="sort" id="sort" class="form-select form-select-sm" onchange="this.form.submit()" style="width: auto;">
-          <option value="newest" {% if sort == "newest" %}selected{% endif %}>Newest</option>
-          <option value="price_low" {% if sort == "price_low" %}selected{% endif %}>Price: Low to High</option>
-          <option value="price_high" {% if sort == "price_high" %}selected{% endif %}>Price: High to Low</option>
-          <option value="available" {% if sort == "available" %}selected{% endif %}>Most Available</option>
-        </select>
-      </form>
+      <div class="d-flex align-items-center gap-2">
+        <button class="hs-btn hs-btn-ghost d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#srFilterOffcanvas">
+          ⚙ Filters {% if active_filter_count %}<span class="badge bg-secondary ms-1">{{ active_filter_count }}</span>{% endif %}
+        </button>
+        <form method="get" class="d-flex align-items-center gap-2" data-sr-sort-form>
+          {% for key, value in hidden_qs_pairs %}
+            <input type="hidden" name="{{ key }}" value="{{ value }}">
+          {% endfor %}
+          <label for="sort" class="text-muted small mb-0">Sort by</label>
+          <select name="sort" id="sort" class="form-select form-select-sm" onchange="this.form.submit()" style="width: auto;">
+            <option value="newest" {% if sort == "newest" %}selected{% endif %}>Newest</option>
+            <option value="price_low" {% if sort == "price_low" %}selected{% endif %}>Price: Low to High</option>
+            <option value="price_high" {% if sort == "price_high" %}selected{% endif %}>Price: High to Low</option>
+            <option value="available" {% if sort == "available" %}selected{% endif %}>Most Available</option>
+          </select>
+        </form>
+      </div>
     </div>
 
-    {# Member 3: add a filter sidebar/bar here, submitting extra GET params that hostel_list() will read. #}
-
-    {% if page_obj.object_list %}
-      <div class="row g-4">
-        {% for hostel in page_obj %}
-          <div class="col-12 col-md-6 col-lg-4">
-            {% include "hostels/_card.html" %}
-          </div>
-        {% endfor %}
+    <div class="row g-4">
+      <div class="col-lg-3 d-none d-lg-block">
+        <div class="sr-filter-panel" style="position: sticky; top: 1rem;">
+          <div class="hs-heading mb-2" style="font-size: 1rem;">Filters</div>
+          {% include "hostels/_filters.html" %}
+        </div>
       </div>
 
-      {% if page_obj.has_other_pages %}
-        <nav class="mt-4" aria-label="Listing pages">
-          <ul class="pagination justify-content-center">
-            {% if page_obj.has_previous %}
-              <li class="page-item"><a class="page-link" href="?sort={{ sort }}&page={{ page_obj.previous_page_number }}">Previous</a></li>
-            {% endif %}
-            <li class="page-item disabled"><span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span></li>
-            {% if page_obj.has_next %}
-              <li class="page-item"><a class="page-link" href="?sort={{ sort }}&page={{ page_obj.next_page_number }}">Next</a></li>
-            {% endif %}
-          </ul>
-        </nav>
-      {% endif %}
-    {% else %}
-      <div class="hs-empty-state">
-        <span class="icon">🏠</span>
-        <h3 class="hs-heading">No listings yet</h3>
-        <p>Check back soon — new hostels are added regularly.</p>
+      <div class="col-lg-9">
+        <div id="sr-results" data-api-url="{% url 'hostels:hostel_search_api' %}">
+          {% include "hostels/_search_results.html" %}
+        </div>
       </div>
-    {% endif %}
+    </div>
   </div>
 </div>
+
+<div class="offcanvas offcanvas-start" tabindex="-1" id="srFilterOffcanvas">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title">Filters</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+  </div>
+  <div class="offcanvas-body">
+    {% include "hostels/_filters.html" %}
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'hostels/js/search.js' %}"></script>
 {% endblock %}

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}My Favorites{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <h1 class="mb-3">❤️ My Saved Hostels</h1>
+    <p class="text-muted">{{ favorites|length }} saved hostel(s)</p>
+
+    <div class="row g-4">
+        {% for favorite in favorites %}
+        {% with hostel=favorite.hostel %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm">
+                {% if hostel.primary_image %}
+                <img src="{{ hostel.primary_image.image.url }}"
+                     class="card-img-top"
+                     style="height:220px;object-fit:cover"
+                     alt="{{ hostel.hostel_name }}">
+                {% endif %}
+
+                <div class="card-body">
+                    <h5>{{ hostel.hostel_name }}</h5>
+                    <p class="text-muted">{{ hostel.area }}, {{ hostel.city }}</p>
+
+                    {% if hostel.starting_rent %}
+                    <p class="fw-bold">₹{{ hostel.starting_rent }}/month</p>
+                    {% endif %}
+
+                    <a href="{% url 'hostels:hostel_detail' hostel.pk %}"
+                       class="btn btn-primary">View Hostel</a>
+
+                    <form method="post"
+                          action="{% url 'requests_module:remove_favorite' hostel.pk %}"
+                          class="d-inline">
+                        {% csrf_token %}
+                        <input type="hidden" name="next"
+                               value="{% url 'requests_module:favorites' %}">
+                        <button class="btn btn-outline-danger">♥ Remove</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endwith %}
+        {% empty %}
+        <div class="col-12 text-center py-5">
+            <h2>❤️ No saved hostels yet</h2>
+            <p>Save hostels you like and find them here later.</p>
+            <a href="{% url 'hostels:hostel_list' %}" class="btn btn-primary">
+                Explore Hostels
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <h1 class="mb-4">Admin Dashboard</h1>
+
+    <div class="row g-3">
+        <div class="col-6 col-lg-3">
+            <div class="card p-4 shadow-sm">
+                <h6>Total Users</h6><h2>{{ total_users }}</h2>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="card p-4 shadow-sm">
+                <h6>Total Hostels</h6><h2>{{ total_hostels }}</h2>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="card p-4 shadow-sm">
+                <h6>Total Rooms</h6><h2>{{ total_rooms }}</h2>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="card p-4 shadow-sm">
+                <h6>Pending Requests</h6><h2>{{ pending_requests }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="card p-4 mt-4">
+        <h5>Reported Listings</h5>
+        <h2>{{ reported_listings }}</h2>
+    </div>
+
+    <div class="d-flex flex-wrap gap-2 mt-4">
+        <a href="{% url 'requests_module:admin_users' %}" class="btn btn-primary">Manage Users</a>
+        <a href="{% url 'requests_module:admin_hostels' %}" class="btn btn-primary">Manage Hostels</a>
+        <a href="{% url 'requests_module:admin_reports' %}" class="btn btn-primary">Manage Reports</a>
+    </div>
+</div>
+{% endblock %}

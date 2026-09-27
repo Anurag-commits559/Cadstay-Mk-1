@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     # "search",
     "hostels",
     "roommates",
+    "requests_module",
 ]
 
 MIDDLEWARE = [

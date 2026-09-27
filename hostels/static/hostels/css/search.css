@@ -1,0 +1,103 @@
+/* ==========================================================================
+   Hostel search & filters — extends hostel.css's "hs-" design system with
+   "sr-" prefixed rules for the search bar, filter sidebar/offcanvas and the
+   dual-range rent slider, so nothing here collides with hostel.css.
+   ========================================================================== */
+
+.sr-search-bar {
+  background: var(--hs-surface);
+  border: 1px solid var(--hs-border);
+  border-radius: var(--hs-radius);
+  box-shadow: var(--hs-shadow);
+  padding: 1rem 1.25rem;
+}
+
+.sr-filter-panel {
+  background: var(--hs-surface);
+  border: 1px solid var(--hs-border);
+  border-radius: var(--hs-radius);
+  padding: 1.25rem;
+}
+
+.sr-filter-title {
+  font-weight: 600;
+  color: var(--hs-navy);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+  margin-bottom: .4rem;
+}
+
+.sr-filter-group + .sr-filter-group {
+  margin-top: 1.1rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--hs-border);
+}
+
+.sr-checkbox-scroll {
+  max-height: 180px;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+
+/* --------------------------------------------------------------------
+   Dual-thumb rent range slider.
+   Two overlapping <input type="range"> elements; each is transparent
+   except for its own thumb (pointer-events: none on the track lets
+   clicks pass through to whichever thumb is on top / closer).
+   -------------------------------------------------------------------- */
+.sr-range-slider {
+  position: relative;
+  height: 32px;
+}
+.sr-range-track {
+  position: absolute;
+  top: 14px;
+  left: 0;
+  right: 0;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--hs-border);
+}
+.sr-range-fill {
+  position: absolute;
+  top: 14px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--hs-coral);
+}
+.sr-range-input {
+  position: absolute;
+  top: 8px;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  background: transparent;
+  pointer-events: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.sr-range-input::-webkit-slider-thumb {
+  pointer-events: auto;
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--hs-coral);
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,.25);
+  cursor: pointer;
+}
+.sr-range-input::-moz-range-thumb {
+  pointer-events: auto;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--hs-coral);
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,.25);
+  cursor: pointer;
+}
+.sr-range-input::-webkit-slider-runnable-track { background: transparent; }
+.sr-range-input::-moz-range-track { background: transparent; }

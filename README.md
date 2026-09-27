@@ -62,10 +62,9 @@ hostel_roommate/
 │
 └── static/
     └── requests_module/
-        ├── css/
-        │   └── member4.css
+        ├── css/   
         └── js/
-            └── member4.js
+            
 ```
 
 ## Installation

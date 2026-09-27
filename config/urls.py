@@ -11,6 +11,7 @@ urlpatterns = [
     path("", include("accounts.urls")),
     path("hostels/", include("hostels.urls")),
     path("roommates/", include("roommates.urls")),  # <-- Updated to include "roommates/"
+    path("", include("requests_module.urls")), 
 ]
 
 if settings.DEBUG:

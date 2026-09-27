@@ -1,35 +1,127 @@
-{% comment %}Expects `hostel` (annotated queryset item or plain instance).{% endcomment %}
+{% comment %} Hostel card with working favorites {% endcomment %}
+
 <div class="hs-card">
-  <div class="hs-card-media">
-    <span class="hs-badge-gender">{{ hostel.get_gender_allowed_display }}</span>
-    <button type="button" class="hs-wishlist-btn" aria-label="Save to wishlist">♡</button>
-    {% with img=hostel.primary_image %}
-      {% if img %}
-        <img src="{{ img.image.url }}" alt="{{ hostel.hostel_name }}">
-      {% else %}
-        <div class="hs-card-media-empty">🏠</div>
-      {% endif %}
-    {% endwith %}
-  </div>
-  <div class="hs-card-body">
-    <h3 class="hs-card-title">{{ hostel.hostel_name }}</h3>
-    <div class="hs-card-location">📍 {{ hostel.area }}, {{ hostel.city }}</div>
-    <div class="hs-amenity-row">
-      {% if hostel.wifi %}<span class="hs-chip">Wi-Fi</span>{% endif %}
-      {% if hostel.food_available %}<span class="hs-chip">Food</span>{% endif %}
-      {% if hostel.ac %}<span class="hs-chip">AC</span>{% endif %}
-      {% if hostel.cctv %}<span class="hs-chip">CCTV</span>{% endif %}
-    </div>
-    <div class="hs-card-footer">
-      <div>
-        {% if hostel.starting_rent %}
-          <div class="hs-price">₹{{ hostel.starting_rent|floatformat:0 }}<span>/month</span></div>
-        {% else %}
-          <div class="hs-room-type-label">Rooms coming soon</div>
+    <div class="hs-card-media">
+        <span class="hs-badge-gender">
+            {{ hostel.get_gender_allowed_display }}
+        </span>
+
+        {% if user.is_authenticated %}
+        <form method="post"
+              action="{% url 'requests_module:add_favorite' hostel.pk %}"
+              class="hs-wishlist-form">
+            {% csrf_token %}
+            <button type="submit" class="hs-wishlist-btn"
+                    aria-label="Save to favorites">♡</button>
+        </form>
         {% endif %}
-        <div class="hs-room-type-label">{{ hostel.available_rooms }} room type{{ hostel.available_rooms|pluralize }} available</div>
-      </div>
-      <a href="{% url 'hostels:hostel_detail' hostel.pk %}" class="hs-btn hs-btn-primary">View details</a>
+
+        {% with img=hostel.primary_image %}
+            {% if img %}
+                <img src="{{ img.image.url }}" alt="{{ hostel.hostel_name }}">
+            {% else %}
+                <div class="hs-card-media-empty">🏠</div>
+            {% endif %}
+        {% endwith %}
     </div>
-  </div>
+
+    <div class="hs-card-body">
+        <h3 class="hs-card-title">{{ hostel.hostel_name }}</h3>
+
+        <div class="hs-card-location">
+            📍 {{ hostel.area }}, {{ hostel.city }}
+        </div>
+
+        <div class="hs-amenity-row">
+            {% if hostel.wifi %}<span class="hs-chip">Wi-Fi</span>{% endif %}
+            {% if hostel.food_available %}<span class="hs-chip">Food</span>{% endif %}
+            {% if hostel.ac %}<span class="hs-chip">AC</span>{% endif %}
+            {% if hostel.cctv %}<span class="hs-chip">CCTV</span>{% endif %}
+        </div>
+
+        <div class="hs-card-footer">
+            <div>
+                {% if hostel.starting_rent %}
+                    <div class="hs-price">
+                        ₹{{ hostel.starting_rent|floatformat:0 }}
+                        <span>/month</span>
+                    </div>
+                {% else %}
+                    <div class="hs-room-type-label">Rooms coming soon</div>
+                {% endif %}
+
+                <div class="hs-room-type-label">
+                    {{ hostel.available_rooms }} room types available
+                </div>
+            </div>
+
+            <a href="{% url 'hostels:hostel_detail' hostel.pk %}"
+               class="hs-btn hs-btn-primary">
+                View details
+            </a>
+        </div>
+    </div>
+</div>{% comment %} Hostel card with working favorites {% endcomment %}
+
+<div class="hs-card">
+    <div class="hs-card-media">
+        <span class="hs-badge-gender">
+            {{ hostel.get_gender_allowed_display }}
+        </span>
+
+        {% if user.is_authenticated %}
+        <form method="post"
+              action="{% url 'requests_module:add_favorite' hostel.pk %}"
+              class="hs-wishlist-form">
+            {% csrf_token %}
+            <button type="submit" class="hs-wishlist-btn"
+                    aria-label="Save to favorites">♡</button>
+        </form>
+        {% endif %}
+
+        {% with img=hostel.primary_image %}
+            {% if img %}
+                <img src="{{ img.image.url }}" alt="{{ hostel.hostel_name }}">
+            {% else %}
+                <div class="hs-card-media-empty">🏠</div>
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <div class="hs-card-body">
+        <h3 class="hs-card-title">{{ hostel.hostel_name }}</h3>
+
+        <div class="hs-card-location">
+            📍 {{ hostel.area }}, {{ hostel.city }}
+        </div>
+
+        <div class="hs-amenity-row">
+            {% if hostel.wifi %}<span class="hs-chip">Wi-Fi</span>{% endif %}
+            {% if hostel.food_available %}<span class="hs-chip">Food</span>{% endif %}
+            {% if hostel.ac %}<span class="hs-chip">AC</span>{% endif %}
+            {% if hostel.cctv %}<span class="hs-chip">CCTV</span>{% endif %}
+        </div>
+
+        <div class="hs-card-footer">
+            <div>
+                {% if hostel.starting_rent %}
+                    <div class="hs-price">
+                        ₹{{ hostel.starting_rent|floatformat:0 }}
+                        <span>/month</span>
+                    </div>
+                {% else %}
+                    <div class="hs-room-type-label">Rooms coming soon</div>
+                {% endif %}
+
+                <div class="hs-room-type-label">
+                    {{ hostel.available_rooms }} room types available
+                </div>
+            </div>
+
+            <a href="{% url 'hostels:hostel_detail' hostel.pk %}"
+               class="hs-btn hs-btn-primary">
+                View details
+            </a>
+        </div>
+    </div>
 </div>

@@ -91,9 +91,11 @@
                   {% if room.ac_available %}<span>✓ AC</span>{% endif %}
                   {% if room.furnishing %}<span>✓ {{ room.get_furnishing_display }}</span>{% endif %}
                 </div>
-                <button type="button" class="hs-btn hs-btn-primary mt-auto"
-                        data-hostel-id="{{ hostel.id }}" data-room-id="{{ room.id }}">
-                  Request room
+                <button type="button"
+                      class="hs-btn hs-btn-primary mt-auto"
+                      data-room-request
+                      data-room-id="{{ room.id }}">
+                    Request room
                 </button>
               </div>
             </div>
@@ -112,9 +114,14 @@
           {% else %}
             <p class="text-muted">Pricing not available yet.</p>
           {% endif %}
-          <button type="button" class="hs-btn hs-btn-primary w-100 mb-2" data-hostel-id="{{ hostel.id }}">
-            Send request
-          </button>
+          {% if user.is_authenticated and user.role == "TENANT" %}
+          <form method="post" action="{% url 'requests_module:add_favorite' hostel.pk %}">
+            {% csrf_token %}
+            <button class="btn btn-outline-danger w-100 mb-2">
+              ♡ Save to Favorites
+            </button>
+          </form>
+          {% endif %}
           <button type="button" class="hs-btn hs-btn-outline w-100" data-hostel-id="{{ hostel.id }}">
             Contact owner
           </button>
@@ -128,4 +135,103 @@
     </div>
   </div>
 </div>
+<!-- Send Request Modal -->
+<div class="modal fade" id="requestModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" action="{% url 'requests_module:create_request' %}">
+                {% csrf_token %}
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Interested in this Hostel?</h5>
+                    <button type="button" class="btn-close"
+                            data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <p><strong>{{ hostel.hostel_name }}</strong></p>
+
+                    <label class="form-label">Select Room</label>
+                    <select name="room" class="form-select mb-3" required>
+                        <option value="">Choose a room</option>
+                        {% for room in hostel.rooms.all %}
+                            {% if room.available_beds > 0 %}
+                            <option value="{{ room.pk }}">
+                                {{ room.get_room_type_display }} —
+                                ₹{{ room.rent }}/month
+                            </option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+
+                    <label class="form-label">Message</label>
+                    <textarea name="message" class="form-control" rows="4"
+                              placeholder="I am interested in this room..."></textarea>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        Send Request
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Report Listing Modal -->
+<div class="modal fade" id="reportModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post"
+                  action="{% url 'requests_module:report_hostel' hostel.pk %}">
+                {% csrf_token %}
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Report this Listing</h5>
+                    <button type="button" class="btn-close"
+                            data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <label class="form-label">Reason</label>
+                    <select name="reason" class="form-select mb-3" required>
+                        <option value="">Select a reason</option>
+                        <option value="INCORRECT">Incorrect information</option>
+                        <option value="FAKE">Fake listing</option>
+                        <option value="INAPPROPRIATE">Inappropriate content</option>
+                        <option value="UNAVAILABLE">Already unavailable</option>
+                        <option value="OTHER">Other</option>
+                    </select>
+
+                    <label class="form-label">Additional details</label>
+                    <textarea name="description" class="form-control" rows="4"></textarea>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger">
+                        Submit Report
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll("[data-room-request]").forEach(function (button) {
+        button.addEventListener("click", function () {
+            const modal = new bootstrap.Modal(
+                document.getElementById("requestModal")
+            );
+            modal.show();
+        });
+    });
+});
+</script>
 {% endblock %}

@@ -1,0 +1,15 @@
+﻿<form method="get" action="{% url 'hostels:hostel_list' %}" class="d-flex flex-column gap-3">
+    <div>
+        <label for="q" class="form-label font-weight-bold">Search</label>
+        <input type="text" name="q" id="q" class="form-control" placeholder="Search hostels..." value="{{ request.GET.q|default:'' }}">
+    </div>
+    <div>
+        <label for="min_rent" class="form-label">Min Rent</label>
+        <input type="number" name="min_rent" id="min_rent" class="form-control" placeholder="0" value="{{ request.GET.min_rent|default:'' }}">
+    </div>
+    <div>
+        <label for="max_rent" class="form-label">Max Rent</label>
+        <input type="number" name="max_rent" id="max_rent" class="form-control" placeholder="Max" value="{{ request.GET.max_rent|default:'' }}">
+    </div>
+    <button type="submit" class="btn btn-primary w-100 mt-2">Apply Filters</button>
+</form>

@@ -1,0 +1,17 @@
+﻿<div class="row g-3">
+    {% for hostel in page_obj %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">{{ hostel.name }}</h5>
+                    <p class="card-text text-muted">{{ hostel.address }}</p>
+                    <p class="fw-bold text-primary">₹{{ hostel.rent }} / month</p>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <div class="col-12">
+            <p class="text-muted text-center py-4">No hostels found matching your criteria.</p>
+        </div>
+    {% endfor %}
+</div>

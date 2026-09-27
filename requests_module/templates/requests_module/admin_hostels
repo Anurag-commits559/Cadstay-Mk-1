@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Hostels{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <h1>Manage Hostels</h1>
+
+    <div class="table-responsive mt-4">
+        <table class="table table-striped align-middle">
+            <thead>
+                <tr>
+                    <th>Hostel</th>
+                    <th>Owner</th>
+                    <th>Location</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in hostels %}
+                <tr>
+                    <td>
+                        <a href="{% url 'hostels:hostel_detail' item.pk %}">
+                            {{ item.hostel_name }}
+                        </a>
+                    </td>
+                    <td>{{ item.owner.username }}</td>
+                    <td>{{ item.area }}, {{ item.city }}</td>
+                    <td>{{ item.get_status_display }}</td>
+                    <td>
+                        <form method="post"
+                              action="{% url 'requests_module:toggle_hostel_status' item.pk %}">
+                            {% csrf_token %}
+                            <button class="btn btn-sm btn-outline-primary">
+                                {% if item.status == "ACTIVE" %}Deactivate{% else %}Activate{% endif %}
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="5">No hostels found.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

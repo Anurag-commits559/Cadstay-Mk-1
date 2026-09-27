@@ -38,6 +38,34 @@ hostel_roommate/
 │   └── templates/accounts/
 ├── templates/           # base.html, home.html, 404.html
 └── static/              # css/style.css, js/main.js
+├──requests_module/
+│
+├── __init__.py
+├── apps.py
+├── models.py
+├── forms.py
+├── views.py
+├── urls.py
+├── admin.py
+├── tests.py
+│
+├── templates/
+│   └── requests_module/
+│       ├── favorites.html
+│       ├── student_requests.html
+│       ├── owner_requests.html
+│       ├── notifications.html
+│       ├── admin_dashboard.html
+│       ├── admin_users.html
+│       ├── admin_hostels.html
+│       └── admin_reports.html
+│
+└── static/
+    └── requests_module/
+        ├── css/
+        │   └── member4.css
+        └── js/
+            └── member4.js
 ```
 
 ## Installation

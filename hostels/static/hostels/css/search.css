@@ -9,7 +9,20 @@
   border: 1px solid var(--hs-border);
   border-radius: var(--hs-radius);
   box-shadow: var(--hs-shadow);
-  padding: 1rem 1.25rem;
+  padding: 1rem;
+}
+
+@media (min-width: 768px) {
+  .sr-search-bar {
+    padding: 1.15rem 1.25rem;
+  }
+}
+
+@media (min-width: 992px) {
+  .sr-search-bar .hs-btn {
+    min-width: 7.5rem;
+    height: 100%;
+  }
 }
 
 .sr-filter-panel {

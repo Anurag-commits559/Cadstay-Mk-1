@@ -1,15 +1,45 @@
-﻿<form method="get" action="{% url 'hostels:hostel_list' %}" class="d-flex flex-column gap-3">
-    <div>
-        <label for="q" class="form-label font-weight-bold">Search</label>
-        <input type="text" name="q" id="q" class="form-control" placeholder="Search hostels..." value="{{ request.GET.q|default:'' }}">
+<form method="get" action="{% url 'hostels:hostel_list' %}" class="d-flex flex-column gap-3 cs-filters-form">
+    <div class="cs-filter-group">
+        <label for="q" class="form-label fw-bold small text-uppercase text-secondary mb-1">
+            <i class="bi bi-search me-1 text-primary"></i> Keyword / Area
+        </label>
+        <input type="text" name="q" id="q" class="form-control" placeholder="Search area, college..." value="{{ request.GET.q|default:'' }}">
     </div>
-    <div>
-        <label for="min_rent" class="form-label">Min Rent</label>
-        <input type="number" name="min_rent" id="min_rent" class="form-control" placeholder="0" value="{{ request.GET.min_rent|default:'' }}">
+
+    <div class="cs-filter-group">
+        <label class="form-label fw-bold small text-uppercase text-secondary mb-1">
+            <i class="bi bi-currency-rupee me-1 text-teal"></i> Budget Range
+        </label>
+        <div class="row g-2">
+            <div class="col-6">
+                <label for="min_rent" class="form-label visually-hidden">Min Rent</label>
+                <div class="input-group input-group-sm">
+                    <span class="input-group-text bg-light text-muted">₹</span>
+                    <input type="number" name="min_rent" id="min_rent" class="form-control" placeholder="Min" value="{{ request.GET.min_rent|default:'' }}">
+                </div>
+            </div>
+            <div class="col-6">
+                <label for="max_rent" class="form-label visually-hidden">Max Rent</label>
+                <div class="input-group input-group-sm">
+                    <span class="input-group-text bg-light text-muted">₹</span>
+                    <input type="number" name="max_rent" id="max_rent" class="form-control" placeholder="Max" value="{{ request.GET.max_rent|default:'' }}">
+                </div>
+            </div>
+        </div>
+        <!-- Quick budget presets -->
+        <div class="d-flex flex-wrap gap-1 mt-2">
+            <button type="button" class="btn btn-outline-secondary btn-sm py-0 px-2 rounded-pill text-xs" onclick="document.getElementById('max_rent').value='7000';">Under 7k</button>
+            <button type="button" class="btn btn-outline-secondary btn-sm py-0 px-2 rounded-pill text-xs" onclick="document.getElementById('min_rent').value='7000';document.getElementById('max_rent').value='12000';">7k - 12k</button>
+            <button type="button" class="btn btn-outline-secondary btn-sm py-0 px-2 rounded-pill text-xs" onclick="document.getElementById('min_rent').value='12000';document.getElementById('max_rent').value='';">12k+</button>
+        </div>
     </div>
-    <div>
-        <label for="max_rent" class="form-label">Max Rent</label>
-        <input type="number" name="max_rent" id="max_rent" class="form-control" placeholder="Max" value="{{ request.GET.max_rent|default:'' }}">
+
+    <div class="d-flex gap-2 pt-2">
+        <button type="submit" class="btn btn-primary w-100 fw-bold d-flex align-items-center justify-content-center gap-1">
+            <i class="bi bi-funnel-fill"></i> Apply
+        </button>
+        <a href="{% url 'hostels:hostel_list' %}" class="btn btn-outline-secondary px-3" title="Clear all filters">
+            <i class="bi bi-arrow-counterclockwise"></i>
+        </a>
     </div>
-    <button type="submit" class="btn btn-primary w-100 mt-2">Apply Filters</button>
 </form>

@@ -1,9 +1,15 @@
 {% comment %} Hostel card with working favorites {% endcomment %}
 
-<div class="hs-card">
-    <div class="hs-card-media">
-        <span class="hs-badge-gender">
-            {{ hostel.get_gender_allowed_display }}
+<div class="hs-card shadow-sm h-100 d-flex flex-column">
+    <div class="hs-card-media position-relative overflow-hidden">
+        <span class="hs-badge-gender hs-badge-gender--{{ hostel.gender_allowed|lower|default:'coed' }}">
+            {% if hostel.gender_allowed == "BOYS" %}
+                <i class="bi bi-gender-male me-1"></i>Boys Hostel
+            {% elif hostel.gender_allowed == "GIRLS" %}
+                <i class="bi bi-gender-female me-1"></i>Girls PG
+            {% else %}
+                <i class="bi bi-people-fill me-1"></i>{{ hostel.get_gender_allowed_display }}
+            {% endif %}
         </span>
 
         {% if user.is_authenticated %}
@@ -12,116 +18,64 @@
               class="hs-wishlist-form">
             {% csrf_token %}
             <button type="submit" class="hs-wishlist-btn"
-                    aria-label="Save to favorites">♡</button>
+                    aria-label="Save {{ hostel.hostel_name }} to favorites"
+                    title="Save to favorites">
+                <i class="bi bi-heart"></i>
+            </button>
         </form>
         {% endif %}
 
         {% with img=hostel.primary_image %}
             {% if img %}
-                <img src="{{ img.image.url }}" alt="{{ hostel.hostel_name }}">
+                <img src="{{ img.image.url }}" alt="{{ hostel.hostel_name }}" class="hs-card-img" loading="lazy">
             {% else %}
-                <div class="hs-card-media-empty">🏠</div>
+                <div class="hs-card-media-empty d-flex flex-column align-items-center justify-content-center" aria-hidden="true">
+                    <i class="bi bi-buildings fs-1 text-secondary opacity-50 mb-1"></i>
+                    <span class="text-xs text-muted">No photo uploaded</span>
+                </div>
             {% endif %}
         {% endwith %}
     </div>
 
-    <div class="hs-card-body">
-        <h3 class="hs-card-title">{{ hostel.hostel_name }}</h3>
-
-        <div class="hs-card-location">
-            📍 {{ hostel.area }}, {{ hostel.city }}
+    <div class="hs-card-body d-flex flex-column flex-grow-1 p-3">
+        <div class="d-flex justify-content-between align-items-start gap-2 mb-1">
+            <h3 class="hs-card-title h6 fw-bold mb-0">
+                <a href="{% url 'hostels:hostel_detail' hostel.pk %}" class="text-decoration-none text-dark stretched-link">
+                    {{ hostel.hostel_name }}
+                </a>
+            </h3>
         </div>
 
-        <div class="hs-amenity-row">
-            {% if hostel.wifi %}<span class="hs-chip">Wi-Fi</span>{% endif %}
-            {% if hostel.food_available %}<span class="hs-chip">Food</span>{% endif %}
-            {% if hostel.ac %}<span class="hs-chip">AC</span>{% endif %}
-            {% if hostel.cctv %}<span class="hs-chip">CCTV</span>{% endif %}
+        <div class="hs-card-location small text-muted mb-2">
+            <i class="bi bi-geo-alt-fill text-danger me-1"></i>{{ hostel.area }}, {{ hostel.city }}
         </div>
 
-        <div class="hs-card-footer">
+        <div class="hs-amenity-row mb-3">
+            {% if hostel.wifi %}<span class="hs-chip"><i class="bi bi-wifi"></i> Wi-Fi</span>{% endif %}
+            {% if hostel.food_available %}<span class="hs-chip"><i class="bi bi-cup-hot"></i> Meals</span>{% endif %}
+            {% if hostel.ac %}<span class="hs-chip"><i class="bi bi-snow"></i> AC</span>{% endif %}
+            {% if hostel.cctv %}<span class="hs-chip"><i class="bi bi-camera-video"></i> CCTV</span>{% endif %}
+        </div>
+
+        <div class="hs-card-footer mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
             <div>
                 {% if hostel.starting_rent %}
-                    <div class="hs-price">
-                        ₹{{ hostel.starting_rent|floatformat:0 }}
-                        <span>/month</span>
+                    <div class="hs-price fw-bold text-teal">
+                        <span class="currency">₹</span>{{ hostel.starting_rent|floatformat:0 }}<span class="period text-muted small fw-normal">/mo</span>
                     </div>
                 {% else %}
-                    <div class="hs-room-type-label">Rooms coming soon</div>
+                    <div class="hs-room-type-label text-muted small">Pricing soon</div>
                 {% endif %}
 
-                <div class="hs-room-type-label">
-                    {{ hostel.available_rooms }} room types available
+                <div class="hs-room-type-label small text-muted d-flex align-items-center gap-1">
+                    <span class="hs-avail-dot"></span>
+                    {{ hostel.available_rooms }} room type{{ hostel.available_rooms|pluralize }}
                 </div>
             </div>
 
-            <a href="{% url 'hostels:hostel_detail' hostel.pk %}"
-               class="hs-btn hs-btn-primary">
-                View details
-            </a>
-        </div>
-    </div>
-</div>{% comment %} Hostel card with working favorites {% endcomment %}
-
-<div class="hs-card">
-    <div class="hs-card-media">
-        <span class="hs-badge-gender">
-            {{ hostel.get_gender_allowed_display }}
-        </span>
-
-        {% if user.is_authenticated %}
-        <form method="post"
-              action="{% url 'requests_module:add_favorite' hostel.pk %}"
-              class="hs-wishlist-form">
-            {% csrf_token %}
-            <button type="submit" class="hs-wishlist-btn"
-                    aria-label="Save to favorites">♡</button>
-        </form>
-        {% endif %}
-
-        {% with img=hostel.primary_image %}
-            {% if img %}
-                <img src="{{ img.image.url }}" alt="{{ hostel.hostel_name }}">
-            {% else %}
-                <div class="hs-card-media-empty">🏠</div>
-            {% endif %}
-        {% endwith %}
-    </div>
-
-    <div class="hs-card-body">
-        <h3 class="hs-card-title">{{ hostel.hostel_name }}</h3>
-
-        <div class="hs-card-location">
-            📍 {{ hostel.area }}, {{ hostel.city }}
-        </div>
-
-        <div class="hs-amenity-row">
-            {% if hostel.wifi %}<span class="hs-chip">Wi-Fi</span>{% endif %}
-            {% if hostel.food_available %}<span class="hs-chip">Food</span>{% endif %}
-            {% if hostel.ac %}<span class="hs-chip">AC</span>{% endif %}
-            {% if hostel.cctv %}<span class="hs-chip">CCTV</span>{% endif %}
-        </div>
-
-        <div class="hs-card-footer">
-            <div>
-                {% if hostel.starting_rent %}
-                    <div class="hs-price">
-                        ₹{{ hostel.starting_rent|floatformat:0 }}
-                        <span>/month</span>
-                    </div>
-                {% else %}
-                    <div class="hs-room-type-label">Rooms coming soon</div>
-                {% endif %}
-
-                <div class="hs-room-type-label">
-                    {{ hostel.available_rooms }} room types available
-                </div>
-            </div>
-
-            <a href="{% url 'hostels:hostel_detail' hostel.pk %}"
-               class="hs-btn hs-btn-primary">
-                View details
-            </a>
+            <span class="btn btn-primary btn-sm rounded-pill px-3 py-1 position-relative z-2">
+                Details <i class="bi bi-arrow-right ms-1"></i>
+            </span>
         </div>
     </div>
 </div>

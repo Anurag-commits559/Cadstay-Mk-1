@@ -1,54 +1,110 @@
 {% extends "base.html" %}
 
-{% block title %}My Favorites{% endblock %}
+{% block title %}My Favorites — CadStay{% endblock %}
 
 {% block content %}
 <div class="container py-4">
-    <h1 class="mb-3">❤️ My Saved Hostels</h1>
-    <p class="text-muted">{{ favorites|length }} saved hostel(s)</p>
+    <!-- Page Header -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-4 pb-2 border-bottom">
+        <div>
+            <div class="d-flex align-items-center gap-2 mb-1">
+                <span class="d-inline-flex align-items-center justify-content-center bg-danger-subtle text-danger rounded-circle" style="width: 40px; height: 40px;">
+                    <i class="bi bi-heart-fill"></i>
+                </span>
+                <h1 class="h3 fw-bold mb-0">My Saved Hostels</h1>
+            </div>
+            <p class="text-muted mb-0 small">Keep track of hostels and PGs you're considering for quick comparison</p>
+        </div>
+        <div>
+            <span class="badge bg-light text-dark border px-3 py-2 rounded-pill fw-medium">
+                <i class="bi bi-bookmark-check text-primary me-1"></i> {{ favorites|length }} saved property{{ favorites|length|pluralize:"ies" }}
+            </span>
+        </div>
+    </div>
 
+    <!-- Listings Grid -->
     <div class="row g-4">
         {% for favorite in favorites %}
         {% with hostel=favorite.hostel %}
-        <div class="col-md-6 col-lg-4">
-            <div class="card h-100 shadow-sm">
-                {% if hostel.primary_image %}
-                <img src="{{ hostel.primary_image.image.url }}"
-                     class="card-img-top"
-                     style="height:220px;object-fit:cover"
-                     alt="{{ hostel.hostel_name }}">
-                {% endif %}
-
-                <div class="card-body">
-                    <h5>{{ hostel.hostel_name }}</h5>
-                    <p class="text-muted">{{ hostel.area }}, {{ hostel.city }}</p>
-
-                    {% if hostel.starting_rent %}
-                    <p class="fw-bold">₹{{ hostel.starting_rent }}/month</p>
+        <div class="col-12 col-md-6 col-xl-4">
+            <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden cs-hover-lift">
+                <div class="position-relative">
+                    {% if hostel.primary_image %}
+                    <img src="{{ hostel.primary_image.image.url }}"
+                         class="card-img-top"
+                         style="height: 220px; object-fit: cover;"
+                         alt="{{ hostel.hostel_name }}"
+                         loading="lazy">
+                    {% else %}
+                    <div class="bg-light d-flex flex-column align-items-center justify-content-center text-muted" style="height: 220px;">
+                        <i class="bi bi-building display-6 mb-2 opacity-50"></i>
+                        <span class="small">No preview available</span>
+                    </div>
                     {% endif %}
 
-                    <a href="{% url 'hostels:hostel_detail' hostel.pk %}"
-                       class="btn btn-primary">View Hostel</a>
+                    {% if hostel.gender_allowed %}
+                    <span class="position-absolute top-0 start-0 m-3 badge {% if hostel.gender_allowed == 'GIRLS' %}bg-danger{% elif hostel.gender_allowed == 'BOYS' %}bg-primary{% else %}bg-success{% endif %} rounded-pill shadow-sm px-3 py-2">
+                        <i class="bi {% if hostel.gender_allowed == 'GIRLS' %}bi-gender-female{% elif hostel.gender_allowed == 'BOYS' %}bi-gender-male{% else %}bi-gender-ambiguous{% endif %} me-1"></i>
+                        {{ hostel.get_gender_allowed_display }}
+                    </span>
+                    {% endif %}
+                </div>
 
-                    <form method="post"
-                          action="{% url 'requests_module:remove_favorite' hostel.pk %}"
-                          class="d-inline">
-                        {% csrf_token %}
-                        <input type="hidden" name="next"
-                               value="{% url 'requests_module:favorites' %}">
-                        <button class="btn btn-outline-danger">♥ Remove</button>
-                    </form>
+                <div class="card-body p-4 d-flex flex-column">
+                    <div class="mb-2">
+                        <h2 class="h5 fw-bold text-truncate mb-1" title="{{ hostel.hostel_name }}">{{ hostel.hostel_name }}</h2>
+                        <p class="text-muted small mb-0 d-flex align-items-center">
+                            <i class="bi bi-geo-alt-fill text-danger me-1 flex-shrink-0"></i>
+                            <span class="text-truncate">{{ hostel.area }}, {{ hostel.city }}</span>
+                        </p>
+                    </div>
+
+                    <div class="mt-auto pt-3 border-top d-flex align-items-center justify-content-between gap-2">
+                        <div>
+                            {% if hostel.starting_rent %}
+                            <span class="text-muted small d-block">Starting from</span>
+                            <span class="fs-5 fw-bold text-teal">₹{{ hostel.starting_rent }}</span>
+                            <span class="text-muted small">/mo</span>
+                            {% else %}
+                            <span class="text-muted small">Price on request</span>
+                            {% endif %}
+                        </div>
+
+                        <div class="d-flex align-items-center gap-2">
+                            <form method="post"
+                                  action="{% url 'requests_module:remove_favorite' hostel.pk %}"
+                                  class="d-inline">
+                                {% csrf_token %}
+                                <input type="hidden" name="next"
+                                       value="{% url 'requests_module:favorites' %}">
+                                <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-3" title="Remove from favorites">
+                                    <i class="bi bi-trash3 me-1"></i> Remove
+                                </button>
+                            </form>
+                            <a href="{% url 'hostels:hostel_detail' hostel.pk %}"
+                               class="btn btn-primary btn-sm rounded-pill px-3">
+                                View <i class="bi bi-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         {% endwith %}
         {% empty %}
-        <div class="col-12 text-center py-5">
-            <h2>❤️ No saved hostels yet</h2>
-            <p>Save hostels you like and find them here later.</p>
-            <a href="{% url 'hostels:hostel_list' %}" class="btn btn-primary">
-                Explore Hostels
-            </a>
+        <div class="col-12">
+            <div class="bg-white rounded-4 border p-5 text-center my-4 shadow-sm">
+                <div class="d-inline-flex align-items-center justify-content-center bg-danger-subtle text-danger rounded-circle mb-3" style="width: 72px; height: 72px;">
+                    <i class="bi bi-heartbreak fs-2"></i>
+                </div>
+                <h2 class="h4 fw-bold mb-2">No saved hostels yet</h2>
+                <p class="text-muted mb-4 mx-auto" style="max-width: 440px;">
+                    When you find a hostel or PG you like, click the heart icon on any card to save it here for later reference.
+                </p>
+                <a href="{% url 'hostels:hostel_list' %}" class="btn btn-primary rounded-pill px-4 py-2">
+                    <i class="bi bi-search me-1"></i> Explore Available Hostels
+                </a>
+            </div>
         </div>
         {% endfor %}
     </div>

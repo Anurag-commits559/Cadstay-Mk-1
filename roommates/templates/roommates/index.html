@@ -1,98 +1,142 @@
 {% extends 'base.html' %}
 
+{% block title %}Find Roommates — CadStay{% endblock %}
+
 {% block content %}
-<div class="container mt-4">
-    <!-- Header -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4 pb-2 border-bottom" data-reveal>
         <div>
-            <h2 class="fw-bold mb-0">Roommate Requests</h2>
-            <p class="text-muted small mb-0">Find compatible roommates or post your requirement</p>
+            <div class="d-inline-flex align-items-center gap-1 badge bg-teal-subtle text-teal rounded-pill px-3 py-1 mb-2">
+                <i class="bi bi-people-fill"></i> Student Community
+            </div>
+            <h1 class="h2 fw-bold mb-1 text-dark">Find Compatible Roommates</h1>
+            <p class="text-secondary small mb-0">Connect with fellow students and young professionals looking for flatmates or roommates</p>
         </div>
-        <a href="{% url 'roommates:create_roommate_request' %}" class="btn btn-primary fw-semibold">+ Post Roommate Request</a>
+        <a href="{% url 'roommates:create_roommate_request' %}" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm d-flex align-items-center gap-2">
+            <i class="bi bi-plus-circle-fill"></i> Post Roommate Request
+        </a>
     </div>
 
-    <!-- Enhanced Filter Section -->
-    <div class="card p-3 mb-4 border-0 shadow-sm rounded-3 bg-light">
+    <!-- Filter Bar -->
+    <div class="card border rounded-4 p-3 shadow-sm bg-white mb-4" data-reveal>
         <form method="GET" class="row g-2 align-items-center">
-            <div class="col-md-4">
-                <input type="text" name="q" class="form-control" value="{{ request.GET.q|default:'' }}" placeholder="Search location or keywords...">
+            <div class="col-12 col-md-6 col-lg-4">
+                <label class="visually-hidden" for="roommate-q">Search</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-search text-primary"></i></span>
+                    <input id="roommate-q" type="text" name="q" class="form-control border-start-0 ps-0" value="{{ request.GET.q|default:'' }}" placeholder="Search location or keywords...">
+                </div>
             </div>
-            <div class="col-md-2">
-                <select name="gender" class="form-select">
+            <div class="col-6 col-md-3 col-lg-2">
+                <label class="visually-hidden" for="roommate-gender">Gender</label>
+                <select id="roommate-gender" name="gender" class="form-select">
                     <option value="">All Genders</option>
-                    <option value="male" {% if request.GET.gender == 'male' %}selected{% endif %}>Male</option>
-                    <option value="female" {% if request.GET.gender == 'female' %}selected{% endif %}>Female</option>
-                    <option value="any" {% if request.GET.gender == 'any' %}selected{% endif %}>Any</option>
+                    <option value="male" {% if request.GET.gender == 'male' %}selected{% endif %}>Looking for Male</option>
+                    <option value="female" {% if request.GET.gender == 'female' %}selected{% endif %}>Looking for Female</option>
+                    <option value="any" {% if request.GET.gender == 'any' %}selected{% endif %}>Any Gender</option>
                 </select>
             </div>
-            <div class="col-md-2">
-                <input type="number" name="max_budget" class="form-control" value="{{ request.GET.max_budget|default:'' }}" placeholder="Max Budget (₹)">
+            <div class="col-6 col-md-3 col-lg-2">
+                <label class="visually-hidden" for="roommate-budget">Max budget</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0 text-muted">₹</span>
+                    <input id="roommate-budget" type="number" name="max_budget" class="form-control border-start-0 ps-0" value="{{ request.GET.max_budget|default:'' }}" placeholder="Max Budget">
+                </div>
             </div>
-            <div class="col-md-2">
-                <select name="sort" class="form-select">
+            <div class="col-6 col-md-6 col-lg-2">
+                <label class="visually-hidden" for="roommate-sort">Sort</label>
+                <select id="roommate-sort" name="sort" class="form-select">
                     <option value="newest" {% if request.GET.sort == 'newest' %}selected{% endif %}>Newest First</option>
                     <option value="budget_asc" {% if request.GET.sort == 'budget_asc' %}selected{% endif %}>Budget: Low to High</option>
                     <option value="budget_desc" {% if request.GET.sort == 'budget_desc' %}selected{% endif %}>Budget: High to Low</option>
                 </select>
             </div>
-            <div class="col-md-2">
-                <button type="submit" class="btn btn-dark w-100 fw-semibold">Filter</button>
+            <div class="col-6 col-md-6 col-lg-2 d-flex gap-2">
+                <button type="submit" class="btn btn-primary w-100 fw-bold d-flex align-items-center justify-content-center gap-1">
+                    <i class="bi bi-funnel-fill"></i> Filter
+                </button>
+                {% if request.GET.q or request.GET.gender or request.GET.max_budget %}
+                    <a href="{% url 'roommates:roommate_list' %}" class="btn btn-outline-secondary px-3" title="Clear filters">
+                        <i class="bi bi-arrow-counterclockwise"></i>
+                    </a>
+                {% endif %}
             </div>
         </form>
     </div>
 
-    <!-- Roommate Listings Grid -->
-    <div class="row">
+    <!-- Roommate Cards Grid -->
+    <div class="row g-4">
         {% if profiles %}
             {% for profile in profiles %}
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100 border-0 shadow-sm rounded-3">
-                        <div class="card-body">
-                            <!-- User Header -->
-                            <div class="d-flex align-items-center justify-content-between mb-3">
-                                <div class="d-flex align-items-center">
-                                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2 fw-bold" style="width: 42px; height: 42px; font-size: 1.1rem;">
+                <div class="col-12 col-md-6 col-xl-4" data-reveal>
+                    <div class="card h-100 border rounded-4 shadow-sm bg-white overflow-hidden d-flex flex-column cs-mate-card">
+                        <div class="card-body p-4 d-flex flex-column">
+                            <div class="d-flex align-items-center justify-content-between mb-3 gap-2">
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="cs-avatar-chip" style="width:46px;height:46px;font-size:1.15rem;">
                                         {{ profile.user.username|slice:":1"|upper }}
                                     </div>
                                     <div>
-                                        <h6 class="card-title mb-0 fw-bold">{{ profile.user.username }}</h6>
-                                        <small class="text-muted" style="font-size: 0.75rem;">Posted {{ profile.created_at|timesince }} ago</small>
+                                        <h2 class="h6 card-title mb-0 fw-bold text-dark">{{ profile.user.username }}</h2>
+                                        <small class="text-muted"><i class="bi bi-clock me-1"></i>{{ profile.created_at|timesince }} ago</small>
                                     </div>
                                 </div>
                                 {% if user == profile.user %}
                                     <form method="POST" action="{% url 'roommates:delete_roommate_request' profile.pk %}" onsubmit="return confirm('Are you sure you want to delete this post?');">
                                         {% csrf_token %}
-                                        <button type="submit" class="btn btn-outline-danger btn-sm py-0 px-2" style="font-size: 0.75rem;">Delete</button>
+                                        <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-3" title="Delete request">
+                                            <i class="bi bi-trash"></i> Delete
+                                        </button>
                                     </form>
                                 {% endif %}
                             </div>
 
-                            <!-- Badges -->
-                            <div class="mb-2">
-                                <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-2 py-1">₹{{ profile.budget }}/mo</span>
-                                <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle rounded-pill px-2 py-1">{{ profile.get_gender_preference_display }}</span>
+                            <div class="d-flex flex-wrap gap-2 mb-3">
+                                <span class="badge bg-teal-subtle text-teal fs-6 fw-bold rounded-pill px-3 py-1">
+                                    <span class="fw-normal">Budget:</span> ₹{{ profile.budget }}/mo
+                                </span>
+                                <span class="badge bg-light text-secondary border rounded-pill px-3 py-1">
+                                    <i class="bi bi-person-check me-1"></i>{{ profile.get_gender_preference_display }}
+                                </span>
                             </div>
 
-                            <!-- Details -->
-                            <p class="card-text mb-2">
-                                <strong>📍 Location:</strong> {{ profile.location }}
-                            </p>
-                            <p class="card-text text-secondary small">
-                                {{ profile.bio|default:"No description provided."|truncatewords:20 }}
-                            </p>
+                            <div class="small fw-semibold text-secondary mb-2 d-flex align-items-center gap-1">
+                                <i class="bi bi-geo-alt-fill text-danger"></i>
+                                <span>{{ profile.location }}</span>
+                            </div>
+
+                            <div class="p-3 bg-light rounded-3 text-secondary small mb-3 flex-grow-1 border">
+                                <i class="bi bi-quote fs-5 text-teal opacity-50 d-inline-block"></i>
+                                {{ profile.bio|default:"No description provided."|truncatewords:25 }}
+                            </div>
                         </div>
 
-                        <div class="card-footer bg-transparent border-top-0 d-flex gap-2 pb-3">
-                            <a href="#" class="btn btn-outline-primary btn-sm flex-grow-1 fw-semibold">View Profile</a>
+                        <div class="card-footer bg-white border-top p-3 d-flex gap-2">
+                            <a href="mailto:{{ profile.user.email }}" class="btn btn-outline-primary btn-sm rounded-pill flex-grow-1 fw-bold d-flex align-items-center justify-content-center gap-1">
+                                <i class="bi bi-envelope"></i> Contact Roommate
+                            </a>
                         </div>
                     </div>
                 </div>
             {% endfor %}
         {% else %}
-            <div class="col-12">
-                <div class="alert alert-light text-center py-5 border shadow-sm rounded-3">
-                    <p class="text-muted mb-0 fs-5">No roommate requests match your criteria.</p>
-                    <a href="{% url 'roommates:roommate_list' %}" class="btn btn-sm btn-link mt-2">Clear all filters</a>
+            <div class="col-12" data-reveal>
+                <div class="card border rounded-4 p-5 text-center bg-white shadow-sm">
+                    <div class="mb-3">
+                        <i class="bi bi-people fs-1 text-teal opacity-50"></i>
+                    </div>
+                    <h2 class="h4 fw-bold text-dark mb-2">No Roommate Requests Found</h2>
+                    <p class="text-secondary max-w-md mx-auto mb-4">
+                        There are currently no roommate requests matching your selected filters. Try broadening your budget or clearing filters.
+                    </p>
+                    <div class="d-flex justify-content-center gap-2">
+                        <a href="{% url 'roommates:roommate_list' %}" class="btn btn-outline-secondary rounded-pill px-4">
+                            Clear All Filters
+                        </a>
+                        <a href="{% url 'roommates:create_roommate_request' %}" class="btn btn-primary rounded-pill px-4 fw-bold">
+                            + Post Your Request
+                        </a>
+                    </div>
                 </div>
             </div>
         {% endif %}

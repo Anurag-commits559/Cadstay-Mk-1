@@ -1,61 +1,146 @@
 {% extends "base.html" %}
 
-{% block title %}Owner Requests{% endblock %}
+{% block title %}Owner Requests — CadStay{% endblock %}
 
 {% block content %}
 <div class="container py-4">
-    <h1 class="mb-4">Owner Dashboard — Requests</h1>
+    <!-- Header -->
+    <div class="mb-4">
+        <h1 class="h3 fw-bold mb-1">Incoming Tenant Requests</h1>
+        <p class="text-muted small">Manage and respond to room inquiries from prospective students and tenants</p>
+    </div>
 
+    <!-- Stats Bar -->
     <div class="row g-3 mb-4">
-        <div class="col-md-4">
-            <div class="card p-3"><h6>Pending</h6><h3>{{ stats.pending }}</h3></div>
+        <div class="col-12 col-md-4">
+            <div class="card border-0 shadow-sm rounded-4 bg-white p-3 h-100">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <span class="text-muted small fw-medium d-block">Pending Action</span>
+                        <span class="fs-3 fw-bold text-warning">{{ stats.pending }}</span>
+                    </div>
+                    <div class="d-inline-flex align-items-center justify-content-center bg-warning-subtle text-warning rounded-circle" style="width: 44px; height: 44px;">
+                        <i class="bi bi-clock-history fs-5"></i>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-md-4">
-            <div class="card p-3"><h6>Accepted</h6><h3>{{ stats.accepted }}</h3></div>
+        <div class="col-12 col-md-4">
+            <div class="card border-0 shadow-sm rounded-4 bg-white p-3 h-100">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <span class="text-muted small fw-medium d-block">Accepted</span>
+                        <span class="fs-3 fw-bold text-success">{{ stats.accepted }}</span>
+                    </div>
+                    <div class="d-inline-flex align-items-center justify-content-center bg-success-subtle text-success rounded-circle" style="width: 44px; height: 44px;">
+                        <i class="bi bi-check-circle-fill fs-5"></i>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-md-4">
-            <div class="card p-3"><h6>Rejected</h6><h3>{{ stats.rejected }}</h3></div>
+        <div class="col-12 col-md-4">
+            <div class="card border-0 shadow-sm rounded-4 bg-white p-3 h-100">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <span class="text-muted small fw-medium d-block">Declined</span>
+                        <span class="fs-3 fw-bold text-danger">{{ stats.rejected }}</span>
+                    </div>
+                    <div class="d-inline-flex align-items-center justify-content-center bg-danger-subtle text-danger rounded-circle" style="width: 44px; height: 44px;">
+                        <i class="bi bi-x-circle-fill fs-5"></i>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    {% for item in requests %}
-    <div class="card p-4 mb-3 shadow-sm">
-        <h5>{{ item.student.full_name }}</h5>
-        <p><strong>Hostel:</strong> {{ item.hostel.hostel_name }}</p>
-        <p><strong>Room:</strong> {{ item.room.get_room_type_display }}</p>
-        <p><strong>Rent:</strong> ₹{{ item.room.rent }}/month</p>
-        <p><strong>Message:</strong> {{ item.message|default:"No message provided." }}</p>
-        <p><strong>Sent:</strong> {{ item.created_at|date:"d M Y" }}</p>
-        <p><strong>Status:</strong> {{ item.get_status_display }}</p>
+    <!-- Requests List -->
+    <div class="d-flex flex-column gap-3">
+        {% for item in requests %}
+        <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3 mb-3">
+                <div class="d-flex align-items-start gap-3">
+                    <div class="d-inline-flex align-items-center justify-content-center bg-primary text-white rounded-circle fs-5 fw-bold flex-shrink-0" style="width: 48px; height: 48px;">
+                        {{ item.student.full_name|slice:":1"|upper }}
+                    </div>
+                    <div>
+                        <div class="d-flex align-items-center gap-2 flex-wrap mb-1">
+                            <h2 class="h5 fw-bold mb-0 text-dark">{{ item.student.full_name }}</h2>
+                            <span class="badge bg-light text-dark border rounded-pill px-3 py-1 small">
+                                <i class="bi bi-building me-1"></i> {{ item.hostel.hostel_name }}
+                            </span>
+                        </div>
+                        <div class="d-flex flex-wrap gap-2 align-items-center small text-secondary">
+                            <span><i class="bi bi-door-open me-1"></i> {{ item.room.get_room_type_display }}</span>
+                            <span>·</span>
+                            <span class="fw-bold text-teal">₹{{ item.room.rent }}/month</span>
+                            <span>·</span>
+                            <span><i class="bi bi-calendar-event me-1"></i> Received: {{ item.created_at|date:"d M Y" }}</span>
+                        </div>
+                    </div>
+                </div>
 
-        {% if item.status == "PENDING" %}
-        <div class="d-flex gap-2 flex-wrap">
-            <form method="post"
-                  action="{% url 'requests_module:accept_request' item.pk %}">
-                {% csrf_token %}
-                <button class="btn btn-success"
-                        onclick="return confirm('Accept this request?')">
-                    Accept
-                </button>
-            </form>
+                <div>
+                    {% if item.status == "PENDING" %}
+                    <span class="badge bg-warning-subtle text-warning-emphasis border border-warning rounded-pill px-3 py-1">
+                        <i class="bi bi-hourglass-split me-1"></i> Pending Action
+                    </span>
+                    {% elif item.status == "ACCEPTED" %}
+                    <span class="badge bg-success-subtle text-success border border-success rounded-pill px-3 py-1">
+                        <i class="bi bi-check-circle me-1"></i> Accepted
+                    </span>
+                    {% elif item.status == "REJECTED" %}
+                    <span class="badge bg-danger-subtle text-danger border border-danger rounded-pill px-3 py-1">
+                        <i class="bi bi-x-circle me-1"></i> Rejected
+                    </span>
+                    {% else %}
+                    <span class="badge bg-secondary-subtle text-secondary border rounded-pill px-3 py-1">{{ item.get_status_display }}</span>
+                    {% endif %}
+                </div>
+            </div>
 
-            <form method="post"
-                  action="{% url 'requests_module:reject_request' item.pk %}"
-                  class="d-flex gap-2 flex-wrap">
-                {% csrf_token %}
-                <input type="text" name="reason"
-                       class="form-control"
-                       placeholder="Optional rejection reason">
-                <button class="btn btn-danger">Reject</button>
-            </form>
+            <!-- Student Message Callout -->
+            <div class="p-3 bg-light rounded-3 mb-3 border">
+                <span class="small text-muted fw-semibold d-block mb-1">
+                    <i class="bi bi-chat-left-quote me-1"></i> Message from applicant:
+                </span>
+                <p class="mb-0 small text-dark fst-italic">"{{ item.message|default:"No message provided." }}"</p>
+            </div>
+
+            {% if item.status == "PENDING" %}
+            <div class="pt-3 border-top d-flex flex-column flex-md-row gap-2 align-items-stretch align-items-md-center">
+                <form method="post"
+                      action="{% url 'requests_module:accept_request' item.pk %}"
+                      class="flex-shrink-0">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success btn-sm rounded-pill px-4 w-100"
+                            onclick="return confirm('Accept this booking request?')">
+                        <i class="bi bi-check-lg me-1"></i> Accept Request
+                    </button>
+                </form>
+
+                <form method="post"
+                      action="{% url 'requests_module:reject_request' item.pk %}"
+                      class="d-flex gap-2 flex-grow-1">
+                    {% csrf_token %}
+                    <input type="text" name="reason"
+                           class="form-control form-control-sm rounded-pill px-3"
+                           placeholder="Optional rejection reason (e.g. room full)">
+                    <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-3 flex-shrink-0">
+                        <i class="bi bi-x-lg me-1"></i> Reject
+                    </button>
+                </form>
+            </div>
+            {% endif %}
         </div>
-        {% endif %}
+        {% empty %}
+        <div class="bg-white rounded-4 border p-5 text-center my-3 shadow-sm">
+            <div class="d-inline-flex align-items-center justify-content-center bg-light text-muted rounded-circle mb-3" style="width: 72px; height: 72px;">
+                <i class="bi bi-inbox fs-2 opacity-50"></i>
+            </div>
+            <h2 class="h5 fw-bold mb-1">No requests received yet</h2>
+            <p class="text-muted small mb-0">When students request a room in your hostel, their booking details will appear here.</p>
+        </div>
+        {% endfor %}
     </div>
-    {% empty %}
-    <div class="text-center py-5">
-        <h2>📬 No requests received</h2>
-        <p>New student requests will appear here.</p>
-    </div>
-    {% endfor %}
 </div>
 {% endblock %}

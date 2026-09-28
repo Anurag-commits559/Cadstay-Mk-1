@@ -1,43 +1,126 @@
 {% extends "base.html" %}
 
-{% block title %}Admin Dashboard{% endblock %}
+{% block title %}Admin Dashboard — CadStay{% endblock %}
 
 {% block content %}
 <div class="container py-4">
-    <h1 class="mb-4">Admin Dashboard</h1>
+    <!-- Header -->
+    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-3 mb-4 pb-2 border-bottom">
+        <div>
+            <div class="d-flex align-items-center gap-2 mb-1">
+                <span class="d-inline-flex align-items-center justify-content-center bg-dark text-white rounded-circle" style="width: 40px; height: 40px;">
+                    <i class="bi bi-shield-lock-fill"></i>
+                </span>
+                <h1 class="h3 fw-bold mb-0">Platform Administration</h1>
+            </div>
+            <p class="text-muted small mb-0">Overview of CadStay platform metrics, listings, user accounts, and moderation</p>
+        </div>
+        <div>
+            <span class="badge bg-primary-subtle text-primary border border-primary px-3 py-2 rounded-pill fw-semibold">
+                <i class="bi bi-check-circle me-1"></i> System Operational
+            </span>
+        </div>
+    </div>
 
+    <!-- Metrics Cards -->
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-lg-3">
+            <div class="card border-0 shadow-sm rounded-4 bg-white p-3 h-100">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="text-muted small fw-medium">Total Registered Users</span>
+                    <span class="d-inline-flex align-items-center justify-content-center bg-primary-subtle text-primary rounded-circle" style="width: 38px; height: 38px;">
+                        <i class="bi bi-people-fill"></i>
+                    </span>
+                </div>
+                <h2 class="display-6 fw-bold mb-0 text-dark">{{ total_users }}</h2>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="card border-0 shadow-sm rounded-4 bg-white p-3 h-100">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="text-muted small fw-medium">Total Hostels</span>
+                    <span class="d-inline-flex align-items-center justify-content-center bg-success-subtle text-success rounded-circle" style="width: 38px; height: 38px;">
+                        <i class="bi bi-building"></i>
+                    </span>
+                </div>
+                <h2 class="display-6 fw-bold mb-0 text-dark">{{ total_hostels }}</h2>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="card border-0 shadow-sm rounded-4 bg-white p-3 h-100">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="text-muted small fw-medium">Listed Rooms</span>
+                    <span class="d-inline-flex align-items-center justify-content-center bg-info-subtle text-info rounded-circle" style="width: 38px; height: 38px;">
+                        <i class="bi bi-door-open-fill"></i>
+                    </span>
+                </div>
+                <h2 class="display-6 fw-bold mb-0 text-dark">{{ total_rooms }}</h2>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="card border-0 shadow-sm rounded-4 bg-white p-3 h-100">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="text-muted small fw-medium">Pending Requests</span>
+                    <span class="d-inline-flex align-items-center justify-content-center bg-warning-subtle text-warning rounded-circle" style="width: 38px; height: 38px;">
+                        <i class="bi bi-clock-history"></i>
+                    </span>
+                </div>
+                <h2 class="display-6 fw-bold mb-0 text-warning">{{ pending_requests }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <!-- Moderation Alert Banner -->
+    <div class="card border-0 shadow-sm rounded-4 bg-white p-4 mb-4">
+        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-3">
+            <div class="d-flex align-items-center gap-3">
+                <div class="d-inline-flex align-items-center justify-content-center {% if reported_listings > 0 %}bg-danger-subtle text-danger{% else %}bg-success-subtle text-success{% endif %} rounded-circle" style="width: 48px; height: 48px;">
+                    <i class="bi {% if reported_listings > 0 %}bi-flag-fill{% else %}bi-shield-check{% endif %} fs-4"></i>
+                </div>
+                <div>
+                    <h2 class="h5 fw-bold mb-1">Listing Moderation Queue</h2>
+                    <p class="text-muted small mb-0">Flagged property reports requiring administrator review</p>
+                </div>
+            </div>
+            <div class="d-flex align-items-center gap-3">
+                <span class="fs-3 fw-bold {% if reported_listings > 0 %}text-danger{% else %}text-muted{% endif %}">{{ reported_listings }}</span>
+                <a href="{% url 'requests_module:admin_reports' %}" class="btn btn-outline-danger btn-sm rounded-pill px-3">
+                    Review Reports <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Navigation Management Actions -->
+    <h3 class="h6 text-uppercase text-muted fw-bold mb-3 letter-spacing-1">Management Consoles</h3>
     <div class="row g-3">
-        <div class="col-6 col-lg-3">
-            <div class="card p-4 shadow-sm">
-                <h6>Total Users</h6><h2>{{ total_users }}</h2>
-            </div>
+        <div class="col-12 col-md-4">
+            <a href="{% url 'requests_module:admin_users' %}" class="card border-0 shadow-sm rounded-4 p-4 text-decoration-none bg-white cs-hover-lift h-100">
+                <div class="d-inline-flex align-items-center justify-content-center bg-primary-subtle text-primary rounded-circle mb-3" style="width: 44px; height: 44px;">
+                    <i class="bi bi-people fs-5"></i>
+                </div>
+                <h4 class="h6 fw-bold text-dark mb-1">Manage Users</h4>
+                <p class="text-muted small mb-0">Search accounts, activate or suspend user and student privileges.</p>
+            </a>
         </div>
-        <div class="col-6 col-lg-3">
-            <div class="card p-4 shadow-sm">
-                <h6>Total Hostels</h6><h2>{{ total_hostels }}</h2>
-            </div>
+        <div class="col-12 col-md-4">
+            <a href="{% url 'requests_module:admin_hostels' %}" class="card border-0 shadow-sm rounded-4 p-4 text-decoration-none bg-white cs-hover-lift h-100">
+                <div class="d-inline-flex align-items-center justify-content-center bg-success-subtle text-success rounded-circle mb-3" style="width: 44px; height: 44px;">
+                    <i class="bi bi-building-gear fs-5"></i>
+                </div>
+                <h4 class="h6 fw-bold text-dark mb-1">Manage Hostels</h4>
+                <p class="text-muted small mb-0">Inspect listings, verify safety, and toggle active/inactive listing status.</p>
+            </a>
         </div>
-        <div class="col-6 col-lg-3">
-            <div class="card p-4 shadow-sm">
-                <h6>Total Rooms</h6><h2>{{ total_rooms }}</h2>
-            </div>
+        <div class="col-12 col-md-4">
+            <a href="{% url 'requests_module:admin_reports' %}" class="card border-0 shadow-sm rounded-4 p-4 text-decoration-none bg-white cs-hover-lift h-100">
+                <div class="d-inline-flex align-items-center justify-content-center bg-danger-subtle text-danger rounded-circle mb-3" style="width: 44px; height: 44px;">
+                    <i class="bi bi-flag fs-5"></i>
+                </div>
+                <h4 class="h6 fw-bold text-dark mb-1">Review Reports</h4>
+                <p class="text-muted small mb-0">Examine community flags, fake listings, and take disciplinary actions.</p>
+            </a>
         </div>
-        <div class="col-6 col-lg-3">
-            <div class="card p-4 shadow-sm">
-                <h6>Pending Requests</h6><h2>{{ pending_requests }}</h2>
-            </div>
-        </div>
-    </div>
-
-    <div class="card p-4 mt-4">
-        <h5>Reported Listings</h5>
-        <h2>{{ reported_listings }}</h2>
-    </div>
-
-    <div class="d-flex flex-wrap gap-2 mt-4">
-        <a href="{% url 'requests_module:admin_users' %}" class="btn btn-primary">Manage Users</a>
-        <a href="{% url 'requests_module:admin_hostels' %}" class="btn btn-primary">Manage Hostels</a>
-        <a href="{% url 'requests_module:admin_reports' %}" class="btn btn-primary">Manage Reports</a>
     </div>
 </div>
 {% endblock %}

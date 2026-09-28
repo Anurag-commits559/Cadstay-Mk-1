@@ -13,50 +13,92 @@
   <div class="container">
 
     {# --- Prominent top search bar (spec item 2) ------------------------ #}
-    <form method="get" class="sr-search-bar mb-4" data-sr-filter-form>
-      {% for key, value in hidden_qs_pairs %}
-        {% if key != "q" and key != "min_rent" and key != "max_rent" and key != "gender" %}<input type="hidden" name="{{ key }}" value="{{ value }}">{% endif %}
-      {% endfor %}
-      <input type="hidden" name="sort" value="{{ sort }}">
-      <div class="row g-2 align-items-center">
-        <div class="col-12 col-md-5">
-          <input type="text" name="q" value="{{ request.GET.q }}" class="form-control" placeholder="📍 Search location, area, hostel name or college">
+    <div class="cs-listings-search-wrap mb-4" data-reveal>
+      <form method="get" class="sr-search-bar shadow-sm p-3 p-md-4 rounded-4" data-sr-filter-form>
+        {% for key, value in hidden_qs_pairs %}
+          {% if key != "q" and key != "min_rent" and key != "max_rent" and key != "gender" %}<input type="hidden" name="{{ key }}" value="{{ value }}">{% endif %}
+        {% endfor %}
+        <input type="hidden" name="sort" value="{{ sort }}">
+        <div class="row g-2 align-items-center">
+          <div class="col-12 col-lg-5">
+            <label class="visually-hidden" for="listings-q">Search location</label>
+            <div class="input-group">
+              <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-geo-alt-fill text-primary"></i></span>
+              <input id="listings-q" type="text" name="q" value="{{ request.GET.q }}" class="form-control border-start-0 ps-0" placeholder="Search area, college, city or hostel...">
+            </div>
+          </div>
+          <div class="col-6 col-md-3 col-lg-2">
+            <label class="visually-hidden" for="listings-min">Min budget</label>
+            <div class="input-group">
+              <span class="input-group-text bg-white border-end-0 text-muted">₹</span>
+              <input id="listings-min" type="number" name="min_rent" value="{{ request.GET.min_rent }}" class="form-control border-start-0 ps-0" placeholder="Min budget">
+            </div>
+          </div>
+          <div class="col-6 col-md-3 col-lg-2">
+            <label class="visually-hidden" for="listings-max">Max budget</label>
+            <div class="input-group">
+              <span class="input-group-text bg-white border-end-0 text-muted">₹</span>
+              <input id="listings-max" type="number" name="max_rent" value="{{ request.GET.max_rent }}" class="form-control border-start-0 ps-0" placeholder="Max budget">
+            </div>
+          </div>
+          <div class="col-6 col-md-3 col-lg-2">
+            <label class="visually-hidden" for="listings-gender">Gender</label>
+            <select id="listings-gender" name="gender" class="form-select">
+              <option value="" {% if not request.GET.gender %}selected{% endif %}>Any Gender</option>
+              {% for value, label in gender_choices %}
+                <option value="{{ value }}" {% if request.GET.gender == value %}selected{% endif %}>{{ label }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-6 col-md-3 col-lg-auto d-grid flex-grow-1">
+            <button type="submit" class="btn btn-primary d-flex align-items-center justify-content-center gap-2 fw-bold">
+              <i class="bi bi-search"></i>
+              <span>Search</span>
+            </button>
+          </div>
         </div>
-        <div class="col-6 col-md-2">
-          <input type="number" name="min_rent" value="{{ request.GET.min_rent }}" class="form-control" placeholder="Min budget">
-        </div>
-        <div class="col-6 col-md-2">
-          <input type="number" name="max_rent" value="{{ request.GET.max_rent }}" class="form-control" placeholder="Max budget">
-        </div>
-        <div class="col-6 col-md-2">
-          <select name="gender" class="form-select">
-            <option value="" {% if not request.GET.gender %}selected{% endif %}>Any gender</option>
-            {% for value, label in gender_choices %}
-              <option value="{{ value }}" {% if request.GET.gender == value %}selected{% endif %}>{{ label }}</option>
-            {% endfor %}
-          </select>
-        </div>
-        <div class="col-6 col-md-1 d-grid">
-          <button type="submit" class="hs-btn hs-btn-primary justify-content-center">Search</button>
-        </div>
-      </div>
-    </form>
 
-    <div class="hs-section-heading flex-wrap gap-2">
+        {% if request.GET.q or request.GET.min_rent or request.GET.max_rent or request.GET.gender %}
+          <div class="d-flex align-items-center flex-wrap gap-2 mt-3 pt-2 border-top">
+            <span class="small text-muted fw-semibold">Active filters:</span>
+            {% if request.GET.q %}
+              <span class="badge bg-teal-subtle text-teal rounded-pill px-3 py-1">Location: {{ request.GET.q }}</span>
+            {% endif %}
+            {% if request.GET.min_rent or request.GET.max_rent %}
+              <span class="badge bg-teal-subtle text-teal rounded-pill px-3 py-1">Budget: ₹{{ request.GET.min_rent|default:"0" }} - ₹{{ request.GET.max_rent|default:"Any" }}</span>
+            {% endif %}
+            {% if request.GET.gender %}
+              <span class="badge bg-teal-subtle text-teal rounded-pill px-3 py-1">Gender: {{ request.GET.gender }}</span>
+            {% endif %}
+            <a href="{% url 'hostels:hostel_list' %}" class="small text-danger ms-auto text-decoration-none fw-semibold">
+              <i class="bi bi-x-circle me-1"></i>Clear all
+            </a>
+          </div>
+        {% endif %}
+      </form>
+    </div>
+
+    <!-- Section Heading & Controls -->
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4 pb-2 border-bottom">
       <div>
-        <h1 class="hs-heading mb-1">Hostels &amp; PGs near you</h1>
-        <p class="text-muted mb-0" id="sr-results-count-heading">{{ total_count }} listing{{ total_count|pluralize }} found</p>
+        <h1 class="h3 fw-bold mb-1 d-flex align-items-center gap-2">
+          <span>Hostels &amp; PGs Near You</span>
+          <span class="badge bg-teal-subtle text-teal fs-6 rounded-pill px-3 py-1" id="sr-results-count-heading">{{ total_count }} found</span>
+        </h1>
+        <p class="text-muted small mb-0">Verified student accommodations with transparent pricing</p>
       </div>
       <div class="d-flex align-items-center gap-2">
-        <button class="hs-btn hs-btn-ghost d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#srFilterOffcanvas">
-          ⚙ Filters {% if active_filter_count %}<span class="badge bg-secondary ms-1">{{ active_filter_count }}</span>{% endif %}
+        <button class="btn btn-outline-secondary d-lg-none d-flex align-items-center gap-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#srFilterOffcanvas">
+          <i class="bi bi-sliders"></i>
+          <span>Filters</span>
+          {% if active_filter_count %}<span class="badge bg-teal text-white rounded-pill ms-1">{{ active_filter_count }}</span>{% endif %}
         </button>
         <form method="get" class="d-flex align-items-center gap-2" data-sr-sort-form>
           {% for key, value in hidden_qs_pairs %}
             <input type="hidden" name="{{ key }}" value="{{ value }}">
           {% endfor %}
-          <label for="sort" class="text-muted small mb-0">Sort by</label>
-          <select name="sort" id="sort" class="form-select form-select-sm" onchange="this.form.submit()" style="width: auto;">
+          <label for="sort" class="text-muted small mb-0 text-nowrap d-none d-sm-inline"><i class="bi bi-sort-down me-1"></i>Sort by:</label>
+          <select name="sort" id="sort" class="form-select form-select-sm" onchange="this.form.submit()" style="min-width: 140px;">
             <option value="newest" {% if sort == "newest" %}selected{% endif %}>Newest</option>
             <option value="price_low" {% if sort == "price_low" %}selected{% endif %}>Price: Low to High</option>
             <option value="price_high" {% if sort == "price_high" %}selected{% endif %}>Price: High to Low</option>
@@ -68,8 +110,14 @@
 
     <div class="row g-4">
       <div class="col-lg-3 d-none d-lg-block">
-        <div class="sr-filter-panel" style="position: sticky; top: 1rem;">
-          <div class="hs-heading mb-2" style="font-size: 1rem;">Filters</div>
+        <div class="sr-filter-panel shadow-sm rounded-4 p-3 border bg-white" style="position: sticky; top: 5.5rem;">
+          <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+            <div class="fw-bold d-flex align-items-center gap-2 text-dark">
+              <i class="bi bi-sliders text-teal"></i>
+              <span>Filters</span>
+            </div>
+            <a href="{% url 'hostels:hostel_list' %}" class="small text-muted text-decoration-none">Reset</a>
+          </div>
           {% include "hostels/_filters.html" %}
         </div>
       </div>
@@ -83,10 +131,12 @@
   </div>
 </div>
 
-<div class="offcanvas offcanvas-start" tabindex="-1" id="srFilterOffcanvas">
-  <div class="offcanvas-header">
-    <h5 class="offcanvas-title">Filters</h5>
-    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+<div class="offcanvas offcanvas-start rounded-end-4" tabindex="-1" id="srFilterOffcanvas" aria-labelledby="srFilterOffcanvasLabel">
+  <div class="offcanvas-header border-bottom">
+    <h5 class="offcanvas-title fw-bold d-flex align-items-center gap-2" id="srFilterOffcanvasLabel">
+      <i class="bi bi-sliders text-teal"></i> Filter Hostels
+    </h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body">
     {% include "hostels/_filters.html" %}

@@ -1,48 +1,87 @@
 {% extends "base.html" %}
 
-{% block title %}Manage Hostels{% endblock %}
+{% block title %}Manage Hostels — CadStay{% endblock %}
 
 {% block content %}
 <div class="container py-4">
-    <h1>Manage Hostels</h1>
+    <!-- Header -->
+    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-3 mb-4 pb-2 border-bottom">
+        <div>
+            <nav aria-label="breadcrumb" class="mb-1">
+                <ol class="breadcrumb mb-0 small">
+                    <li class="breadcrumb-item"><a href="{% url 'requests_module:admin_dashboard' %}" class="text-decoration-none">Admin</a></li>
+                    <li class="breadcrumb-item active">Hostels</li>
+                </ol>
+            </nav>
+            <h1 class="h3 fw-bold mb-0">Manage Hostels</h1>
+        </div>
+    </div>
 
-    <div class="table-responsive mt-4">
-        <table class="table table-striped align-middle">
-            <thead>
-                <tr>
-                    <th>Hostel</th>
-                    <th>Owner</th>
-                    <th>Location</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in hostels %}
-                <tr>
-                    <td>
-                        <a href="{% url 'hostels:hostel_detail' item.pk %}">
-                            {{ item.hostel_name }}
-                        </a>
-                    </td>
-                    <td>{{ item.owner.username }}</td>
-                    <td>{{ item.area }}, {{ item.city }}</td>
-                    <td>{{ item.get_status_display }}</td>
-                    <td>
-                        <form method="post"
-                              action="{% url 'requests_module:toggle_hostel_status' item.pk %}">
-                            {% csrf_token %}
-                            <button class="btn btn-sm btn-outline-primary">
-                                {% if item.status == "ACTIVE" %}Deactivate{% else %}Activate{% endif %}
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-                {% empty %}
-                <tr><td colspan="5">No hostels found.</td></tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <!-- Table -->
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light">
+                    <tr>
+                        <th class="ps-4 py-3 fw-semibold small text-uppercase text-muted">Hostel Name</th>
+                        <th class="py-3 fw-semibold small text-uppercase text-muted">Owner</th>
+                        <th class="py-3 fw-semibold small text-uppercase text-muted">Location</th>
+                        <th class="py-3 fw-semibold small text-uppercase text-muted">Status</th>
+                        <th class="pe-4 py-3 fw-semibold small text-uppercase text-muted text-end">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in hostels %}
+                    <tr>
+                        <td class="ps-4 py-3">
+                            <a href="{% url 'hostels:hostel_detail' item.pk %}" class="fw-medium text-decoration-none text-dark">
+                                <i class="bi bi-building text-primary me-1"></i> {{ item.hostel_name }}
+                            </a>
+                        </td>
+                        <td class="py-3 text-muted small">
+                            <span class="d-inline-flex align-items-center gap-1">
+                                <span class="d-inline-flex align-items-center justify-content-center bg-light text-muted rounded-circle fw-bold" style="width: 26px; height: 26px; font-size: 11px;">
+                                    {{ item.owner.username|slice:":1"|upper }}
+                                </span>
+                                {{ item.owner.username }}
+                            </span>
+                        </td>
+                        <td class="py-3 text-muted small">
+                            <i class="bi bi-geo-alt text-danger me-1"></i>{{ item.area }}, {{ item.city }}
+                        </td>
+                        <td class="py-3">
+                            {% if item.status == "ACTIVE" %}
+                            <span class="badge bg-success-subtle text-success border border-success rounded-pill px-2 py-1 small">
+                                <i class="bi bi-check-circle-fill me-1"></i>Active
+                            </span>
+                            {% else %}
+                            <span class="badge bg-secondary-subtle text-secondary border rounded-pill px-2 py-1 small">
+                                <i class="bi bi-dash-circle me-1"></i>{{ item.get_status_display }}
+                            </span>
+                            {% endif %}
+                        </td>
+                        <td class="pe-4 py-3 text-end">
+                            <form method="post"
+                                  action="{% url 'requests_module:toggle_hostel_status' item.pk %}"
+                                  class="d-inline">
+                                {% csrf_token %}
+                                <button class="btn btn-sm {% if item.status == 'ACTIVE' %}btn-outline-danger{% else %}btn-outline-success{% endif %} rounded-pill px-3">
+                                    {% if item.status == "ACTIVE" %}<i class="bi bi-slash-circle me-1"></i>Deactivate{% else %}<i class="bi bi-check-circle me-1"></i>Activate{% endif %}
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center py-5 text-muted">
+                            <i class="bi bi-building-slash fs-2 d-block mb-2 opacity-50"></i>
+                            No hostels found on the platform yet.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 {% endblock %}

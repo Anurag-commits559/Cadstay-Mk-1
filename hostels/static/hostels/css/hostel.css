@@ -5,39 +5,18 @@
    audience), Inter for body copy (quiet, highly legible at small sizes).
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&display=swap');
-
-:root {
-  --hs-navy: #1B2A4A;
-  --hs-navy-dark: #101B33;
-  --hs-coral: #FF6B4A;
-  --hs-coral-dark: #E5522F;
-  --hs-bg: #F7F8FB;
-  --hs-surface: #FFFFFF;
-  --hs-border: #E4E7EC;
-  --hs-text: #1A1D29;
-  --hs-text-muted: #6B7280;
-  --hs-success: #1F9D6C;
-  --hs-success-bg: #E7F7EF;
-  --hs-warning-bg: #FFF4E5;
-  --hs-warning-text: #9A5B00;
-  --hs-radius: 14px;
-  --hs-radius-sm: 8px;
-  --hs-shadow: 0 4px 20px rgba(27, 42, 74, 0.08);
-  --hs-shadow-hover: 0 12px 28px rgba(27, 42, 74, 0.14);
-}
-
 .hs-page {
-  background: var(--hs-bg);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: transparent;
+  font-family: inherit;
   color: var(--hs-text);
 }
 
 .hs-page h1, .hs-page h2, .hs-page h3, .hs-page h4,
 .hs-heading {
-  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: "Fraunces", Georgia, serif;
   font-weight: 600;
   color: var(--hs-navy);
+  overflow-wrap: anywhere;
 }
 
 /* --------------------------------------------------------------------
@@ -169,6 +148,7 @@
   color: var(--hs-navy);
   margin: 0;
   line-height: 1.3;
+  overflow-wrap: anywhere;
 }
 
 .hs-card-location {
@@ -458,7 +438,7 @@
   text-align: left;
 }
 .hs-stat-value {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Fraunces", Georgia, serif;
   font-size: 1.8rem;
   font-weight: 700;
   color: var(--hs-navy);
@@ -503,8 +483,104 @@
   margin-bottom: 1rem;
 }
 
+.hs-wishlist-form {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 3;
+  margin: 0;
+}
+
+.hs-wishlist-btn {
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
+}
+
+.hs-gallery-thumb-btn {
+  display: block;
+  width: 100%;
+  border: 0;
+  padding: 0;
+  background: none;
+  border-radius: var(--hs-radius-sm);
+  overflow: hidden;
+  min-height: 44px;
+}
+
+.hs-gallery-thumbs .hs-gallery-thumb-btn img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: var(--hs-radius-sm);
+  cursor: pointer;
+  opacity: 0.85;
+}
+
+.hs-gallery-thumb-btn:hover img,
+.hs-gallery-thumb-btn:focus-visible img {
+  opacity: 1;
+}
+
+.hs-detail-sidebar {
+  position: static;
+}
+
+.hs-card-footer {
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.hs-btn {
+  min-height: 44px;
+  text-decoration: none;
+}
+
+.hs-manage-row {
+  flex-wrap: wrap;
+}
+
+@media (min-width: 768px) {
+  .hs-gallery-main {
+    aspect-ratio: 16 / 8;
+  }
+}
+
+@media (min-width: 992px) {
+  .hs-detail-sidebar {
+    position: sticky;
+    top: calc(var(--cs-header-h, 4.5rem) + 1rem);
+  }
+}
+
 @media (max-width: 576px) {
   .hs-form-shell { padding: 1.2rem; }
   .hs-steps { gap: 0.25rem; }
   .hs-step { font-size: 0.72rem; }
+  .hs-card-footer .hs-btn {
+    width: 100%;
+  }
+  .hs-gallery-thumbs {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .sr-search-bar .hs-btn {
+    width: 100%;
+  }
+}
+
+@media (hover: none) {
+  .hs-card:hover {
+    transform: none;
+  }
+  .hs-card:hover .hs-card-media img {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hs-card,
+  .hs-card-media img,
+  .hs-btn {
+    transition: none;
+  }
 }

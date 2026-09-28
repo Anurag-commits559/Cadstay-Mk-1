@@ -1,54 +1,88 @@
 {% extends "base.html" %}
 
-{% block title %}Manage Reports{% endblock %}
+{% block title %}Manage Reports — CadStay{% endblock %}
 
 {% block content %}
 <div class="container py-4">
-    <h1>Manage Reports</h1>
+    <!-- Header -->
+    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-3 mb-4 pb-2 border-bottom">
+        <div>
+            <nav aria-label="breadcrumb" class="mb-1">
+                <ol class="breadcrumb mb-0 small">
+                    <li class="breadcrumb-item"><a href="{% url 'requests_module:admin_dashboard' %}" class="text-decoration-none">Admin</a></li>
+                    <li class="breadcrumb-item active">Reports</li>
+                </ol>
+            </nav>
+            <h1 class="h3 fw-bold mb-0">Listing Reports & Moderation</h1>
+        </div>
+    </div>
 
-    <div class="table-responsive mt-4">
-        <table class="table table-striped align-middle">
-            <thead>
-                <tr>
-                    <th>Hostel</th>
-                    <th>Reported By</th>
-                    <th>Reason</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in reports %}
-                <tr>
-                    <td>
-                        <a href="{% url 'hostels:hostel_detail' item.hostel.pk %}">
-                            {{ item.hostel.hostel_name }}
-                        </a>
-                    </td>
-                    <td>{{ item.reported_by.username }}</td>
-                    <td>{{ item.get_reason_display }}</td>
-                    <td>{{ item.created_at|date:"d M Y" }}</td>
-                    <td>{{ item.get_status_display }}</td>
-                    <td>
-                        <form method="post"
-                              action="{% url 'requests_module:update_report_status' item.pk %}"
-                              class="d-flex gap-2">
-                            {% csrf_token %}
-                            <select name="status" class="form-select form-select-sm">
-                                <option value="REVIEWED">Reviewed</option>
-                                <option value="RESOLVED">Resolved</option>
-                                <option value="DISMISSED">Dismissed</option>
-                            </select>
-                            <button class="btn btn-sm btn-primary">Save</button>
-                        </form>
-                    </td>
-                </tr>
-                {% empty %}
-                <tr><td colspan="6">No reports found.</td></tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <!-- Table -->
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light">
+                    <tr>
+                        <th class="ps-4 py-3 fw-semibold small text-uppercase text-muted">Flagged Hostel</th>
+                        <th class="py-3 fw-semibold small text-uppercase text-muted">Reporter</th>
+                        <th class="py-3 fw-semibold small text-uppercase text-muted">Reason</th>
+                        <th class="py-3 fw-semibold small text-uppercase text-muted">Date</th>
+                        <th class="py-3 fw-semibold small text-uppercase text-muted">Status</th>
+                        <th class="pe-4 py-3 fw-semibold small text-uppercase text-muted text-end">Update</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in reports %}
+                    <tr>
+                        <td class="ps-4 py-3">
+                            <a href="{% url 'hostels:hostel_detail' item.hostel.pk %}" class="fw-medium text-decoration-none text-dark">
+                                <i class="bi bi-building text-danger me-1"></i> {{ item.hostel.hostel_name }}
+                            </a>
+                        </td>
+                        <td class="py-3 text-muted small">
+                            <span class="d-inline-flex align-items-center gap-1">
+                                <span class="d-inline-flex align-items-center justify-content-center bg-light text-muted rounded-circle fw-bold" style="width: 26px; height: 26px; font-size: 11px;">
+                                    {{ item.reported_by.username|slice:":1"|upper }}
+                                </span>
+                                {{ item.reported_by.username }}
+                            </span>
+                        </td>
+                        <td class="py-3">
+                            <span class="badge bg-warning-subtle text-warning-emphasis border border-warning rounded-pill px-2 py-1 small">
+                                {{ item.get_reason_display }}
+                            </span>
+                        </td>
+                        <td class="py-3 text-muted small">
+                            <i class="bi bi-calendar3 me-1"></i>{{ item.created_at|date:"d M Y" }}
+                        </td>
+                        <td class="py-3">
+                            <span class="badge bg-light text-dark border rounded-pill px-2 py-1 small">{{ item.get_status_display }}</span>
+                        </td>
+                        <td class="pe-4 py-3 text-end">
+                            <form method="post"
+                                  action="{% url 'requests_module:update_report_status' item.pk %}"
+                                  class="d-inline-flex gap-2 align-items-center">
+                                {% csrf_token %}
+                                <select name="status" class="form-select form-select-sm rounded-pill border px-3" style="width: auto; min-width: 130px;">
+                                    <option value="REVIEWED">Reviewed</option>
+                                    <option value="RESOLVED">Resolved</option>
+                                    <option value="DISMISSED">Dismissed</option>
+                                </select>
+                                <button class="btn btn-sm btn-primary rounded-pill px-3">Save</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center py-5 text-muted">
+                            <i class="bi bi-shield-check fs-2 d-block mb-2 text-success opacity-50"></i>
+                            No reports to review — all clear!
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 {% endblock %}

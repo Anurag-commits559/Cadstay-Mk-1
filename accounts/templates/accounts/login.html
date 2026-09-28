@@ -1,30 +1,50 @@
 {% extends "base.html" %}
-{% block title %}Login - NoBroker{% endblock %}
+{% block title %}Log In — CadStay{% endblock %}
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-6 col-lg-5">
-        <div class="card border-0 shadow-sm rounded-4">
-            <div class="card-body p-4 p-md-5">
-                <h3 class="fw-bold mb-4 text-center">Welcome back</h3>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-sm-10 col-md-8 col-lg-5 col-xl-4" data-reveal>
+            <div class="card border rounded-4 shadow-sm bg-white p-4 p-md-5">
+                <div class="text-center mb-4">
+                    <div class="cs-avatar-chip mx-auto mb-3" style="width: 52px; height: 52px; font-size: 1.4rem;">
+                        <i class="bi bi-shield-lock-fill"></i>
+                    </div>
+                    <h1 class="h3 fw-bold mb-1 text-dark">Welcome back</h1>
+                    <p class="text-secondary small mb-0">Log in to save stays, track room requests, and message owners.</p>
+                </div>
+
                 <form method="post" novalidate>
                     {% csrf_token %}
                     <div class="mb-3">
-                        <label class="form-label">{{ form.username.label }}</label>
+                        <label class="form-label fw-bold small text-secondary">
+                            <i class="bi bi-person me-1"></i>{{ form.username.label }}
+                        </label>
                         {{ form.username }}
+                        {% if form.username.errors %}
+                            <div class="text-danger small mt-1">{{ form.username.errors }}</div>
+                        {% endif %}
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">{{ form.password.label }}</label>
+                        <label class="form-label fw-bold small text-secondary">
+                            <i class="bi bi-key me-1"></i>{{ form.password.label }}
+                        </label>
                         {{ form.password }}
+                        {% if form.password.errors %}
+                            <div class="text-danger small mt-1">{{ form.password.errors }}</div>
+                        {% endif %}
                     </div>
                     {% if form.non_field_errors %}
-                        <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+                        <div class="alert alert-danger py-2 small mb-3">{{ form.non_field_errors }}</div>
                     {% endif %}
                     <input type="hidden" name="next" value="{{ next }}">
-                    <button type="submit" class="btn btn-primary w-100 mt-2">Log in</button>
+                    <button type="submit" class="btn btn-primary w-100 rounded-pill py-2 fw-bold shadow-sm d-flex align-items-center justify-content-center gap-2 mt-2">
+                        <i class="bi bi-box-arrow-in-right"></i> Log In
+                    </button>
                 </form>
-                <p class="text-center text-secondary mt-3 mb-0">
-                    Don't have an account? <a href="{% url 'accounts:register' %}">Register</a>
-                </p>
+
+                <div class="text-center text-secondary small mt-4 pt-3 border-top">
+                    Don't have an account yet? <a href="{% url 'accounts:register' %}" class="fw-bold text-teal text-decoration-none">Register Free</a>
+                </div>
             </div>
         </div>
     </div>

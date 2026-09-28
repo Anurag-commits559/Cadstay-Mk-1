@@ -1,55 +1,78 @@
 {% extends 'base.html' %}
 
+{% block title %}Post a Roommate Request — CadStay{% endblock %}
+
 {% block content %}
-<div class="container mt-4">
+<div class="container py-4">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow-sm border-0 rounded-3">
-                <div class="card-header bg-white border-bottom py-3">
-                    <h4 class="mb-0 fw-bold text-primary">Post a Roommate Request</h4>
+        <div class="col-12 col-lg-7 col-xl-6" data-reveal>
+            <!-- Breadcrumb -->
+            <nav aria-label="breadcrumb" class="mb-3">
+                <ol class="breadcrumb small">
+                    <li class="breadcrumb-item"><a href="/"><i class="bi bi-house-door me-1"></i>Home</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'roommates:roommate_list' %}">Roommates</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Post Request</li>
+                </ol>
+            </nav>
+
+            <div class="card border rounded-4 shadow-sm bg-white p-4 p-md-5">
+                <div class="d-inline-flex align-items-center gap-1 badge bg-teal-subtle text-teal rounded-pill px-3 py-1 mb-2">
+                    <i class="bi bi-people-fill"></i> Roommate Match
                 </div>
-                <div class="card-body p-4">
-                    <form method="POST">
-                        {% csrf_token %}
-                        
-                        <div class="mb-3">
-                            <label for="{{ form.location.id_for_label }}" class="form-label fw-semibold">Preferred Location</label>
-                            {{ form.location }}
-                            {% if form.location.errors %}
-                                <div class="text-danger small mt-1">{{ form.location.errors }}</div>
-                            {% endif %}
-                        </div>
+                <h1 class="h3 mb-1 fw-bold text-dark">Post a Roommate Request</h1>
+                <p class="text-secondary small mb-4">Share your budget, preferred area, and lifestyle preferences to find a compatible flatmate.</p>
 
-                        <div class="mb-3">
-                            <label for="{{ form.budget.id_for_label }}" class="form-label fw-semibold">Monthly Budget (₹)</label>
-                            {{ form.budget }}
-                            {% if form.budget.errors %}
-                                <div class="text-danger small mt-1">{{ form.budget.errors }}</div>
-                            {% endif %}
-                        </div>
+                <form method="POST" novalidate>
+                    {% csrf_token %}
 
-                        <div class="mb-3">
-                            <label for="{{ form.gender_preference.id_for_label }}" class="form-label fw-semibold">Gender Preference</label>
-                            {{ form.gender_preference }}
-                            {% if form.gender_preference.errors %}
-                                <div class="text-danger small mt-1">{{ form.gender_preference.errors }}</div>
-                            {% endif %}
-                        </div>
+                    <div class="mb-3">
+                        <label for="{{ form.location.id_for_label }}" class="form-label fw-bold small text-secondary">
+                            <i class="bi bi-geo-alt-fill text-danger me-1"></i>Preferred Location / Area <span class="text-danger">*</span>
+                        </label>
+                        {{ form.location }}
+                        {% if form.location.errors %}
+                            <div class="text-danger small mt-1">{{ form.location.errors }}</div>
+                        {% endif %}
+                    </div>
 
-                        <div class="mb-4">
-                            <label for="{{ form.bio.id_for_label }}" class="form-label fw-semibold">Bio / Preferences / Requirements</label>
-                            {{ form.bio }}
-                            {% if form.bio.errors %}
-                                <div class="text-danger small mt-1">{{ form.bio.errors }}</div>
-                            {% endif %}
-                        </div>
+                    <div class="mb-3">
+                        <label for="{{ form.budget.id_for_label }}" class="form-label fw-bold small text-secondary">
+                            <i class="bi bi-currency-rupee text-teal me-1"></i>Monthly Budget (₹) <span class="text-danger">*</span>
+                        </label>
+                        {{ form.budget }}
+                        {% if form.budget.errors %}
+                            <div class="text-danger small mt-1">{{ form.budget.errors }}</div>
+                        {% endif %}
+                    </div>
 
-                        <div class="d-flex justify-content-between">
-                            <a href="{% url 'roommates:roommate_list' %}" class="btn btn-outline-secondary">Cancel</a>
-                            <button type="submit" class="btn btn-primary fw-semibold">Submit Request</button>
-                        </div>
-                    </form>
-                </div>
+                    <div class="mb-3">
+                        <label for="{{ form.gender_preference.id_for_label }}" class="form-label fw-bold small text-secondary">
+                            <i class="bi bi-gender-ambiguous text-primary me-1"></i>Gender Preference <span class="text-danger">*</span>
+                        </label>
+                        {{ form.gender_preference }}
+                        {% if form.gender_preference.errors %}
+                            <div class="text-danger small mt-1">{{ form.gender_preference.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="{{ form.bio.id_for_label }}" class="form-label fw-bold small text-secondary">
+                            <i class="bi bi-card-text text-teal me-1"></i>About Yourself / Study Habits / Requirements
+                        </label>
+                        {{ form.bio }}
+                        {% if form.bio.errors %}
+                            <div class="text-danger small mt-1">{{ form.bio.errors }}</div>
+                        {% endif %}
+                        <div class="form-text small text-muted">Mention your college/work, cleanliness habits, food preferences, and move-in timeline.</div>
+                    </div>
+
+                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 pt-2 border-top">
+                        <a href="{% url 'roommates:roommate_list' %}" class="btn btn-outline-secondary rounded-pill px-4">Cancel</a>
+                        <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm d-flex align-items-center gap-2">
+                            <i class="bi bi-check2-circle"></i> Publish Request
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

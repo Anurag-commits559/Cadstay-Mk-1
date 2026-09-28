@@ -6,34 +6,34 @@
 /* -------------------- ROOT VARIABLES -------------------- */
 
 :root {
-    --m4-primary: #0e7c7b;
-    --m4-primary-dark: #0a5c5b;
-    --m4-primary-light: #e6f4f3;
+    --m4-primary:       var(--cs-primary-500);
+    --m4-primary-dark:  var(--cs-primary-700);
+    --m4-primary-light: var(--cs-primary-50);
 
-    --m4-success: #198754;
-    --m4-success-light: #e8f7ee;
+    --m4-success:       var(--cs-success-fg);
+    --m4-success-light: var(--cs-success-bg);
 
-    --m4-danger: #dc3545;
-    --m4-danger-light: #fff0f1;
+    --m4-danger:        var(--cs-error-fg);
+    --m4-danger-light:  var(--cs-error-bg);
 
-    --m4-warning: #f0ad4e;
-    --m4-warning-light: #fff6df;
+    --m4-warning:       #f0ad4e;
+    --m4-warning-light: var(--cs-warning-bg);
 
-    --m4-info: #0d6efd;
-    --m4-info-light: #eaf2ff;
+    --m4-info:          #0d6efd;
+    --m4-info-light:    #eaf2ff;
 
-    --m4-text: #242333;
-    --m4-muted: #777789;
+    --m4-text:   var(--cs-text);
+    --m4-muted:  var(--cs-text-muted);
 
-    --m4-bg: #f7f7fb;
-    --m4-card: #ffffff;
-    --m4-border: #e7e6ef;
+    --m4-bg:     var(--cs-bg-alt);
+    --m4-card:   var(--cs-surface);
+    --m4-border: var(--cs-border);
 
-    --m4-radius: 16px;
-    --m4-radius-sm: 10px;
+    --m4-radius:    var(--cs-radius-lg);
+    --m4-radius-sm: var(--cs-radius-md);
 
-    --m4-shadow: 0 6px 24px rgba(36, 35, 51, 0.06);
-    --m4-shadow-hover: 0 12px 32px rgba(36, 35, 51, 0.12);
+    --m4-shadow:       var(--cs-shadow-2);
+    --m4-shadow-hover: var(--cs-shadow-4);
 
     --m4-transition: 0.25s ease;
 }

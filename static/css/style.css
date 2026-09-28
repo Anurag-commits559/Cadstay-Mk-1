@@ -1,54 +1,320 @@
 /* CadStay design system — hostel / PG / roommate marketplace */
+/* Expanded premium design system — AC-1 & AC-2 */
+
+/* ==========================================================================
+   1. DESIGN TOKENS — :root CSS custom properties
+   ========================================================================== */
 
 :root {
-    --cs-ink: #12263a;
-    --cs-ink-soft: #3d5166;
-    --cs-teal: #0e7c7b;
-    --cs-teal-dark: #0a5c5b;
-    --cs-teal-soft: #e6f4f3;
-    --cs-terracotta: #d46a3a;
-    --cs-terracotta-dark: #b8542a;
-    --cs-sand: #f4efe6;
-    --cs-cream: #fbf8f3;
-    --cs-surface: #ffffff;
-    --cs-border: #e4dcd0;
-    --cs-success: #1f8a64;
-    --cs-danger: #c0392b;
-    --cs-radius: 1.25rem;
-    --cs-radius-sm: 0.75rem;
-    --cs-shadow: 0 10px 30px rgba(18, 38, 58, 0.08);
-    --cs-shadow-hover: 0 18px 40px rgba(18, 38, 58, 0.14);
-    --cs-header-h: 4.5rem;
-    --cs-max: 1180px;
+    /* ---- Font families (preserved) ---- */
     --cs-font: "Plus Jakarta Sans", "Segoe UI", sans-serif;
     --cs-display: "Fraunces", Georgia, serif;
 
-    --nb-primary: var(--cs-teal);
-    --nb-bg: var(--cs-cream);
-    --nb-text: var(--cs-ink);
+    /* ---- Primary: Teal family (4 tones) ---- */
+    --cs-primary-50:  #eaf7f6;
+    --cs-primary-100: #c9e9e7;
+    --cs-primary-300: #17a5a3;
+    --cs-primary-500: #0e7c7b;
+    --cs-primary-700: #0a5c5b;
+    --cs-primary-900: #073d3c;
 
-    --hs-navy: var(--cs-ink);
-    --hs-navy-dark: #0c1826;
-    --hs-coral: var(--cs-terracotta);
-    --hs-coral-dark: var(--cs-terracotta-dark);
-    --hs-bg: var(--cs-cream);
-    --hs-surface: var(--cs-surface);
-    --hs-border: var(--cs-border);
-    --hs-text: var(--cs-ink);
-    --hs-text-muted: var(--cs-ink-soft);
-    --hs-success: var(--cs-success);
-    --hs-success-bg: #e7f6ef;
-    --hs-warning-bg: #fff4e5;
-    --hs-warning-text: #9a5b00;
-    --hs-radius: var(--cs-radius);
-    --hs-radius-sm: var(--cs-radius-sm);
-    --hs-shadow: var(--cs-shadow);
-    --hs-shadow-hover: var(--cs-shadow-hover);
+    /* Legacy teal aliases for backward compatibility */
+    --cs-teal:       var(--cs-primary-500);
+    --cs-teal-dark:  var(--cs-primary-700);
+    --cs-teal-soft:  var(--cs-primary-50);
 
-    --m4-primary: var(--cs-teal);
-    --m4-primary-dark: var(--cs-teal-dark);
-    --m4-primary-light: var(--cs-teal-soft);
+    /* ---- Secondary / Accent: Warm coral / terracotta family (3 tones) ---- */
+    --cs-accent-50:  #fbeee6;
+    --cs-accent-300: #e68a5e;
+    --cs-accent-500: #d46a3a;
+    --cs-accent-700: #b8542a;
+
+    /* Legacy terracotta aliases */
+    --cs-terracotta:      var(--cs-accent-500);
+    --cs-terracotta-dark: var(--cs-accent-700);
+
+    /* ---- Background levels ---- */
+    --cs-bg:          #fbf8f3;
+    --cs-bg-alt:      #f4efe6;
+    --cs-bg-elevated: #ffffff;
+    --cs-bg-inverse:  #12263a;
+
+    /* Legacy bg aliases */
+    --cs-cream: var(--cs-bg);
+    --cs-sand:  var(--cs-bg-alt);
+
+    /* ---- Surface colors ---- */
+    --cs-surface:      #ffffff;
+    --cs-surface-soft: #faf7f1;
+
+    /* ---- Text levels ---- */
+    --cs-text:       #12263a;
+    --cs-text-soft:  #3d5166;
+    --cs-text-muted: #6b7c90;
+
+    /* Legacy ink aliases */
+    --cs-ink:       var(--cs-text);
+    --cs-ink-soft:  var(--cs-text-soft);
+
+    /* ---- Border colors ---- */
+    --cs-border:        #e4dcd0;
+    --cs-border-strong: #c9bfad;
+    --cs-border-soft:   #efe9dd;
+
+    /* ---- Semantic: Success (bg + fg) ---- */
+    --cs-success-bg: #e7f6ef;
+    --cs-success-fg: #1f8a64;
+    --cs-success:    var(--cs-success-fg);
+
+    /* ---- Semantic: Warning (bg + fg) ---- */
+    --cs-warning-bg: #fff4e5;
+    --cs-warning-fg: #9a5b00;
+
+    /* ---- Semantic: Error / Danger (bg + fg) ---- */
+    --cs-error-bg:   #fdecea;
+    --cs-error-fg:   #c0392b;
+    --cs-danger:     var(--cs-error-fg);
+
+    /* ---- Elevation shadow scale (5 levels: 0–5) ---- */
+    --cs-shadow-0: 0 0 0 0 rgba(18, 38, 58, 0.00);
+    --cs-shadow-1: 0 1px 3px rgba(18, 38, 58, 0.06),
+                   0 1px 2px rgba(18, 38, 58, 0.04);
+    --cs-shadow-2: 0 4px 10px rgba(18, 38, 58, 0.07),
+                   0 2px 4px rgba(18, 38, 58, 0.05);
+    --cs-shadow-3: 0 10px 30px rgba(18, 38, 58, 0.08),
+                   0 4px 10px rgba(18, 38, 58, 0.05);
+    --cs-shadow-4: 0 18px 40px rgba(18, 38, 58, 0.14),
+                   0 8px 18px rgba(18, 38, 58, 0.08);
+    --cs-shadow-5: 0 30px 60px rgba(18, 38, 58, 0.22),
+                   0 14px 28px rgba(18, 38, 58, 0.14);
+
+    /* Legacy shadow aliases */
+    --cs-shadow:       var(--cs-shadow-3);
+    --cs-shadow-hover: var(--cs-shadow-4);
+
+    /* ---- Radius scale (xs → pill) ---- */
+    --cs-radius-xs:   4px;
+    --cs-radius-sm:   8px;
+    --cs-radius-md:   12px;
+    --cs-radius-lg:   16px;
+    --cs-radius-xl:   20px;
+    --cs-radius-2xl:  28px;
+    --cs-radius-pill: 999px;
+
+    /* Legacy radius aliases (map to original 0.75rem / 1.25rem ≈ 12px / 20px) */
+    --cs-radius-sm: var(--cs-radius-md);
+    --cs-radius:    var(--cs-radius-xl);
+
+    /* ---- Spacing scale: 4–96px (4px base step) ---- */
+    --cs-space-1:  4px;
+    --cs-space-2:  8px;
+    --cs-space-3:  12px;
+    --cs-space-4:  16px;
+    --cs-space-5:  20px;
+    --cs-space-6:  24px;
+    --cs-space-7:  28px;
+    --cs-space-8:  32px;
+    --cs-space-10: 40px;
+    --cs-space-12: 48px;
+    --cs-space-16: 64px;
+    --cs-space-20: 80px;
+    --cs-space-24: 96px;
+
+    /* ---- Font-size scale: 0.75rem → 4rem ---- */
+    --cs-fs-xs:  0.75rem;
+    --cs-fs-sm:  0.875rem;
+    --cs-fs-md:  1rem;
+    --cs-fs-lg:  1.125rem;
+    --cs-fs-xl:  1.25rem;
+    --cs-fs-2xl: 1.5rem;
+    --cs-fs-3xl: 2rem;
+    --cs-fs-4xl: 2.5rem;
+    --cs-fs-5xl: 3rem;
+    --cs-fs-6xl: 4rem;
+
+    /* ---- Layout constants ---- */
+    --cs-header-h: 4.5rem;
+    --cs-max: 1180px;
+
+    /* ==========================================================================
+       MODULE VARIABLE ALIASES
+       — nb-* (navigation bar)
+       — hs-* (hostel listing module)
+       — m4-* (member4 / requests & admin module)
+       All alias to the new central tokens above.
+       ========================================================================== */
+
+    /* -- nb-* aliases -- */
+    --nb-primary: var(--cs-primary-500);
+    --nb-bg:      var(--cs-bg);
+    --nb-text:    var(--cs-text);
+
+    /* -- hs-* aliases (hostel module) -- */
+    --hs-navy:       var(--cs-text);
+    --hs-navy-dark:  var(--cs-bg-inverse);
+    --hs-coral:      var(--cs-accent-500);
+    --hs-coral-dark: var(--cs-accent-700);
+    --hs-bg:         var(--cs-bg);
+    --hs-surface:    var(--cs-surface);
+    --hs-border:     var(--cs-border);
+    --hs-text:       var(--cs-text);
+    --hs-text-muted: var(--cs-text-soft);
+    --hs-success:    var(--cs-success-fg);
+    --hs-success-bg: var(--cs-success-bg);
+    --hs-warning-bg: var(--cs-warning-bg);
+    --hs-warning-text: var(--cs-warning-fg);
+    --hs-radius:     var(--cs-radius-lg);
+    --hs-radius-sm:  var(--cs-radius-md);
+    --hs-shadow:     var(--cs-shadow-3);
+    --hs-shadow-hover: var(--cs-shadow-4);
+
+    /* -- m4-* aliases (member4 / requests module) -- */
+    --m4-primary:       var(--cs-primary-500);
+    --m4-primary-dark:  var(--cs-primary-700);
+    --m4-primary-light: var(--cs-primary-50);
+
+    --m4-success:       var(--cs-success-fg);
+    --m4-success-light: var(--cs-success-bg);
+
+    --m4-danger:        var(--cs-error-fg);
+    --m4-danger-light:  var(--cs-error-bg);
+
+    --m4-warning:       #f0ad4e;
+    --m4-warning-light: var(--cs-warning-bg);
+
+    --m4-info:          #0d6efd;
+    --m4-info-light:    #eaf2ff;
+
+    --m4-text:   var(--cs-text);
+    --m4-muted:  var(--cs-text-muted);
+
+    --m4-bg:     var(--cs-bg-alt);
+    --m4-card:   var(--cs-surface);
+    --m4-border: var(--cs-border);
+
+    --m4-radius:    var(--cs-radius-lg);
+    --m4-radius-sm: var(--cs-radius-md);
+
+    --m4-shadow:       var(--cs-shadow-2);
+    --m4-shadow-hover: var(--cs-shadow-4);
+
+    --m4-transition: 0.25s ease;
 }
+
+/* ==========================================================================
+   2. EXPLICIT TYPOGRAPHY RULES
+   Hero title, section title, card title, section lead,
+   metadata, label, price, button — with weight / line-height / tracking.
+   ========================================================================== */
+
+/* -- Hero Title (display) -- */
+.cs-hero-title {
+    font-family: var(--cs-display);
+    font-weight: 700;
+    font-size: clamp(2.1rem, 5vw, var(--cs-fs-6xl));
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    color: var(--cs-text);
+    margin-bottom: 1rem;
+    max-width: 16ch;
+}
+
+/* -- Section Title -- */
+.cs-section-title {
+    font-family: var(--cs-display);
+    font-weight: 700;
+    font-size: clamp(1.6rem, 3vw, var(--cs-fs-3xl));
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--cs-text);
+    margin-bottom: 0.4rem;
+}
+
+/* -- Card Title -- */
+.cs-feature-card h2,
+.cs-feature-card h3,
+.hs-card-title {
+    font-family: var(--cs-font);
+    font-weight: 800;
+    font-size: var(--cs-fs-xl);
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    color: var(--cs-text);
+    margin-bottom: 0.45rem;
+}
+
+/* -- Section Lead / Body Intro -- */
+.cs-section-lead,
+.cs-hero-lead {
+    font-family: var(--cs-font);
+    font-weight: 500;
+    font-size: clamp(1rem, 1.8vw, var(--cs-fs-lg));
+    line-height: 1.65;
+    letter-spacing: -0.005em;
+    color: var(--cs-text-soft);
+    margin-bottom: 1.75rem;
+    max-width: 38rem;
+}
+
+/* -- Metadata (small secondary info) -- */
+.cs-stat h6,
+.cs-stat .label,
+.table thead th,
+.hs-card-location,
+.hs-room-type-label,
+.hs-stat-label,
+.sr-filter-title {
+    font-family: var(--cs-font);
+    font-weight: 700;
+    font-size: var(--cs-fs-xs);
+    line-height: 1.4;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--cs-text-soft);
+}
+
+/* -- Label (form, chip, badge) -- */
+.form-label,
+.cs-badge,
+.hs-chip,
+.hs-pill,
+.m4-status,
+.cs-footer-heading {
+    font-family: var(--cs-font);
+    font-weight: 600;
+    font-size: var(--cs-fs-sm);
+    line-height: 1.4;
+    letter-spacing: 0.01em;
+}
+
+/* -- Price -- */
+.hs-price,
+.m4-favorite-price,
+.cs-stat h2,
+.cs-stat h3 {
+    font-family: var(--cs-display);
+    font-weight: 700;
+    font-size: var(--cs-fs-xl);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--cs-text);
+}
+
+/* -- Button -- */
+.btn,
+.cs-navbar .btn,
+.hs-btn,
+.m4-btn {
+    font-family: var(--cs-font);
+    font-weight: 700;
+    font-size: var(--cs-fs-md);
+    line-height: 1.2;
+    letter-spacing: 0.005em;
+}
+
+/* ==========================================================================
+   3. BASE / RESET
+   ========================================================================== */
 
 html {
     scroll-behavior: smooth;
@@ -65,10 +331,10 @@ html {
     display: flex;
     flex-direction: column;
     margin: 0;
-    background: var(--cs-cream);
-    color: var(--cs-ink);
+    background: var(--cs-bg);
+    color: var(--cs-text);
     font-family: var(--cs-font);
-    font-size: 1rem;
+    font-size: var(--cs-fs-md);
     line-height: 1.6;
     overflow-x: hidden;
 }
@@ -78,26 +344,32 @@ img {
     height: auto;
 }
 
+/* ==========================================================================
+   4. LAYOUT HELPERS
+   ========================================================================== */
+
 .container {
     max-width: var(--cs-max);
 }
 
 .cs-skip-link {
     position: absolute;
-    left: 1rem;
+    left: var(--cs-space-4);
     top: -4rem;
     z-index: 2000;
-    background: var(--cs-ink);
+    background: var(--cs-bg-inverse);
     color: #fff;
     padding: 0.6rem 1rem;
-    border-radius: 0.5rem;
+    border-radius: var(--cs-radius-sm);
 }
 
 .cs-skip-link:focus {
     top: 0.75rem;
 }
 
-/* ---------- Header / navbar ---------- */
+/* ==========================================================================
+   5. HEADER / NAVBAR
+   ========================================================================== */
 
 .cs-header {
     position: sticky;
@@ -115,28 +387,28 @@ img {
 }
 
 .cs-nav-inner {
-    gap: 0.5rem;
+    gap: var(--cs-space-2);
 }
 
 .cs-brand {
     display: inline-flex;
     align-items: center;
     gap: 0.55rem;
-    color: var(--cs-teal) !important;
+    color: var(--cs-primary-500) !important;
     font-weight: 800;
     letter-spacing: -0.03em;
-    font-size: 1.25rem;
+    font-size: var(--cs-fs-xl);
 }
 
 .cs-brand-mark {
-    color: var(--cs-teal);
+    color: var(--cs-primary-500);
     display: inline-flex;
 }
 
 .cs-brand-text {
     font-family: var(--cs-display);
     font-weight: 700;
-    color: var(--cs-ink);
+    color: var(--cs-text);
 }
 
 .cs-brand--footer {
@@ -154,7 +426,7 @@ img {
 
 .cs-nav-toggle {
     border: 1px solid var(--cs-border);
-    border-radius: 0.7rem;
+    border-radius: var(--cs-radius-md);
     padding: 0.45rem 0.6rem;
 }
 
@@ -164,16 +436,16 @@ img {
 }
 
 .cs-navbar .nav-link {
-    color: var(--cs-ink-soft);
+    color: var(--cs-text-soft);
     font-weight: 600;
     padding: 0.65rem 0.85rem;
-    border-radius: 0.7rem;
+    border-radius: var(--cs-radius-md);
 }
 
 .cs-navbar .nav-link:hover,
 .cs-navbar .nav-link:focus {
-    color: var(--cs-ink);
-    background: var(--cs-sand);
+    color: var(--cs-text);
+    background: var(--cs-bg-alt);
 }
 
 .cs-nav-avatar {
@@ -186,7 +458,7 @@ img {
     width: 2rem;
     height: 2rem;
     border-radius: 50%;
-    background: var(--cs-teal);
+    background: var(--cs-primary-500);
     color: #fff;
     display: inline-flex;
     align-items: center;
@@ -197,14 +469,14 @@ img {
 
 .cs-dropdown {
     border: 1px solid var(--cs-border);
-    border-radius: 1rem;
-    box-shadow: var(--cs-shadow);
+    border-radius: var(--cs-radius-lg);
+    box-shadow: var(--cs-shadow-3);
     padding: 0.5rem;
     min-width: 14rem;
 }
 
 .cs-dropdown .dropdown-item {
-    border-radius: 0.6rem;
+    border-radius: var(--cs-radius-sm);
     font-weight: 600;
     padding: 0.55rem 0.75rem;
 }
@@ -216,7 +488,7 @@ img {
 .cs-navbar .btn {
     min-height: 2.6rem;
     padding: 0.45rem 1.05rem;
-    border-radius: 999px;
+    border-radius: var(--cs-radius-pill);
     font-weight: 700;
 }
 
@@ -225,14 +497,18 @@ img {
     margin-left: 0;
 }
 
-/* ---------- Buttons / forms (Bootstrap overrides) ---------- */
+/* ==========================================================================
+   6. BUTTONS / FORMS (Bootstrap overrides)
+   — Pills (999px) used for CTAs / badges
+   — Larger surfaces use 12–20px radii via tokens
+   ========================================================================== */
 
 .btn-primary {
-    background-color: var(--cs-teal);
-    border-color: var(--cs-teal);
+    background-color: var(--cs-primary-500);
+    border-color: var(--cs-primary-500);
     color: #fff;
     font-weight: 700;
-    border-radius: 999px;
+    border-radius: var(--cs-radius-pill);
     padding: 0.55rem 1.2rem;
     min-height: 2.7rem;
     transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
@@ -240,63 +516,64 @@ img {
 
 .btn-primary:hover,
 .btn-primary:focus {
-    background-color: var(--cs-teal-dark);
-    border-color: var(--cs-teal-dark);
+    background-color: var(--cs-primary-700);
+    border-color: var(--cs-primary-700);
     color: #fff;
 }
 
 .btn-outline-primary {
-    color: var(--cs-teal);
-    border-color: var(--cs-teal);
+    color: var(--cs-primary-500);
+    border-color: var(--cs-primary-500);
     font-weight: 700;
-    border-radius: 999px;
+    border-radius: var(--cs-radius-pill);
     min-height: 2.7rem;
     padding: 0.55rem 1.2rem;
 }
 
 .btn-outline-primary:hover {
-    background-color: var(--cs-teal);
-    border-color: var(--cs-teal);
+    background-color: var(--cs-primary-500);
+    border-color: var(--cs-primary-500);
     color: #fff;
 }
 
 .text-primary {
-    color: var(--cs-teal) !important;
+    color: var(--cs-primary-500) !important;
 }
 
 .form-control,
 .form-select {
-    border-radius: var(--cs-radius-sm);
+    border-radius: var(--cs-radius-md);
     border-color: var(--cs-border);
     min-height: 2.85rem;
     padding: 0.6rem 0.9rem;
-    background: #fff;
+    background: var(--cs-surface);
 }
 
 .form-control:focus,
 .form-select:focus {
-    border-color: var(--cs-teal);
+    border-color: var(--cs-primary-500);
     box-shadow: 0 0 0 0.2rem rgba(14, 124, 123, 0.16);
 }
 
 .form-label {
     font-weight: 600;
-    color: var(--cs-ink);
+    color: var(--cs-text);
 }
 
 .card {
-    border-radius: var(--cs-radius);
+    border-radius: var(--cs-radius-lg);
     border-color: var(--cs-border);
 }
 
 .alert {
-    border-radius: var(--cs-radius-sm);
+    border-radius: var(--cs-radius-md);
 }
 
 .cs-alert {
     margin-top: 1rem;
 }
 
+/* ---- Focus-visible (preserved, values updated to tokens) ---- */
 a:focus-visible,
 button:focus-visible,
 .form-control:focus-visible,
@@ -306,7 +583,9 @@ button:focus-visible,
     outline-offset: 2px;
 }
 
-/* ---------- Layout ---------- */
+/* ==========================================================================
+   7. LAYOUT
+   ========================================================================== */
 
 .site-main {
     flex: 1 0 auto;
@@ -321,7 +600,9 @@ button:focus-visible,
     padding-top: 0.5rem;
 }
 
-/* ---------- Hero / home ---------- */
+/* ==========================================================================
+   8. HERO / HOME
+   ========================================================================== */
 
 .cs-hero {
     position: relative;
@@ -330,7 +611,7 @@ button:focus-visible,
     background:
         radial-gradient(1200px 420px at 12% -10%, rgba(14, 124, 123, 0.22), transparent 55%),
         radial-gradient(900px 380px at 100% 0%, rgba(212, 106, 58, 0.18), transparent 50%),
-        linear-gradient(180deg, #ece6d8 0%, var(--cs-cream) 70%);
+        linear-gradient(180deg, #ece6d8 0%, var(--cs-bg) 70%);
     overflow: hidden;
 }
 
@@ -351,31 +632,14 @@ button:focus-visible,
     gap: 0.4rem;
     background: rgba(255, 255, 255, 0.7);
     border: 1px solid var(--cs-border);
-    color: var(--cs-teal-dark);
+    color: var(--cs-primary-700);
     font-weight: 700;
-    font-size: 0.8rem;
+    font-size: var(--cs-fs-xs);
     letter-spacing: 0.04em;
     text-transform: uppercase;
-    border-radius: 999px;
+    border-radius: var(--cs-radius-pill);
     padding: 0.35rem 0.8rem;
     margin-bottom: 1rem;
-}
-
-.cs-hero-title {
-    font-family: var(--cs-display);
-    font-weight: 700;
-    font-size: clamp(2.1rem, 5vw, 4rem);
-    line-height: 1.12;
-    letter-spacing: -0.03em;
-    margin-bottom: 1rem;
-    max-width: 16ch;
-}
-
-.cs-hero-lead {
-    font-size: clamp(1rem, 2vw, 1.2rem);
-    color: var(--cs-ink-soft);
-    max-width: 38rem;
-    margin-bottom: 1.75rem;
 }
 
 .cs-hero-actions {
@@ -388,8 +652,8 @@ button:focus-visible,
 .cs-search-panel {
     background: rgba(255, 255, 255, 0.92);
     border: 1px solid var(--cs-border);
-    border-radius: 1.5rem;
-    box-shadow: var(--cs-shadow);
+    border-radius: var(--cs-radius-xl);
+    box-shadow: var(--cs-shadow-3);
     padding: 1rem;
 }
 
@@ -407,14 +671,7 @@ button:focus-visible,
     padding: 3rem 0;
 }
 
-.cs-section-title {
-    font-family: var(--cs-display);
-    font-size: clamp(1.6rem, 3vw, 2.2rem);
-    margin-bottom: 0.4rem;
-}
-
 .cs-section-lead {
-    color: var(--cs-ink-soft);
     margin-bottom: 1.75rem;
     max-width: 36rem;
 }
@@ -422,9 +679,9 @@ button:focus-visible,
 .cs-feature-card {
     height: 100%;
     border: 1px solid var(--cs-border);
-    border-radius: var(--cs-radius);
+    border-radius: var(--cs-radius-lg);
     background: var(--cs-surface);
-    box-shadow: var(--cs-shadow);
+    box-shadow: var(--cs-shadow-3);
     overflow: hidden;
     transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
@@ -441,38 +698,31 @@ button:focus-visible,
 .cs-feature-icon {
     width: 3rem;
     height: 3rem;
-    border-radius: 0.9rem;
+    border-radius: var(--cs-radius-md);
     display: grid;
     place-items: center;
-    background: var(--cs-teal-soft);
-    color: var(--cs-teal-dark);
+    background: var(--cs-primary-50);
+    color: var(--cs-primary-700);
     font-size: 1.3rem;
     margin-bottom: 1rem;
 }
 
-.cs-feature-card h2,
-.cs-feature-card h3 {
-    font-size: 1.2rem;
-    font-weight: 800;
-    margin-bottom: 0.45rem;
-}
-
 .cs-feature-card p {
-    color: var(--cs-ink-soft);
+    color: var(--cs-text-soft);
     margin: 0;
 }
 
 @media (hover: hover) {
     .cs-feature-card:hover {
         transform: translateY(-6px);
-        box-shadow: var(--cs-shadow-hover);
+        box-shadow: var(--cs-shadow-4);
     }
 }
 
 .cs-trust {
-    background: var(--cs-ink);
+    background: var(--cs-bg-inverse);
     color: #eef6f5;
-    border-radius: 1.75rem;
+    border-radius: var(--cs-radius-2xl);
     padding: 2rem 1.5rem;
 }
 
@@ -502,16 +752,16 @@ button:focus-visible,
 .cs-amenity-item {
     background: var(--cs-surface);
     border: 1px solid var(--cs-border);
-    border-radius: 1rem;
+    border-radius: var(--cs-radius-lg);
     padding: 0.95rem 0.9rem;
     font-weight: 700;
     font-size: 0.92rem;
 }
 
 .cs-cta-band {
-    background: linear-gradient(135deg, var(--cs-teal) 0%, #146968 55%, #1a4d4c 100%);
+    background: linear-gradient(135deg, var(--cs-primary-500) 0%, var(--cs-primary-700) 55%, var(--cs-primary-900) 100%);
     color: #fff;
-    border-radius: 1.75rem;
+    border-radius: var(--cs-radius-2xl);
     padding: 2.2rem 1.5rem;
     display: flex;
     flex-direction: column;
@@ -530,17 +780,19 @@ button:focus-visible,
 
 .cs-cta-band .btn {
     background: #fff;
-    color: var(--cs-teal-dark);
+    color: var(--cs-primary-700);
     border: 0;
     align-self: flex-start;
 }
 
 .cs-cta-band .btn:hover {
-    background: var(--cs-sand);
-    color: var(--cs-ink);
+    background: var(--cs-bg-alt);
+    color: var(--cs-text);
 }
 
-/* ---------- Auth / account shells ---------- */
+/* ==========================================================================
+   9. AUTH / ACCOUNT SHELLS
+   ========================================================================== */
 
 .cs-auth-wrap {
     max-width: 32rem;
@@ -554,8 +806,8 @@ button:focus-visible,
 .cs-panel {
     background: var(--cs-surface);
     border: 1px solid var(--cs-border);
-    border-radius: 1.5rem;
-    box-shadow: var(--cs-shadow);
+    border-radius: var(--cs-radius-xl);
+    box-shadow: var(--cs-shadow-3);
     padding: 1.6rem;
 }
 
@@ -576,8 +828,8 @@ button:focus-visible,
     width: 120px;
     height: 120px;
     border-radius: 50%;
-    background: var(--cs-teal-soft);
-    color: var(--cs-teal-dark);
+    background: var(--cs-primary-50);
+    color: var(--cs-primary-700);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -588,19 +840,14 @@ button:focus-visible,
 .cs-stat {
     background: var(--cs-surface);
     border: 1px solid var(--cs-border);
-    border-radius: 1.1rem;
+    border-radius: var(--cs-radius-lg);
     padding: 1.1rem 1rem;
-    box-shadow: var(--cs-shadow);
+    box-shadow: var(--cs-shadow-3);
     height: 100%;
 }
 
 .cs-stat h6,
 .cs-stat .label {
-    color: var(--cs-ink-soft);
-    font-size: 0.82rem;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    font-weight: 700;
     margin-bottom: 0.35rem;
 }
 
@@ -611,19 +858,21 @@ button:focus-visible,
 }
 
 .progress {
-    background: var(--cs-sand);
-    border-radius: 999px;
+    background: var(--cs-bg-alt);
+    border-radius: var(--cs-radius-pill);
 }
 
 .progress-bar {
-    background: var(--cs-teal);
+    background: var(--cs-primary-500);
 }
 
 .list-group-item {
     background: transparent;
 }
 
-/* ---------- Roommate cards ---------- */
+/* ==========================================================================
+   10. ROOMMATE CARDS
+   ========================================================================== */
 
 .cs-page-head {
     display: flex;
@@ -637,8 +886,8 @@ button:focus-visible,
 .cs-filter-bar {
     background: var(--cs-surface);
     border: 1px solid var(--cs-border);
-    border-radius: 1.25rem;
-    box-shadow: var(--cs-shadow);
+    border-radius: var(--cs-radius-xl);
+    box-shadow: var(--cs-shadow-3);
     padding: 1rem;
     margin-bottom: 1.5rem;
 }
@@ -646,8 +895,8 @@ button:focus-visible,
 .cs-mate-card {
     height: 100%;
     border: 1px solid var(--cs-border);
-    border-radius: 1.25rem;
-    box-shadow: var(--cs-shadow);
+    border-radius: var(--cs-radius-xl);
+    box-shadow: var(--cs-shadow-3);
     overflow: hidden;
 }
 
@@ -658,15 +907,17 @@ button:focus-visible,
 .cs-badge {
     display: inline-flex;
     align-items: center;
-    border-radius: 999px;
+    border-radius: var(--cs-radius-pill);
     padding: 0.2rem 0.65rem;
-    font-size: 0.78rem;
+    font-size: var(--cs-fs-xs);
     font-weight: 700;
-    background: var(--cs-teal-soft);
-    color: var(--cs-teal-dark);
+    background: var(--cs-primary-50);
+    color: var(--cs-primary-700);
 }
 
-/* ---------- Tables / admin ---------- */
+/* ==========================================================================
+   11. TABLES / ADMIN
+   ========================================================================== */
 
 .table {
     --bs-table-bg: transparent;
@@ -675,28 +926,27 @@ button:focus-visible,
 .table-responsive {
     background: var(--cs-surface);
     border: 1px solid var(--cs-border);
-    border-radius: 1.1rem;
-    box-shadow: var(--cs-shadow);
+    border-radius: var(--cs-radius-lg);
+    box-shadow: var(--cs-shadow-3);
 }
 
 .table thead th {
-    font-size: 0.78rem;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    color: var(--cs-ink-soft);
+    color: var(--cs-text-soft);
 }
 
-/* ---------- Footer ---------- */
+/* ==========================================================================
+   12. FOOTER (preserved structure, values updated)
+   ========================================================================== */
 
 .cs-footer {
-    background: #0f1c2b;
+    background: var(--cs-bg-inverse);
     color: #d5e0df;
     padding: 2.75rem 0 1.4rem;
     margin-top: auto;
 }
 
 .cs-footer-heading {
-    font-size: 0.82rem;
+    font-size: var(--cs-fs-xs);
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: #9fd8d2;
@@ -731,11 +981,13 @@ button:focus-visible,
     margin: 2rem 0 0;
     padding-top: 1.1rem;
     border-top: 1px solid rgba(255, 255, 255, 0.08);
-    font-size: 0.88rem;
+    font-size: var(--cs-fs-sm);
     color: #93a3a2;
 }
 
-/* ---------- Reveal animation ---------- */
+/* ==========================================================================
+   13. REVEAL ANIMATION
+   ========================================================================== */
 
 [data-reveal] {
     animation: csRise 0.55s ease both;
@@ -752,7 +1004,9 @@ button:focus-visible,
     }
 }
 
-/* ---------- Breadcrumbs ---------- */
+/* ==========================================================================
+   14. BREADCRUMBS
+   ========================================================================== */
 
 .breadcrumb {
     background: transparent;
@@ -761,33 +1015,39 @@ button:focus-visible,
 }
 
 .breadcrumb-item a {
-    color: var(--cs-teal);
+    color: var(--cs-primary-500);
     text-decoration: none;
     font-weight: 600;
 }
 
-/* ---------- Pagination ---------- */
+/* ==========================================================================
+   15. PAGINATION (preserved, values updated)
+   ========================================================================== */
 
 .pagination .page-link {
-    border-radius: 0.7rem;
+    border-radius: var(--cs-radius-md);
     margin: 0 0.15rem;
-    color: var(--cs-teal);
+    color: var(--cs-primary-500);
     border-color: var(--cs-border);
 }
 
 .pagination .page-item.active .page-link {
-    background: var(--cs-teal);
-    border-color: var(--cs-teal);
+    background: var(--cs-primary-500);
+    border-color: var(--cs-primary-500);
 }
 
-/* ---------- Modal polish ---------- */
+/* ==========================================================================
+   16. MODAL POLISH
+   ========================================================================== */
 
 .modal-content {
     border: 0;
-    border-radius: 1.25rem;
+    border-radius: var(--cs-radius-xl);
 }
 
-/* ---------- Responsive ---------- */
+/* ==========================================================================
+   17. RESPONSIVE BREAKPOINTS
+   ========================================================================== */
 
 @media (min-width: 576px) {
     .cs-search-panel {
@@ -879,6 +1139,10 @@ button:focus-visible,
     }
 }
 
+/* ==========================================================================
+   18. PREFERS-REDUCED-MOTION (preserved structure)
+   ========================================================================== */
+
 @media (prefers-reduced-motion: reduce) {
     html {
         scroll-behavior: auto;
@@ -897,14 +1161,14 @@ button:focus-visible,
     }
 }
 
-/* ---------- Utility helpers ---------- */
+/* ==========================================================================
+   19. UTILITY HELPERS
+   ========================================================================== */
 
-/* Teal text helper (used on price displays) */
 .text-teal {
-    color: var(--cs-teal) !important;
+    color: var(--cs-primary-500) !important;
 }
 
-/* Hover lift for generic cards */
 .cs-hover-lift {
     transition: transform 0.22s ease, box-shadow 0.22s ease;
 }
@@ -912,7 +1176,7 @@ button:focus-visible,
 @media (hover: hover) {
     .cs-hover-lift:hover {
         transform: translateY(-5px);
-        box-shadow: var(--cs-shadow-hover) !important;
+        box-shadow: var(--cs-shadow-4) !important;
     }
 }
 
@@ -922,12 +1186,10 @@ button:focus-visible,
     }
 }
 
-/* Letter spacing utility */
 .letter-spacing-1 {
     letter-spacing: 0.06em;
 }
 
-/* Bootstrap subtle badge colours (for browsers that may not support them yet) */
 .bg-warning-subtle { background-color: #fff8e1 !important; }
 .bg-success-subtle { background-color: #e8f5e9 !important; }
 .bg-danger-subtle  { background-color: #fce4ec !important; }
@@ -939,49 +1201,37 @@ button:focus-visible,
 .text-success-emphasis { color: #1b5e20 !important; }
 .text-danger-emphasis  { color: #7b1a1a !important; }
 
-/* Border helpers */
 .border-warning { border-color: #e6a817 !important; }
 .border-success { border-color: #2e7d32 !important; }
-.border-danger  { border-color: #c0392b !important; }
-.border-primary { border-color: var(--cs-teal) !important; }
-
-/* ---------- Admin table improvements ---------- */
+.border-danger  { border-color: var(--cs-error-fg) !important; }
+.border-primary { border-color: var(--cs-primary-500) !important; }
 
 .table-hover > tbody > tr:hover > td,
 .table-hover > tbody > tr:hover > th {
     background-color: rgba(14, 124, 123, 0.04);
 }
 
-/* ---------- Notification unread panel styling ---------- */
-
 .bg-primary-subtle.bg-opacity-10 {
     background-color: rgba(14, 124, 123, 0.06) !important;
 }
-
-/* ---------- Touch target sizes ---------- */
 
 @media (max-width: 767.98px) {
     .btn {
         min-height: 2.75rem;
     }
 
-    /* Stack auth card forms on narrow screens */
     .cs-auth-wrap {
         padding: 0 0.5rem;
     }
 
-    /* Admin tables: ensure columns don't overflow */
     .table-responsive table {
         min-width: 540px;
     }
 
-    /* Ensure filter rows stack on mobile */
     .input-group .btn {
-        border-radius: 0 999px 999px 0 !important;
+        border-radius: 0 var(--cs-radius-pill) var(--cs-radius-pill) 0 !important;
     }
 }
-
-/* ---------- iPad / tablet specific (768–1024) ---------- */
 
 @media (min-width: 768px) and (max-width: 1024px) {
     .cs-hero {
@@ -992,13 +1242,10 @@ button:focus-visible,
         padding: 1rem 1.15rem;
     }
 
-    /* 2-up grid for stat cards on tablet */
     .cs-stat {
         min-height: 90px;
     }
 }
-
-/* ---------- Wide desktop ---------- */
 
 @media (min-width: 1400px) {
     .container {
@@ -1006,30 +1253,22 @@ button:focus-visible,
     }
 }
 
-/* ---------- Form focus ring polish ---------- */
-
 .form-control:focus,
 .form-select:focus {
     outline: none;
-    border-color: var(--cs-teal);
+    border-color: var(--cs-primary-500);
     box-shadow: 0 0 0 3px rgba(14, 124, 123, 0.18);
 }
-
-/* ---------- Select element polish for admin forms ---------- */
 
 select.form-select-sm.rounded-pill {
     padding-left: 1rem;
     padding-right: 2rem;
 }
 
-/* ---------- Badge consistency ---------- */
-
 .badge {
     font-weight: 600;
     letter-spacing: 0.01em;
 }
-
-/* ---------- Card table inside card ---------- */
 
 .card .table-responsive {
     background: transparent;
@@ -1038,9 +1277,996 @@ select.form-select-sm.rounded-pill {
     border-radius: 0;
 }
 
-/* ---------- Remove remove-button default focus outline glitch ---------- */
-
 button:focus:not(:focus-visible) {
     outline: none;
     box-shadow: none;
+}
+
+/* ==========================================================================
+   TASK 2 — NAVBAR PREMIUM OVERHAUL EXTENSIONS
+   (Appended: extends existing navbar rules via cascade)
+   ========================================================================== */
+
+/* --- cs-header: upgraded shadow, backdrop-blur, bg, bottom border --- */
+.cs-header {
+    box-shadow: var(--cs-shadow-2);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    background: rgba(251, 248, 243, 0.85);
+    border-bottom: 1px solid var(--cs-border-soft);
+}
+
+/* --- cs-header--scrolled: elevated on scroll (from main.js) --- */
+.cs-header--scrolled {
+    box-shadow: var(--cs-shadow-3);
+    background: rgba(251, 248, 243, 0.94);
+}
+
+/* --- cs-nav-link: transition, updated padding, pill radius --- */
+.cs-nav-link {
+    transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+    padding: 0.7rem 0.95rem !important;
+    border-radius: var(--cs-radius-pill) !important;
+}
+
+/* --- cs-nav-link--active: active page indicator (soft bg pill + bottom accent) --- */
+.cs-nav-link--active {
+    background: var(--cs-primary-50) !important;
+    color: var(--cs-primary-700) !important;
+    position: relative;
+}
+
+.cs-nav-link--active::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -2px;
+    transform: translateX(-50%);
+    width: 34%;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--cs-primary-500);
+}
+
+/* --- cs-brand: increased gap between SVG + text, tighter letter spacing --- */
+.cs-brand {
+    gap: 0.7rem !important;
+    letter-spacing: -0.035em;
+}
+
+/* --- cs-dropdown: min-width, padding, radius, border, shadow upgrade --- */
+.cs-dropdown {
+    min-width: 16rem !important;
+    padding: 0.6rem !important;
+    border-radius: var(--cs-radius-lg) !important;
+    border: 1px solid var(--cs-border) !important;
+    box-shadow: var(--cs-shadow-4) !important;
+}
+
+/* --- cs-dropdown: consistent icon alignment on left --- */
+.cs-dropdown .dropdown-item i {
+    width: 1.1rem;
+    text-align: center;
+    flex-shrink: 0;
+    margin-right: 0.1rem;
+}
+
+/* --- cs-dropdown: improved divider weight --- */
+.cs-dropdown .dropdown-divider {
+    border-top-color: var(--cs-border);
+    opacity: 0.9;
+    margin: 0.55rem 0.25rem;
+}
+
+/* --- cs-dropdown header: consistent padding refinement --- */
+.cs-dropdown .cs-dropdown-header {
+    border-bottom-color: var(--cs-border-soft) !important;
+    padding-bottom: 0.75rem !important;
+    margin-bottom: 0.5rem !important;
+}
+
+/* --- Mobile nav: .navbar-collapse on small screens --- */
+@media (max-width: 991.98px) {
+    .navbar-collapse .cs-nav-list {
+        padding: 1rem !important;
+        gap: 0.1rem;
+    }
+
+    .navbar-collapse .cs-nav-list .nav-link {
+        min-height: 48px;
+        display: flex;
+        align-items: center;
+    }
+
+    .navbar-collapse .cs-nav-section-divider {
+        border-top: 1px solid var(--cs-border-soft);
+        margin: 0.75rem -1rem 0.4rem;
+        padding: 0.85rem 1rem 0.35rem;
+    }
+
+    .cs-nav-section-label {
+        display: block;
+        font-size: var(--cs-fs-xs);
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--cs-text-muted);
+    }
+
+    .cs-nav-logout-band {
+        margin-top: 0.85rem !important;
+        padding-top: 1rem !important;
+    }
+
+    .cs-nav-logout-form {
+        background: var(--cs-error-bg);
+        border: 1.5px solid var(--cs-error-fg);
+        border-radius: var(--cs-radius-lg);
+        padding: 0.6rem;
+        margin: 0 -1rem;
+    }
+
+    .cs-nav-logout-form .btn {
+        min-height: 48px;
+        border: none;
+        background: transparent;
+        color: var(--cs-error-fg);
+        font-weight: 700;
+    }
+
+    .cs-nav-logout-form .btn:hover {
+        background: var(--cs-error-fg);
+        color: #fff;
+    }
+}
+
+/* ===== Task 3: Homepage Hero — Premium Two-Column Layout ===== */
+
+/* --- Hero container: richer background, updated padding clamp, overflow hidden --- */
+section.cs-hero {
+    background:
+        radial-gradient(1000px 500px at 0% 0%, rgba(14, 124, 123, 0.18), transparent 55%),
+        radial-gradient(800px 450px at 100% 20%, rgba(212, 106, 58, 0.14), transparent 55%),
+        linear-gradient(180deg, var(--cs-primary-50) 0%, var(--cs-accent-50) 55%, var(--cs-bg) 100%);
+    padding-top: clamp(3rem, 7vw, 6rem);
+    padding-bottom: clamp(3rem, 7vw, 6rem);
+    overflow: hidden;
+}
+
+section.cs-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg width='48' height='48' viewBox='0 0 48 48' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%230e7c7b' stroke-opacity='0.05' stroke-width='1'%3E%3Cpath d='M0 24h48M24 0v48'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* --- Gradient text on hero headline keyword --- */
+.cs-text-gradient-hero {
+    background: linear-gradient(135deg, var(--cs-primary-500) 0%, var(--cs-accent-500) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-style: italic;
+    font-weight: 700;
+    display: inline;
+}
+
+/* --- Hero kicker pill upgrade --- */
+.cs-hero-kicker-pill {
+    background: var(--cs-primary-50) !important;
+    border: 1px solid var(--cs-primary-100) !important;
+    color: var(--cs-primary-700) !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.08em !important;
+    text-transform: uppercase !important;
+    box-shadow: 0 2px 8px rgba(14, 124, 123, 0.06);
+}
+
+/* --- Support paragraph subtle size upgrade --- */
+.cs-hero-lead-lg {
+    font-size: clamp(1.05rem, 1.9vw, 1.2rem) !important;
+    line-height: 1.7 !important;
+}
+
+/* --- Hero search stack: layered card appearance --- */
+.cs-hero-search-stack {
+    position: relative;
+    background: var(--cs-surface);
+    border-radius: var(--cs-radius-2xl);
+    box-shadow:
+        var(--cs-shadow-4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    border: 1px solid var(--cs-border-soft);
+    margin-bottom: 1.75rem;
+}
+
+.cs-hero-search-stack::before {
+    content: "";
+    position: absolute;
+    inset: 8px -6px -8px 8px;
+    background: linear-gradient(135deg, rgba(14, 124, 123, 0.08), rgba(212, 106, 58, 0.06));
+    border-radius: calc(var(--cs-radius-2xl) + 4px);
+    z-index: -1;
+    filter: blur(2px);
+}
+
+/* --- Unified search slab: input + button row sizing --- */
+.cs-hero-search-stack .form-control.cs-hero-search-input,
+.cs-hero-search-stack .btn.cs-hero-search-btn {
+    min-height: 3.5rem;
+    font-size: 1.05rem;
+}
+
+.cs-hero-search-icon {
+    color: var(--cs-primary-500) !important;
+    font-size: 1.35rem !important;
+    left: 1.15rem !important;
+}
+
+.cs-hero-search-stack .form-control.cs-hero-search-input {
+    padding-left: 3.1rem !important;
+    border: 1px solid var(--cs-border);
+    border-radius: var(--cs-radius-pill) !important;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cs-hero-search-stack .btn.cs-hero-search-btn {
+    background-color: var(--cs-primary-500);
+    border-color: var(--cs-primary-500);
+    border-radius: var(--cs-radius-pill) !important;
+    font-weight: 700 !important;
+    box-shadow: 0 10px 22px rgba(14, 124, 123, 0.22);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.cs-hero-search-stack .btn.cs-hero-search-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 14px 28px rgba(14, 124, 123, 0.28);
+}
+
+@media (min-width: 768px) {
+    .cs-hero-search-row .col-md-8 .cs-hero-search-slab .form-control {
+        border-top-right-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+        border-right: none !important;
+    }
+
+    .cs-hero-search-row .col-md-4 .btn {
+        border-top-left-radius: 0 !important;
+        border-bottom-left-radius: 0 !important;
+    }
+}
+
+/* --- Quick browse chips --- */
+.cs-quick-chip {
+    display: inline-flex;
+    align-items: center;
+    border-radius: var(--cs-radius-pill);
+    padding: 0.5rem 0.95rem;
+    background: var(--cs-surface-soft);
+    border: 1px solid var(--cs-border-soft);
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--cs-text-soft);
+    text-decoration: none;
+    transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.cs-quick-chip:hover {
+    background: #fff;
+    border-color: var(--cs-primary-100);
+    color: var(--cs-primary-700);
+    transform: translateY(-2px);
+    text-decoration: none;
+}
+
+/* --- Trust pills --- */
+.cs-trust-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.5rem 0.9rem;
+    background: var(--cs-surface);
+    border: 1px solid var(--cs-border-soft);
+    border-radius: var(--cs-radius-pill);
+    box-shadow: var(--cs-shadow-1);
+    font-weight: 600;
+    font-size: 0.88rem;
+    color: var(--cs-text-soft);
+}
+
+.cs-trust-pill i {
+    font-size: 1.1rem;
+}
+
+/* --- Right column showcase container --- */
+.cs-hero-showcase {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+}
+
+/* --- Large main showcase card --- */
+.cs-hero-showcase-card-lg {
+    position: absolute;
+    top: 5%;
+    left: 0;
+    width: 80%;
+    background: var(--cs-surface);
+    border-radius: var(--cs-radius-xl);
+    box-shadow: var(--cs-shadow-4);
+    overflow: hidden;
+    z-index: 2;
+    transform: translateX(-2%) rotate(-1deg);
+    border: 1px solid var(--cs-border-soft);
+}
+
+.cs-hero-showcase-media {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    background: linear-gradient(135deg, var(--cs-primary-300) 0%, var(--cs-primary-700) 100%);
+    overflow: hidden;
+}
+
+.cs-hero-showcase-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.cs-hero-showcase-media-fallback {
+    position: absolute;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--cs-primary-300) 0%, var(--cs-primary-700) 100%);
+}
+
+.cs-hero-showcase-badge-gender {
+    position: absolute;
+    top: 0.85rem;
+    left: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.35rem 0.7rem;
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--cs-accent-700);
+    font-weight: 700;
+    font-size: 0.75rem;
+    border-radius: var(--cs-radius-pill);
+    box-shadow: var(--cs-shadow-1);
+}
+
+.cs-hero-showcase-badge-verified {
+    position: absolute;
+    top: 0.85rem;
+    right: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.35rem 0.7rem;
+    background: rgba(14, 124, 123, 0.92);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.75rem;
+    border-radius: var(--cs-radius-pill);
+    box-shadow: var(--cs-shadow-1);
+}
+
+.cs-hero-showcase-content {
+    padding: 1rem 1.1rem 1.15rem;
+}
+
+.cs-hero-showcase-price {
+    font-family: var(--cs-display);
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--cs-primary-700);
+    background: var(--cs-primary-50);
+    padding: 0.25rem 0.6rem;
+    border-radius: var(--cs-radius-pill);
+    white-space: nowrap;
+}
+
+.cs-hero-showcase-amenity {
+    display: inline-block;
+    padding: 0.25rem 0.55rem;
+    background: var(--cs-surface-soft);
+    border: 1px solid var(--cs-border-soft);
+    border-radius: var(--cs-radius-pill);
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--cs-text-soft);
+}
+
+/* --- Small floating showcase cards --- */
+.cs-hero-showcase-card-sm {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.75rem 0.9rem;
+    background: var(--cs-surface);
+    border-radius: var(--cs-radius-lg);
+    box-shadow: var(--cs-shadow-3);
+    border: 1px solid var(--cs-border-soft);
+    z-index: 3;
+    max-width: 55%;
+}
+
+.cs-hero-float-icon {
+    width: 2.4rem;
+    height: 2.4rem;
+    min-width: 2.4rem;
+    border-radius: var(--cs-radius-md);
+    display: grid;
+    place-items: center;
+    font-size: 1.1rem;
+}
+
+.cs-hero-showcase-card-sm .fw-bold {
+    font-size: 0.82rem;
+    line-height: 1.2;
+    color: var(--cs-text);
+}
+
+.cs-hero-showcase-card-sm .text-xs {
+    font-size: 0.7rem;
+    line-height: 1.2;
+    margin-top: 0.1rem;
+}
+
+.cs-hero-float-top-right {
+    top: 0;
+    right: 0;
+    width: 55%;
+    transform: translate(8%, 12%) rotate(2deg);
+}
+
+.cs-hero-float-bottom-left {
+    bottom: 0;
+    left: 0;
+    width: 50%;
+    transform: translate(-4%, 8%) rotate(-2deg);
+}
+
+/* --- Animation delay tiers for staggered reveal --- */
+[data-reveal].cs-reveal-1,
+.cs-reveal-1 { animation-delay: 0ms !important; }
+
+[data-reveal].cs-reveal-2,
+.cs-reveal-2 { animation-delay: 80ms !important; }
+
+[data-reveal].cs-reveal-3,
+.cs-reveal-3 { animation-delay: 160ms !important; }
+
+[data-reveal].cs-reveal-4,
+.cs-reveal-4 { animation-delay: 240ms !important; }
+
+[data-reveal].cs-reveal-5,
+.cs-reveal-5 { animation-delay: 320ms !important; }
+
+[data-reveal].cs-reveal-6,
+.cs-reveal-6 { animation-delay: 400ms !important; }
+
+[data-reveal].cs-reveal-7,
+.cs-reveal-7 { animation-delay: 480ms !important; }
+
+/* ===== Task 4: Homepage Story Arc — Stats / Features / Amenities / Trust / CTA ===== */
+
+/* --- 1. Stats Section (cs-stats-section) --- */
+section.cs-stats-section {
+    padding-top: clamp(2.5rem, 5vw, 4rem);
+    padding-bottom: clamp(2.5rem, 5vw, 4rem);
+    background: var(--cs-surface);
+    border-top: 1px solid var(--cs-border-soft) !important;
+    border-bottom: 1px solid var(--cs-border-soft) !important;
+}
+
+section.cs-stats-section .cs-stats-row > .col-md-3 {
+    margin-bottom: 0.5rem;
+}
+
+@media (min-width: 768px) {
+    section.cs-stats-section .cs-stats-row > .col-md-3:not(:last-child) > .cs-stat-card {
+        border-right: 1px solid var(--cs-border-soft);
+    }
+}
+
+/* --- 2. Stat Card (.cs-stat-card) --- */
+.cs-stat-card {
+    background: var(--cs-surface);
+    border: 1px solid var(--cs-border-soft);
+    border-radius: var(--cs-radius-xl);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    height: 100%;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    text-align: center;
+}
+
+@media (hover: hover) {
+    .cs-stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--cs-shadow-3);
+    }
+}
+
+.cs-stat-icon {
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--cs-primary-50);
+    color: var(--cs-primary-500);
+    border-radius: var(--cs-radius-lg);
+    font-size: 1.35rem;
+    margin-bottom: 0.15rem;
+}
+
+.cs-stat-metric {
+    font-family: var(--cs-display);
+    font-weight: 800;
+    font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+    line-height: 1.1;
+    color: var(--cs-primary-700);
+    letter-spacing: -0.02em;
+}
+
+.cs-stat-label {
+    font-family: var(--cs-font);
+    font-weight: 700;
+    font-size: 0.82rem;
+    line-height: 1.4;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--cs-text-muted);
+}
+
+/* --- 3. Features Section (cs-features-section) --- */
+section.cs-features-section {
+    padding-top: clamp(3.5rem, 7vw, 5.5rem);
+    padding-bottom: clamp(3.5rem, 7vw, 5.5rem);
+    background: var(--cs-surface-soft);
+}
+
+.cs-section-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: var(--cs-primary-50);
+    border: 1px solid var(--cs-primary-100);
+    color: var(--cs-primary-700);
+    font-weight: 700;
+    font-size: var(--cs-fs-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-radius: var(--cs-radius-pill);
+    padding: 0.35rem 0.85rem;
+}
+
+/* --- Section title upgrade (cs-title / cs-title--section) --- */
+.cs-title--section {
+    margin-top: 0.5rem;
+}
+
+/* --- 4. Feature Card Premium (.cs-feature-card-premium) --- */
+.cs-feature-card-premium {
+    background: var(--cs-surface) !important;
+    border: 1px solid var(--cs-border-soft) !important;
+    border-radius: 24px !important;
+    padding: 0 !important;
+    box-shadow: var(--cs-shadow-1) !important;
+    transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease !important;
+    overflow: hidden;
+}
+
+@media (hover: hover) {
+    .cs-feature-card-premium:hover {
+        transform: translateY(-6px) !important;
+        box-shadow: var(--cs-shadow-4) !important;
+        border-color: var(--cs-primary-100) !important;
+    }
+}
+
+.cs-feature-card-premium .cs-feature-card-link {
+    padding: 1.75rem !important;
+    gap: 0.25rem;
+}
+
+.cs-feature-icon-tile {
+    width: 64px;
+    height: 64px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    background: var(--cs-primary-50);
+    color: var(--cs-primary-500);
+}
+
+.cs-feature-icon-tile i {
+    font-size: 1.8rem;
+    line-height: 1;
+}
+
+.cs-feature-card-premium h3,
+.cs-feature-card-premium .h5 {
+    font-family: var(--cs-font);
+    font-weight: 800 !important;
+    font-size: 1.2rem !important;
+    line-height: 1.28 !important;
+    color: var(--cs-text);
+    letter-spacing: -0.01em;
+    margin-bottom: 0.5rem !important;
+}
+
+.cs-feature-card-premium p {
+    font-size: var(--cs-fs-sm) !important;
+    font-weight: 500 !important;
+    line-height: 1.65 !important;
+    color: var(--cs-text-muted) !important;
+}
+
+.cs-feature-arrow-link {
+    text-decoration: none;
+    font-weight: 700;
+    color: var(--cs-primary-500);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color 0.2s ease;
+    margin-top: 0.25rem;
+}
+
+.cs-feature-arrow-link:hover,
+.cs-feature-arrow-link:focus {
+    color: var(--cs-primary-700);
+}
+
+.cs-feature-arrow-icon {
+    display: inline-block;
+    transition: transform 0.22s ease;
+}
+
+@media (hover: hover) {
+    .cs-feature-arrow-link:hover .cs-feature-arrow-icon {
+        transform: translateX(4px);
+    }
+}
+
+/* --- 5. Trust Banner Premium (.cs-trust-banner-premium) --- */
+.cs-trust-banner.cs-trust-banner-premium {
+    border-radius: 24px;
+    box-shadow: var(--cs-shadow-4);
+    padding: clamp(1.5rem, 3vw, 2.5rem) !important;
+    background: linear-gradient(135deg, rgba(7, 61, 60, 0.92) 0%, rgba(10, 92, 91, 0.88) 60%, rgba(14, 124, 123, 0.85) 100%),
+                linear-gradient(180deg, #073d3c 0%, #0a5c5b 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.cs-trust-banner.cs-trust-banner-premium::before {
+    content: "";
+    position: absolute;
+    inset: auto -20% -30% auto;
+    width: 380px;
+    height: 380px;
+    background: radial-gradient(circle at center, rgba(212, 106, 58, 0.18), transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.cs-trust-banner.cs-trust-banner-premium > * {
+    position: relative;
+    z-index: 1;
+}
+
+.cs-trust-banner.cs-trust-banner-premium h2,
+.cs-trust-banner.cs-trust-banner-premium .h3 {
+    font-size: 1.6rem;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+}
+
+.cs-trust-banner.cs-trust-banner-premium .cs-trust-checklist {
+    gap: 0.5rem;
+}
+
+.cs-trust-checklist-item {
+    padding: 0.6rem 0;
+}
+
+.cs-trust-check-icon {
+    flex-shrink: 0;
+    width: 1.8rem;
+    height: 1.8rem;
+    min-width: 1.8rem;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cs-trust-check-icon i {
+    font-size: 1.4rem;
+    line-height: 1;
+    font-weight: 700;
+}
+
+/* --- 6. Amenity Card Premium (.cs-amenity-card-premium) --- */
+.cs-amenities-grid {
+    margin: 0;
+    padding: 0;
+}
+
+li.cs-amenity-card-premium {
+    background: var(--cs-surface);
+    border: 1px solid var(--cs-border-soft);
+    border-radius: 18px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    list-style: none;
+    transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease;
+    text-align: center;
+    min-height: 110px;
+}
+
+@media (hover: hover) {
+    li.cs-amenity-card-premium:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--cs-shadow-2);
+        border-color: var(--cs-primary-100);
+    }
+}
+
+.cs-amenity-icon {
+    font-size: 1.8rem;
+    line-height: 1;
+    color: var(--cs-primary-500);
+}
+
+.cs-amenity-label {
+    font-weight: 600;
+    font-size: var(--cs-fs-sm);
+    color: var(--cs-text);
+    line-height: 1.3;
+}
+
+/* --- 7. Popular Stays Section (cs-popular-stays) --- */
+section.cs-popular-stays {
+    padding-top: clamp(3rem, 6vw, 5rem);
+    padding-bottom: clamp(3rem, 6vw, 5rem);
+    background: var(--cs-surface-soft);
+}
+
+.cs-popular-card {
+    border: 1px solid var(--cs-border-soft) !important;
+    border-radius: var(--cs-radius-2xl) !important;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    background: var(--cs-surface);
+    box-shadow: var(--cs-shadow-1);
+    transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+}
+
+@media (hover: hover) {
+    .cs-popular-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--cs-shadow-4);
+        border-color: var(--cs-primary-100) !important;
+    }
+}
+
+.cs-popular-card-media {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    background: linear-gradient(135deg, var(--cs-primary-300) 0%, var(--cs-primary-700) 100%);
+    overflow: hidden;
+}
+
+.cs-popular-card-media-fallback {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--cs-primary-300) 0%, var(--cs-primary-700) 100%);
+}
+
+.cs-popular-card-media-fallback.cs-fallback-accent {
+    background: linear-gradient(135deg, var(--cs-accent-300) 0%, var(--cs-accent-700) 100%);
+}
+
+.cs-popular-card-media-fallback.cs-fallback-primary {
+    background: linear-gradient(135deg, var(--cs-primary-500) 0%, var(--cs-primary-900) 100%);
+}
+
+.cs-popular-badge-verified {
+    position: absolute;
+    top: 0.85rem;
+    right: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.3rem 0.65rem;
+    background: rgba(14, 124, 123, 0.92);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.72rem;
+    border-radius: var(--cs-radius-pill);
+    box-shadow: var(--cs-shadow-1);
+}
+
+.cs-popular-badge-gender {
+    position: absolute;
+    top: 0.85rem;
+    left: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.3rem 0.65rem;
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--cs-text);
+    font-weight: 700;
+    font-size: 0.72rem;
+    border-radius: var(--cs-radius-pill);
+    box-shadow: var(--cs-shadow-1);
+}
+
+.cs-popular-card-body {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.cs-popular-card-body h3 {
+    font-family: var(--cs-font);
+    font-weight: 800;
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
+}
+
+.cs-popular-price {
+    font-family: var(--cs-display);
+    font-size: 1.1rem;
+    letter-spacing: -0.01em;
+}
+
+.cs-amenity-chip {
+    display: inline-block;
+    padding: 0.22rem 0.55rem;
+    background: var(--cs-surface-soft);
+    border: 1px solid var(--cs-border-soft);
+    border-radius: var(--cs-radius-pill);
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--cs-text-soft);
+}
+
+/* --- 8. CTA Band Premium --- */
+section.cs-cta-band-premium-wrapper {
+    padding-top: clamp(3.2rem, 7vw, 5.5rem);
+    padding-bottom: clamp(2.5rem, 6vw, 4.5rem);
+}
+
+.cs-cta-band.cs-cta-band-premium {
+    border-radius: 28px;
+    box-shadow: var(--cs-shadow-4);
+    background: linear-gradient(135deg, var(--cs-primary-700) 0%, var(--cs-primary-500) 55%, rgba(212, 106, 58, 0.2) 100%),
+                linear-gradient(135deg, var(--cs-primary-700) 0%, var(--cs-primary-500) 100%);
+    position: relative;
+    overflow: hidden;
+    margin-bottom: clamp(2.5rem, 6vw, 4.5rem);
+}
+
+.cs-cta-band.cs-cta-band-premium::before {
+    content: "";
+    position: absolute;
+    inset: -30% auto auto -10%;
+    width: 420px;
+    height: 420px;
+    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.12), transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.cs-cta-band.cs-cta-band-premium::after {
+    content: "";
+    position: absolute;
+    inset: auto -15% -20% auto;
+    width: 340px;
+    height: 340px;
+    background: radial-gradient(circle at center, rgba(212, 106, 58, 0.22), transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.cs-cta-band.cs-cta-band-premium > * {
+    position: relative;
+    z-index: 1;
+}
+
+.cs-cta-title {
+    font-family: var(--cs-display);
+    font-weight: 700;
+    font-size: clamp(1.8rem, 3.6vw, 2.6rem);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: #fff;
+    text-align: center;
+    margin: 0 0 0.6rem;
+}
+
+.cs-cta-body {
+    font-family: var(--cs-font);
+    font-size: clamp(1rem, 1.6vw, 1.1rem);
+    font-weight: 500;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.9);
+    text-align: center;
+    max-width: 40rem;
+}
+
+.cs-cta-btn-premium {
+    min-height: 3.25rem;
+    min-width: 10rem;
+    border-radius: var(--cs-radius-pill);
+    font-weight: 700;
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
+    font-size: 1rem;
+    letter-spacing: 0.005em;
+    transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease, border-color 0.22s ease, color 0.22s ease;
+}
+
+.cs-cta-btn-premium.btn-light {
+    background: #fff;
+    color: var(--cs-primary-700);
+    border: 2px solid #fff;
+}
+
+@media (hover: hover) {
+    .cs-cta-btn-premium.btn-light:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--cs-shadow-5);
+        background: #fff;
+        color: var(--cs-primary-700);
+    }
+}
+
+.cs-cta-btn-premium.btn-outline-light {
+    background: transparent;
+    color: #fff;
+    border: 2px solid #fff;
+}
+
+@media (hover: hover) {
+    .cs-cta-btn-premium.btn-outline-light:hover {
+        background: rgba(255, 255, 255, 0.12);
+        color: #fff;
+        border-color: #fff;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .cs-cta-btn-premium {
+        width: 100%;
+    }
 }

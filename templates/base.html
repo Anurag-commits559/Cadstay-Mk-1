@@ -12,52 +12,52 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm">
         <div class="container">
-            <a class="navbar-brand fw-bold text-primary" href="{% url 'home' %}">NoBroker</a>
+            <a class="navbar-brand fw-bold text-primary" href="/">NoBroker</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navMenu">
                 <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
-                    <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'hostels:hostel_list' %}">Find Hostels</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'roommates:roommate_list' %}">Find Roommates</a></li>
                     {% if user.is_authenticated %}
                         <li class="nav-item"><a class="nav-link" href="{% url 'accounts:profile' %}">Profile</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'accounts:dashboard' %}">Dashboard</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'hostels:hostel_add' %}">Add Hostel</a></li>
-                        <li class="nav-item text-secondary small ms-lg-2">Hi, {{ user.first_name|default:user.username }}</li>
                         <li class="nav-item">
-                            <form method="post" action="{% url 'accounts:logout' %}" class="d-inline">
+                            <form method="POST" action="{% url 'accounts:logout' %}" class="d-inline">
                                 {% csrf_token %}
-                                <button type="submit" class="btn btn-outline-secondary btn-sm ms-lg-2">Logout</button>
+                                <button type="submit" class="btn btn-outline-danger btn-sm">Logout</button>
                             </form>
                         </li>
                     {% else %}
-                        <li class="nav-item"><a class="nav-link" href="{% url 'accounts:login' %}">Login</a></li>
-                        <li class="nav-item">
-                            <a class="btn btn-primary btn-sm ms-lg-2" href="{% url 'accounts:register' %}">Register</a>
-                        </li>
+                        <li class="nav-item"><a class="btn btn-outline-primary btn-sm" href="{% url 'accounts:login' %}">Login</a></li>
+                        <li class="nav-item"><a class="btn btn-primary btn-sm" href="{% url 'accounts:register' %}">Register</a></li>
                     {% endif %}
                 </ul>
             </div>
         </div>
     </nav>
 
-    <main class="container py-4">
+    <main class="py-4">
         {% if messages %}
-            {% for message in messages %}
-                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            {% endfor %}
+            <div class="container">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
         {% endif %}
 
-        {% block content %}{% endblock %}
+        {% block content %}
+        {% endblock %}
     </main>
 
-    <footer class="text-center text-secondary small py-4">
-        &copy; {% now "Y" %} NoBroker Hostel & Roommate Finder
+    <footer class="bg-dark text-light py-4 mt-auto">
+        <div class="container text-center">
+            <p class="mb-0">&copy; {% now "Y" %} NoBroker Hostel & Roommate Finder. All rights reserved.</p>
+        </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

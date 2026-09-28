@@ -19,19 +19,19 @@
             <div class="collapse navbar-collapse" id="navMenu">
                 <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
                     <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'hostels:hostel_list' %}">Find Hostels</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/hostels/">Find Hostels</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'roommates:roommate_list' %}">Find Roommates</a></li>
                     {% if user.is_authenticated %}
-                        <li class="nav-item"><a class="nav-link" href="{% url 'accounts:profile' %}">Profile</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/accounts/profile/">Profile</a></li>
                         <li class="nav-item">
-                            <form method="POST" action="{% url 'accounts:logout' %}" class="d-inline">
+                            <form method="POST" action="/accounts/logout/" class="d-inline">
                                 {% csrf_token %}
                                 <button type="submit" class="btn btn-outline-danger btn-sm">Logout</button>
                             </form>
                         </li>
                     {% else %}
-                        <li class="nav-item"><a class="btn btn-outline-primary btn-sm" href="{% url 'accounts:login' %}">Login</a></li>
-                        <li class="nav-item"><a class="btn btn-primary btn-sm" href="{% url 'accounts:register' %}">Register</a></li>
+                        <li class="nav-item"><a class="btn btn-outline-primary btn-sm" href="/accounts/login/">Login</a></li>
+                        <li class="nav-item"><a class="btn btn-primary btn-sm" href="/accounts/register/">Register</a></li>
                     {% endif %}
                 </ul>
             </div>

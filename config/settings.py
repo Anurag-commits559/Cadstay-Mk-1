@@ -14,6 +14,9 @@ DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 # Allow Render domains and local development
 ALLOWED_HOSTS = ['*']
 
+# Custom user model
+AUTH_USER_MODEL = 'accounts.User'
+
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -44,7 +47,7 @@ ROOT_URLCONF = 'config.urls'  # Replace 'cadstay' with your main project folder 
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'BACKEND': 'django.template.backends.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {

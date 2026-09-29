@@ -36,7 +36,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'cadstay.urls'  # Replace 'cadstay' with your main project folder name if different
+ROOT_URLCONF = 'config.urls'  # Replace 'cadstay' with your main project folder name if different
 
 TEMPLATES = [
     {
@@ -54,7 +54,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'cadstay.wsgi.application'  # Replace 'cadstay' if needed
+WSGI_APPLICATION = 'config.wsgi.application'  # Replace 'cadstay' if needed
 
 # Database
 # Uses Render PostgreSQL database if DATABASE_URL environment variable exists;

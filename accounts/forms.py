@@ -1,12 +1,9 @@
 from django import forms
 from django.conf import settings
-from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.core.exceptions import ValidationError
 
-from .models import UserProfile
-
-User = get_user_model()
+from .models import UserProfile, User
 
 BOOTSTRAP_INPUT = "form-control"
 BOOTSTRAP_SELECT = "form-select"
@@ -35,8 +32,6 @@ class RegistrationForm(forms.ModelForm):
         widget=forms.PasswordInput(attrs={"class": BOOTSTRAP_INPUT, "placeholder": "Confirm password"}),
     )
     role = forms.ChoiceField(
-        choices=User.Role.choices,
-        initial=User.Role.TENANT,
         widget=forms.RadioSelect,
     )
 
@@ -46,6 +41,11 @@ class RegistrationForm(forms.ModelForm):
         widgets = {
             "username": forms.TextInput(attrs={"class": BOOTSTRAP_INPUT, "placeholder": "Choose a username"}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["role"].choices = User.Role.choices
+        self.fields["role"].initial = User.Role.TENANT
 
     def clean_email(self):
         email = self.cleaned_data["email"].lower().strip()
@@ -68,8 +68,6 @@ class RegistrationForm(forms.ModelForm):
             self.add_error("password2", "Passwords do not match.")
 
         if password1:
-            # Run Django's configured password validators (length,
-            # common-password check, similarity to user attributes, etc.)
             from django.contrib.auth.password_validation import validate_password
 
             temp_user = User(

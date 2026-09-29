@@ -18,8 +18,7 @@ ALLOWED_HOSTS = ['*']
 AUTH_USER_MODEL = 'accounts.User'
 
 # Application definition
-# INSTALLED_APPS = 
-[
+INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -30,7 +29,8 @@ AUTH_USER_MODEL = 'accounts.User'
     # Custom apps
     'accounts',
     'roommates',
-    'hostels',  # <--- Add this line
+    'hostels',
+    'requests_module',
 ]
 
 MIDDLEWARE = [
@@ -44,11 +44,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'config.urls'  # Replace 'cadstay' with your main project folder name if different
+ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.DjangoTemplates',
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -62,7 +62,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'config.wsgi.application'  # Replace 'cadstay' if needed
+WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
 # Uses Render PostgreSQL database if DATABASE_URL environment variable exists;

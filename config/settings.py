@@ -22,7 +22,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Add your custom apps here (e.g., 'hostels', 'roommates')
+    
+    # Custom apps
+    'accounts',
+    'roommates',
+    # Add any other app folders here
 ]
 
 MIDDLEWARE = [

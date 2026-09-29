@@ -18,7 +18,8 @@ ALLOWED_HOSTS = ['*']
 AUTH_USER_MODEL = 'accounts.User'
 
 # Application definition
-INSTALLED_APPS = [
+# INSTALLED_APPS = 
+[
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -29,7 +30,7 @@ INSTALLED_APPS = [
     # Custom apps
     'accounts',
     'roommates',
-    # Add any other app folders here
+    'hostels',  # <--- Add this line
 ]
 
 MIDDLEWARE = [

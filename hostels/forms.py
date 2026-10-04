@@ -144,13 +144,13 @@ class RoomForm(forms.ModelForm):
 
 
 # Owners add multiple rooms dynamically on the same page (Step 6 of the
-# add-hostel wizard). extra=1 gives one blank row to start; JS clones it
-# for "+ Add Another Room".
+# add-hostel wizard). min_num=1 already shows one room row to start, so
+# extra=0 (no additional blank row); JS clones it for "+ Add Another Room".
 RoomFormSet = inlineformset_factory(
     Hostel,
     Room,
     form=RoomForm,
-    extra=1,
+    extra=0,
     can_delete=True,
     min_num=1,
     validate_min=True,

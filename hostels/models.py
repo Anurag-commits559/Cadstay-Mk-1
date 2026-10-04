@@ -208,8 +208,13 @@ class Room(models.Model):
         return f"{self.get_room_type_display()} — {self.hostel.hostel_name}"
 
     def clean(self):
-        from django.core.exceptions import ValidationError
-        if self.available_beds > self.total_beds:
+        # FIX: total_beds / available_beds can be None when the form field
+        # was left empty or failed validation, so check before comparing.
+        if (
+            self.total_beds is not None
+            and self.available_beds is not None
+            and self.available_beds > self.total_beds
+        ):
             raise ValidationError(
                 {"available_beds": "Available beds cannot exceed total beds."}
             )

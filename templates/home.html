@@ -1,37 +1,50 @@
 {% extends "base.html" %}
+
 {% block title %}CadStay — Find a place you can call home{% endblock %}
 {% block main_class %}site-main site-main--flush{% endblock %}
+
 {% block content %}
-<!-- Hero Section -->
+<!-- ========================================== -->
+<!-- HERO SECTION                               -->
+<!-- ========================================== -->
 <section class="cs-hero position-relative">
     <div class="cs-hero-ambient-glow" aria-hidden="true"></div>
+    
     <div class="container position-relative">
         <div class="row align-items-center g-4 cs-hero-row">
+            
+            <!-- Left Hero Content & Search -->
             <div class="col-12 col-lg-7 cs-reveal-1" data-reveal style="animation-delay: 0ms;">
+                
+                <!-- Category Kicker Badge -->
                 <div class="d-inline-flex align-items-center gap-2 cs-kicker cs-hero-kicker-pill mb-3 cs-reveal-1" style="animation-delay: 0ms;">
                     <span class="cs-kicker-dot"></span>
                     <span>Verified Student Hostels &bull; PGs &bull; Roommates</span>
                 </div>
+
+                <!-- Main Heading -->
                 <h1 class="cs-hero-title mb-3 cs-reveal-2" style="animation-delay: 80ms;">
                     Find a place you can call <span class="cs-text-gradient-hero">home.</span>
                 </h1>
+
+                <!-- Subheading -->
                 <p class="cs-hero-lead cs-hero-lead-lg mb-4 cs-reveal-3" style="animation-delay: 140ms;">
                     Find a comfortable stay and the right roommate near your campus or workplace — 100% direct listings, without paying any broker fees.
                 </p>
 
-                <!-- Search Panel -->
+                <!-- Search Panel Box -->
                 <div class="cs-hero-search-stack p-4 p-md-5 cs-reveal-4" style="animation-delay: 200ms;">
                     <form method="get" action="{% url 'hostels:hostel_list' %}" class="cs-search-form">
                         <div class="row g-2 align-items-stretch cs-hero-search-row">
                             <div class="col-12 col-md-8">
                                 <label class="visually-hidden" for="home-search-q">Search hostels</label>
-                                <div class="cs-search-input-wrap position-relative cs-hero-search-slab">
-                                    <i class="bi bi-geo-alt-fill cs-search-icon cs-hero-search-icon" aria-hidden="true"></i>
-                                    <input id="home-search-q" type="text" name="q" class="form-control cs-hero-search-input ps-5" placeholder="Enter college, area or city (e.g. Koramangala, DU, Kothrud)...">
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0 text-secondary"><i class="bi bi-geo-alt-fill text-teal" style="color: #0d9488;"></i></span>
+                                    <input id="home-search-q" type="text" name="q" class="form-control border-start-0 bg-light ps-0" placeholder="Enter college, area or city (e.g. Koramangala, DU, Kothrud)...">
                                 </div>
                             </div>
                             <div class="col-12 col-md-4 d-grid">
-                                <button type="submit" class="btn btn-primary cs-btn-hero-search d-flex align-items-center justify-content-center gap-2 cs-hero-search-btn">
+                                <button type="submit" class="btn text-white fw-bold d-flex align-items-center justify-content-center gap-2" style="background-color: #0d9488; border-radius: 8px; padding: 0.6rem 1rem;">
                                     <i class="bi bi-search"></i>
                                     <span>Search Stays</span>
                                 </button>
@@ -39,17 +52,17 @@
                         </div>
                     </form>
 
-                    <!-- Quick filters & popular chips -->
+                    <!-- Quick Browse Chips -->
                     <div class="cs-quick-chips d-flex align-items-center flex-wrap gap-2 mt-4 pt-4 border-top cs-reveal-5" style="animation-delay: 280ms;">
                         <span class="small fw-semibold text-secondary me-1">Quick browse:</span>
-                        <a href="{% url 'hostels:hostel_list' %}?gender=BOYS" class="cs-quick-chip"><i class="bi bi-gender-male text-primary me-1"></i>Boys Hostels</a>
-                        <a href="{% url 'hostels:hostel_list' %}?gender=GIRLS" class="cs-quick-chip"><i class="bi bi-gender-female text-danger me-1"></i>Girls PGs</a>
-                        <a href="{% url 'hostels:hostel_list' %}?gender=COED" class="cs-quick-chip"><i class="bi bi-people-fill text-success me-1"></i>Co-ed Stays</a>
-                        <a href="{% url 'roommates:roommate_list' %}" class="cs-quick-chip"><i class="bi bi-person-heart text-warning me-1"></i>Find Roommates</a>
+                        <a href="{% url 'hostels:hostel_list' %}?gender=BOYS" class="badge bg-light text-dark border text-decoration-none fw-normal p-2"><i class="bi bi-gender-male text-primary me-1"></i>Boys Hostels</a>
+                        <a href="{% url 'hostels:hostel_list' %}?gender=GIRLS" class="badge bg-light text-dark border text-decoration-none fw-normal p-2"><i class="bi bi-gender-female text-danger me-1"></i>Girls PGs</a>
+                        <a href="{% url 'hostels:hostel_list' %}?gender=COED" class="badge bg-light text-dark border text-decoration-none fw-normal p-2"><i class="bi bi-people-fill text-success me-1"></i>Co-ed Stays</a>
+                        <a href="{% url 'roommates:roommate_list' %}" class="badge bg-light text-dark border text-decoration-none fw-normal p-2"><i class="bi bi-person-heart text-warning me-1"></i>Find Roommates</a>
                     </div>
                 </div>
 
-                <!-- Trust pills -->
+                <!-- Trust Badges -->
                 <div class="d-flex flex-wrap gap-3 align-items-center cs-trust-pills-row cs-reveal-6" style="animation-delay: 340ms;">
                     <div class="cs-trust-pill">
                         <i class="bi bi-check-circle-fill text-success me-1"></i>
@@ -66,9 +79,11 @@
                 </div>
             </div>
 
-            <!-- Visual Hero Side / Interactive Showcase -->
+            <!-- Right Visual Showcase (Desktop Only) -->
             <div class="col-12 col-lg-5 d-none d-lg-block cs-reveal-7" data-reveal style="animation-delay: 420ms;">
                 <div class="cs-hero-showcase" aria-hidden="true">
+                    
+                    <!-- Showcase Card Large -->
                     <div class="cs-hero-showcase-card-lg">
                         <div class="cs-hero-showcase-media">
                             <img src="/media/hostel_images/hostel_2/house.webp" alt="" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
@@ -94,6 +109,7 @@
                         </div>
                     </div>
 
+                    <!-- Floating Badge Top Right -->
                     <div class="cs-hero-showcase-card-sm cs-hero-float-top-right">
                         <div class="cs-hero-float-icon bg-success-subtle text-success">
                             <i class="bi bi-door-open-fill"></i>
@@ -104,6 +120,7 @@
                         </div>
                     </div>
 
+                    <!-- Floating Badge Bottom Left -->
                     <div class="cs-hero-showcase-card-sm cs-hero-float-bottom-left">
                         <div class="cs-hero-float-icon bg-primary-subtle text-primary">
                             <i class="bi bi-person-check-fill"></i>
@@ -113,61 +130,65 @@
                             <div class="text-muted text-xs">Matches budget &amp; habits</div>
                         </div>
                     </div>
+
                 </div>
             </div>
+
         </div>
     </div>
 </section>
 
-<!-- Stats Bar -->
-<section class="cs-stats-section border-top border-bottom py-4 bg-white" data-reveal="">
+<!-- ========================================== -->
+<!-- STATS BAR                                  -->
+<!-- ========================================== -->
+<section class="cs-stats-section border-top border-bottom py-4 bg-white" data-reveal>
     <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="row g-3 text-center cs-stats-row">
-                    <div class="col-6 col-md-3">
-                        <div class="cs-stat-card h-100">
-                            <i class="bi bi-buildings-fill cs-stat-icon cs-reveal-1"></i>
-                            <div class="cs-stat-metric cs-reveal-2">500+</div>
-                            <div class="cs-stat-label cs-reveal-3">Properties Listed</div>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <div class="cs-stat-card h-100">
-                            <i class="bi bi-patch-check-fill cs-stat-icon cs-reveal-1"></i>
-                            <div class="cs-stat-metric cs-reveal-2">100%</div>
-                            <div class="cs-stat-label cs-reveal-3">Verified Listings</div>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <div class="cs-stat-card h-100">
-                            <i class="bi bi-cash-stack cs-stat-icon cs-reveal-1"></i>
-                            <div class="cs-stat-metric cs-reveal-2">₹0</div>
-                            <div class="cs-stat-label cs-reveal-3">Zero Brokerage</div>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <div class="cs-stat-card h-100 cs-stat-card--last">
-                            <i class="bi bi-star-fill cs-stat-icon cs-reveal-1"></i>
-                            <div class="cs-stat-metric cs-reveal-2">4.8★</div>
-                            <div class="cs-stat-label cs-reveal-3">Average Rating</div>
-                        </div>
-                    </div>
+        <div class="row g-3 text-center cs-stats-row">
+            <div class="col-6 col-md-3">
+                <div class="cs-stat-card h-100">
+                    <i class="bi bi-buildings-fill cs-stat-icon cs-reveal-1"></i>
+                    <div class="cs-stat-metric cs-reveal-2">500+</div>
+                    <div class="cs-stat-label cs-reveal-3">Properties Listed</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="cs-stat-card h-100">
+                    <i class="bi bi-patch-check-fill cs-stat-icon cs-reveal-1"></i>
+                    <div class="cs-stat-metric cs-reveal-2">100%</div>
+                    <div class="cs-stat-label cs-reveal-3">Verified Listings</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="cs-stat-card h-100">
+                    <i class="bi bi-cash-stack cs-stat-icon cs-reveal-1"></i>
+                    <div class="cs-stat-metric cs-reveal-2">₹0</div>
+                    <div class="cs-stat-label cs-reveal-3">Zero Brokerage</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="cs-stat-card h-100 cs-stat-card--last">
+                    <i class="bi bi-star-fill cs-stat-icon cs-reveal-1"></i>
+                    <div class="cs-stat-metric cs-reveal-2">4.8★</div>
+                    <div class="cs-stat-label cs-reveal-3">Average Rating</div>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- How CadStay Helps -->
-<section class="cs-features-section" data-reveal="">
+<!-- ========================================== -->
+<!-- FEATURES: HOW CADSTAY HELPS                -->
+<!-- ========================================== -->
+<section class="cs-features-section" data-reveal>
     <div class="container">
         <div class="text-center max-w-xl mx-auto mb-5">
             <span class="cs-section-eyebrow cs-reveal-1 d-inline-block mb-2">Simpler &bull; Faster &bull; Transparent</span>
             <h2 class="cs-title cs-title--section cs-section-title cs-reveal-2">How CadStay Helps</h2>
             <p class="cs-section-lead mx-auto cs-reveal-3">Browse verified stays, match with roommates, and talk to owners directly.</p>
         </div>
+        
         <div class="row g-4 cs-features-row">
+            <!-- Feature 1 -->
             <div class="col-12 col-md-6 col-lg-4 cs-reveal-1" data-reveal>
                 <div class="cs-feature-card cs-feature-card-premium h-100">
                     <a href="{% url 'hostels:hostel_list' %}" class="cs-feature-card-link h-100 d-flex flex-column">
@@ -184,6 +205,8 @@
                     </a>
                 </div>
             </div>
+            
+            <!-- Feature 2 -->
             <div class="col-12 col-md-6 col-lg-4 cs-reveal-2" data-reveal>
                 <div class="cs-feature-card cs-feature-card-premium h-100">
                     <a href="{% url 'roommates:roommate_list' %}" class="cs-feature-card-link h-100 d-flex flex-column">
@@ -200,9 +223,11 @@
                     </a>
                 </div>
             </div>
+
+            <!-- Feature 3 -->
             <div class="col-12 col-md-6 col-lg-4 cs-reveal-3" data-reveal>
                 <div class="cs-feature-card cs-feature-card-premium h-100">
-                    <a href="/hostels/" class="cs-feature-card-link h-100 d-flex flex-column">
+                    <a href="{% url 'hostels:hostel_list' %}" class="cs-feature-card-link h-100 d-flex flex-column">
                         <div class="cs-feature-icon-wrapper mb-3">
                             <div class="cs-feature-icon-tile">
                                 <i class="bi bi-chat-dots-fill"></i>
@@ -220,10 +245,14 @@
     </div>
 </section>
 
-<!-- Amenities + Trust -->
-<section class="cs-amenities-trust" data-reveal="">
+<!-- ========================================== -->
+<!-- AMENITIES & TRUST SECTION                  -->
+<!-- ========================================== -->
+<section class="cs-amenities-trust" data-reveal>
     <div class="container">
         <div class="row g-4 align-items-center">
+            
+            <!-- Trust Banner (Left Column) -->
             <div class="col-lg-6 cs-reveal-1" data-reveal>
                 <div class="cs-trust-banner cs-trust-banner-premium p-4 p-md-5 rounded-4">
                     <span class="badge bg-white text-dark px-3 py-1 rounded-pill fw-semibold mb-3">Built for peace of mind</span>
@@ -234,28 +263,15 @@
                     <p class="text-white-50 mb-4">
                         Clear listings, honest pricing, and a search that works the way you expect — on your phone, tablet, or laptop. No surprises when you move in.
                     </p>
-                    <div class="d-flex flex-column gap-3 cs-trust-checklist">
-                        <div class="d-flex align-items-start gap-3 cs-trust-checklist-item">
-                            <div class="cs-trust-check-icon"><i class="bi bi-check2"></i></div>
-                            <div>
-                                <h3 class="h6 fw-bold text-white mb-1">Zero Brokerage Fee</h3>
-                                <p class="small text-white-50 mb-0">Direct connections with property owners. No middlemen taking a cut from your rent.</p>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-start gap-3 cs-trust-checklist-item">
-                            <div class="cs-trust-check-icon"><i class="bi bi-check2"></i></div>
-                            <div>
-                                <h3 class="h6 fw-bold text-white mb-1">100% Verified Owners</h3>
-                                <p class="small text-white-50 mb-0">Every property owner is manually verified. Contact details are confirmed and listings audited.</p>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
+
+            <!-- Amenities Grid (Right Column) -->
             <div class="col-lg-6 cs-reveal-2" data-reveal>
                 <div class="ps-lg-4">
                     <h2 class="cs-section-title h4 mb-2 cs-reveal-1">Amenities students look for</h2>
                     <p class="text-secondary mb-4 cs-reveal-2">Every property listing clearly specifies included facilities so you can filter for what matters most.</p>
+                    
                     <ul class="row g-3 cs-amenities-grid list-unstyled mb-0 cs-reveal-3">
                         <li class="col-6 col-sm-3 cs-amenity-card-premium">
                             <i class="bi bi-wifi cs-amenity-icon"></i>
@@ -292,19 +308,24 @@
                     </ul>
                 </div>
             </div>
+
         </div>
     </div>
 </section>
 
-<!-- Popular Stays -->
-<section class="cs-popular-stays" data-reveal="">
+<!-- ========================================== -->
+<!-- POPULAR STAYS                              -->
+<!-- ========================================== -->
+<section class="cs-popular-stays" data-reveal>
     <div class="container">
         <div class="text-center max-w-xl mx-auto mb-5">
             <span class="cs-section-eyebrow cs-reveal-1 d-inline-block mb-2">Handpicked for you</span>
             <h2 class="cs-title cs-title--section cs-section-title cs-reveal-2">Popular Stays Near Campuses</h2>
             <p class="cs-section-lead mx-auto cs-reveal-3">Top-rated hostels and PGs loved by students across prime locations.</p>
         </div>
+
         <div class="row g-4">
+            <!-- Property Card 1 -->
             <div class="col-12 col-md-6 col-lg-4 cs-reveal-1" data-reveal>
                 <div class="cs-feature-card cs-popular-card h-100">
                     <div class="cs-popular-card-media">
@@ -324,11 +345,13 @@
                         </div>
                         <div class="d-flex justify-content-between align-items-center">
                             <span class="cs-popular-price fw-bold text-primary">₹7,500/mo</span>
-                            <a href="/hostels/" class="btn btn-sm btn-outline-primary rounded-pill">View</a>
+                            <a href="{% url 'hostels:hostel_list' %}" class="btn btn-sm btn-outline-primary rounded-pill">View</a>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Property Card 2 -->
             <div class="col-12 col-md-6 col-lg-4 cs-reveal-2" data-reveal>
                 <div class="cs-feature-card cs-popular-card h-100">
                     <div class="cs-popular-card-media">
@@ -348,11 +371,13 @@
                         </div>
                         <div class="d-flex justify-content-between align-items-center">
                             <span class="cs-popular-price fw-bold text-primary">₹6,800/mo</span>
-                            <a href="/hostels/" class="btn btn-sm btn-outline-primary rounded-pill">View</a>
+                            <a href="{% url 'hostels:hostel_list' %}" class="btn btn-sm btn-outline-primary rounded-pill">View</a>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Property Card 3 -->
             <div class="col-12 col-md-6 col-lg-4 cs-reveal-3" data-reveal>
                 <div class="cs-feature-card cs-popular-card h-100">
                     <div class="cs-popular-card-media">
@@ -372,7 +397,7 @@
                         </div>
                         <div class="d-flex justify-content-between align-items-center">
                             <span class="cs-popular-price fw-bold text-primary">₹8,200/mo</span>
-                            <a href="/hostels/" class="btn btn-sm btn-outline-primary rounded-pill">View</a>
+                            <a href="{% url 'hostels:hostel_list' %}" class="btn btn-sm btn-outline-primary rounded-pill">View</a>
                         </div>
                     </div>
                 </div>
@@ -381,8 +406,10 @@
     </div>
 </section>
 
-<!-- CTA Band -->
-<section class="cs-cta-band-premium-wrapper" data-reveal="">
+<!-- ========================================== -->
+<!-- CALL TO ACTION BAND                        -->
+<!-- ========================================== -->
+<section class="cs-cta-band-premium-wrapper" data-reveal>
     <div class="container">
         <div class="cs-cta-band cs-cta-band-premium p-4 p-md-5 rounded-4 text-white" data-reveal>
             <div class="row align-items-center g-4 cs-reveal-1">
@@ -392,11 +419,11 @@
                         Explore verified hostels and PGs across prime areas, or list your property to connect with students directly — zero brokerage.
                     </p>
                     <div class="d-flex flex-wrap gap-3 justify-content-center">
-                        <a href="/hostels/add/" class="cs-cta-btn-premium btn btn-outline-light">
-                            List Your Property
+                        <a href="{% url 'hostels:hostel_list' %}" class="btn btn-light text-dark fw-bold px-4 py-2 rounded-pill">
+                            Find a Hostel
                         </a>
-                        <a href="{% url 'hostels:hostel_list' %}" class="cs-cta-btn-premium btn btn-light">
-                            Find Hostels
+                        <a href="{% url 'roommates:roommate_list' %}" class="btn btn-outline-light fw-bold px-4 py-2 rounded-pill">
+                            Find Roommates
                         </a>
                     </div>
                 </div>

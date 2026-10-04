@@ -18,7 +18,7 @@ urlpatterns = [
         auth_views.PasswordChangeView.as_view(
             template_name="accounts/password_change_form.html",
             form_class=BootstrapPasswordChangeForm,
-            success_url="/password/change/done/",
+            success_url="/accounts/password/change/done/",
         ),
         name="password_change",
     ),

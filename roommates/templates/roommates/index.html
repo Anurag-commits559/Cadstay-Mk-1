@@ -77,17 +77,26 @@
                                         {{ profile.user.username|slice:":1"|upper }}
                                     </div>
                                     <div>
-                                        <h2 class="h6 card-title mb-0 fw-bold text-dark">{{ profile.user.username }}</h2>
+                                        <h2 class="h6 card-title mb-0 fw-bold">
+                                            <a href="{% url 'roommates:roommate_detail' profile.pk %}" class="text-decoration-none text-dark">
+                                                {{ profile.user.username }}
+                                            </a>
+                                        </h2>
                                         <small class="text-muted"><i class="bi bi-clock me-1"></i>{{ profile.created_at|timesince }} ago</small>
                                     </div>
                                 </div>
                                 {% if user == profile.user %}
-                                    <form method="POST" action="{% url 'roommates:delete_roommate_request' profile.pk %}" onsubmit="return confirm('Are you sure you want to delete this post?');">
-                                        {% csrf_token %}
-                                        <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-3" title="Delete request">
-                                            <i class="bi bi-trash"></i> Delete
-                                        </button>
-                                    </form>
+                                    <div class="d-flex gap-1">
+                                        <a href="{% url 'roommates:edit_roommate_request' profile.pk %}" class="btn btn-outline-secondary btn-sm rounded-pill px-2" title="Edit request">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <form method="POST" action="{% url 'roommates:delete_roommate_request' profile.pk %}" onsubmit="return confirm('Are you sure you want to delete this post?');">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-2" title="Delete request">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
                                 {% endif %}
                             </div>
 
@@ -112,8 +121,11 @@
                         </div>
 
                         <div class="card-footer bg-white border-top p-3 d-flex gap-2">
-                            <a href="mailto:{{ profile.user.email }}" class="btn btn-outline-primary btn-sm rounded-pill flex-grow-1 fw-bold d-flex align-items-center justify-content-center gap-1">
-                                <i class="bi bi-envelope"></i> Contact Roommate
+                            <a href="{% url 'roommates:roommate_detail' profile.pk %}" class="btn btn-outline-secondary btn-sm rounded-pill px-3 fw-bold d-flex align-items-center gap-1">
+                                <i class="bi bi-eye"></i> Details
+                            </a>
+                            <a href="mailto:{{ profile.user.email }}" class="btn btn-primary btn-sm rounded-pill flex-grow-1 fw-bold d-flex align-items-center justify-content-center gap-1">
+                                <i class="bi bi-envelope"></i> Contact
                             </a>
                         </div>
                     </div>

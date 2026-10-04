@@ -101,7 +101,7 @@ function escapeHtml(str) {
  * ------------------------------------------------------------------- */
 function initImageUploader() {
   const dropzone = document.getElementById("hs-dropzone");
-  const input = document.getElementById("hs-image-input");
+  const input = document.getElementById("hs-image-input") || document.getElementById("id_images") || document.querySelector('input[type="file"][name="images"]');
   const previewGrid = document.getElementById("hs-preview-grid");
   if (!dropzone || !input || !previewGrid) return;
 

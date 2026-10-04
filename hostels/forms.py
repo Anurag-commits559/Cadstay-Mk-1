@@ -29,7 +29,7 @@ class MultipleFileField(forms.FileField):
     """
 
     def __init__(self, *args, **kwargs):
-        kwargs.setdefault("widget", MultipleFileInput(attrs={"multiple": True}))
+        kwargs.setdefault("widget", MultipleFileInput(attrs={"multiple": True, "id": "hs-image-input"}))
         super().__init__(*args, **kwargs)
 
     def clean(self, data, initial=None):
@@ -178,3 +178,26 @@ class HostelImageUploadForm(forms.Form):
                     f"'{f.name}' is too large. Maximum size is 5 MB per image."
                 )
         return files
+
+
+class HostelImageForm(forms.ModelForm):
+    """
+    ModelForm for individual HostelImage records.
+    Safely assigns the parent Hostel instance before calling save().
+    """
+
+    class Meta:
+        model = HostelImage
+        fields = ["image", "is_primary"]
+
+    def save(self, commit=True, hostel=None):
+        instance = super().save(commit=False)
+        if hostel is not None:
+            instance.hostel = hostel
+        if commit:
+            if not instance.hostel_id and not getattr(instance, "hostel", None):
+                raise ValueError(
+                    "HostelImage requires a parent Hostel instance to be assigned before calling .save()."
+                )
+            instance.save()
+        return instance

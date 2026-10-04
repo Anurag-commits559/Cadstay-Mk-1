@@ -11,5 +11,9 @@ urlpatterns = [
     path('accounts/', include(('accounts.urls', 'accounts'), namespace='accounts')),
     path('roommates/', include(('roommates.urls', 'roommates'), namespace='roommates')),
     path('hostels/', include(('hostels.urls', 'hostels'), namespace='hostels')),
-    path('requests/', include('requests_module.urls')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('requests/', include(('requests_module.urls', 'requests_module'), namespace='requests_module')),
+]
+
+# Serve media files locally during development
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

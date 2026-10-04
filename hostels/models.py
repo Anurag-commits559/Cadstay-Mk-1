@@ -7,9 +7,11 @@ directly here, so this app stays loosely coupled to Member 1's app.
 """
 
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.urls import reverse
+from cloudinary.models import CloudinaryField
 
 
 def hostel_image_upload_path(instance, filename):
@@ -213,8 +215,6 @@ class Room(models.Model):
             )
 
     def save(self, *args, **kwargs):
-        # Auto-derive availability_status from the bed counts, so the
-        # owner never has to set it manually and it can't go stale.
         if self.total_beds and self.available_beds <= 0:
             self.availability_status = self.AvailabilityStatus.FULL
         elif self.total_beds and self.available_beds < self.total_beds:
@@ -228,7 +228,7 @@ class HostelImage(models.Model):
     hostel = models.ForeignKey(
         Hostel, on_delete=models.CASCADE, related_name="images"
     )
-    image = models.ImageField(upload_to=hostel_image_upload_path)
+    image = models.ImageField(upload_to=hostel_image_upload_path, max_length=255)
     is_primary = models.BooleanField(default=False)
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
@@ -236,4 +236,19 @@ class HostelImage(models.Model):
         ordering = ["-is_primary", "uploaded_at"]
 
     def __str__(self):
-        return f"Image for {self.hostel.hostel_name}"
+        try:
+            return f"Image for {self.hostel.hostel_name}"
+        except Exception:
+            return f"HostelImage #{self.pk or 'unsaved'}"
+
+    def clean(self):
+        super().clean()
+        if not self.hostel_id and not getattr(self, "hostel", None):
+            raise ValidationError({"hostel": "Parent Hostel instance must be assigned before saving."})
+
+    def save(self, *args, **kwargs):
+        if not self.hostel_id and not getattr(self, "hostel", None):
+            raise ValueError(
+                "HostelImage requires a parent Hostel instance to be assigned before calling .save()."
+            )
+        super().save(*args, **kwargs)
